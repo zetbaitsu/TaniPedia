@@ -16,8 +16,5 @@
 
 <resources>
     <string name="app_name">TaniPedia</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_berita">BeritaActivity</string>
+    <string name="buat_akun"><u>Buat Akun Baru</u></string>
 </resources>

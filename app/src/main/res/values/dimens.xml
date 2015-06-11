@@ -32,4 +32,11 @@
     <dimen name="sample_text_size">12sp</dimen>
 
     <dimen name="margin">8dp</dimen>
+
+    <dimen name="fab_elevation">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_elevation_press">12dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+
+    <dimen name="statusbar_size">24dp</dimen>
 </resources>

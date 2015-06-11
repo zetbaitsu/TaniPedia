@@ -25,13 +25,26 @@ import android.os.Parcelable;
 public class Cuaca implements Parcelable
 {
     public static final String API = "http://apitanipedia.appspot.com/cuaca?";
+    public static final Creator<Cuaca> CREATOR
+            = new Creator<Cuaca>()
+    {
+        public Cuaca createFromParcel(Parcel in)
+        {
+            return new Cuaca(in);
+        }
 
+        public Cuaca[] newArray(int size)
+        {
+            return new Cuaca[size];
+        }
+    };
     private String lokasi;
     private String suhuMax;
     private String suhuMin;
+    private String suhu;
     private String tanggal;
     private String cuaca;
-    private String detail;
+    private String kegiatan;
 
     public Cuaca()
     {
@@ -42,9 +55,10 @@ public class Cuaca implements Parcelable
         lokasi = in.readString();
         suhuMax = in.readString();
         suhuMin = in.readString();
+        suhu = in.readString();
         tanggal = in.readString();
         cuaca = in.readString();
-        detail = in.readString();
+        kegiatan = in.readString();
     }
 
     public String getLokasi()
@@ -77,6 +91,16 @@ public class Cuaca implements Parcelable
         this.suhuMin = suhuMin;
     }
 
+    public String getSuhu()
+    {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu)
+    {
+        this.suhu = suhu;
+    }
+
     public String getTanggal()
     {
         return tanggal;
@@ -97,14 +121,14 @@ public class Cuaca implements Parcelable
         this.cuaca = cuaca;
     }
 
-    public String getDetail()
+    public String getKegiatan()
     {
-        return detail;
+        return kegiatan;
     }
 
-    public void setDetail(String detail)
+    public void setKegiatan(String kegiatan)
     {
-        this.detail = detail;
+        this.kegiatan = kegiatan;
     }
 
     @Override
@@ -119,22 +143,9 @@ public class Cuaca implements Parcelable
         dest.writeString(lokasi);
         dest.writeString(suhuMax);
         dest.writeString(suhuMin);
+        dest.writeString(suhu);
         dest.writeString(tanggal);
         dest.writeString(cuaca);
-        dest.writeString(detail);
+        dest.writeString(kegiatan);
     }
-
-    public static final Creator<Cuaca> CREATOR
-            = new Creator<Cuaca>()
-    {
-        public Cuaca createFromParcel(Parcel in)
-        {
-            return new Cuaca(in);
-        }
-
-        public Cuaca[] newArray(int size)
-        {
-            return new Cuaca[size];
-        }
-    };
 }

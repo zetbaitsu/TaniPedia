@@ -16,10 +16,101 @@
 
 package id.zelory.tanipedia.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by zetbaitsu on 4/23/2015.
  */
-public class Jawaban
+public class Jawaban implements Parcelable
 {
+    public static final String API_AMBIL = "http://apitanipedia.appspot.com/tanya/ambil-jawaban?idSoal=";
+    public static final String API_KIRIM = "http://apitanipedia.appspot.com/tanya/kirim-jawaban?idSoal=";
 
+    private String idSoal;
+    private String nama;
+    private String tanggal;
+    private String isi;
+
+    public Jawaban()
+    {
+
+    }
+
+    private Jawaban(Parcel in)
+    {
+        idSoal = in.readString();
+        nama = in.readString();
+        tanggal = in.readString();
+        isi = in.readString();
+    }
+
+    public String getIdSoal()
+    {
+        return idSoal;
+    }
+
+    public void setIdSoal(String idSoal)
+    {
+        this.idSoal = idSoal;
+    }
+
+    public String getNama()
+    {
+        return nama;
+    }
+
+    public void setNama(String nama)
+    {
+        this.nama = nama;
+    }
+
+    public String getTanggal()
+    {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal)
+    {
+        this.tanggal = tanggal;
+    }
+
+    public String getIsi()
+    {
+        return isi;
+    }
+
+    public void setIsi(String isi)
+    {
+        this.isi = isi;
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i)
+    {
+        parcel.writeString(idSoal);
+        parcel.writeString(nama);
+        parcel.writeString(tanggal);
+        parcel.writeString(isi);
+    }
+
+    public static final Creator<Jawaban> CREATOR
+            = new Creator<Jawaban>()
+    {
+        public Jawaban createFromParcel(Parcel in)
+        {
+            return new Jawaban(in);
+        }
+
+        public Jawaban[] newArray(int size)
+        {
+            return new Jawaban[size];
+        }
+    };
 }

@@ -16,9 +16,74 @@
 
 package id.zelory.tanipedia.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by zetbaitsu on 4/23/2015.
  */
-public class Komoditas
+public class Komoditas implements Parcelable
 {
+    public static final String API = "http://apitanipedia.appspot.com/komoditas";
+    public static final Creator<Komoditas> CREATOR
+            = new Creator<Komoditas>()
+    {
+        public Komoditas createFromParcel(Parcel in)
+        {
+            return new Komoditas(in);
+        }
+
+        public Komoditas[] newArray(int size)
+        {
+            return new Komoditas[size];
+        }
+    };
+    private String nama;
+    private String harga;
+
+    public Komoditas()
+    {
+
+    }
+
+    public Komoditas(Parcel in)
+    {
+        nama = in.readString();
+        harga = in.readString();
+    }
+
+    public String getNama()
+    {
+        return nama;
+    }
+
+    public void setNama(String nama)
+    {
+        this.nama = nama;
+    }
+
+    public String getHarga()
+    {
+        return harga;
+    }
+
+    public void setHarga(String harga)
+    {
+        harga = harga.replace(",",".");
+        harga = harga+",00";
+        this.harga = harga;
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i)
+    {
+        parcel.writeString(nama);
+        parcel.writeString(harga);
+    }
 }

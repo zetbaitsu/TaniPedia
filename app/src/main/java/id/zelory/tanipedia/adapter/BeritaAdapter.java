@@ -17,11 +17,14 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -31,10 +34,11 @@ import id.zelory.tanipedia.model.Berita;
 /**
  * Created by zetbaitsu on 4/26/2015.
  */
-public class BeritaAdapter extends BaseAdapter
+public class BeritaAdapter extends RecyclerView.Adapter
 {
     private Context context;
     private ArrayList<Berita> beritaArrayList;
+    private OnItemClickListener clickListener;
 
     public BeritaAdapter(Context context, ArrayList<Berita> beritaArrayList)
     {
@@ -43,15 +47,20 @@ public class BeritaAdapter extends BaseAdapter
     }
 
     @Override
-    public int getCount()
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        return beritaArrayList.size();
+        View view = LayoutInflater.from(context).inflate(R.layout.item_berita, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public Object getItem(int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        return beritaArrayList.get(position);
+        ViewHolder viewHolder = (ViewHolder) holder;
+        Berita berita = beritaArrayList.get(position);
+        Picasso.with(context).load(berita.getGambar()).into(viewHolder.gambar);
+        viewHolder.judul.setText(berita.getJudul());
+        viewHolder.tanggal.setText("TaniPedia - "+berita.getTanggal());
     }
 
     @Override
@@ -61,37 +70,40 @@ public class BeritaAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public int getItemCount()
     {
-        ViewHolder holder;
-        Berita berita = beritaArrayList.get(position);
-        String hasil = "";
-
-        if (convertView == null)
-        {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_cuaca, parent, false);
-
-            holder = new ViewHolder();
-            holder.textView = (TextView) convertView.findViewById(R.id.teks);
-            convertView.setTag(holder);
-        } else
-        {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        hasil += berita.getJudul() + "\n";
-        hasil += berita.getAlamat() + "\n";
-        hasil += berita.getGambar() + "\n";
-        hasil += berita.getDeskripsi() + "\n";
-
-        holder.textView.setText(hasil);
-
-        return convertView;
+        return beritaArrayList.size();
     }
 
-    private class ViewHolder
+    private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        TextView textView;
+        ImageView gambar;
+        TextView judul;
+        TextView tanggal;
+
+        public ViewHolder(View itemView)
+        {
+            super(itemView);
+            gambar = (ImageView) itemView.findViewById(R.id.gambar);
+            judul = (TextView) itemView.findViewById(R.id.judul);
+            tanggal = (TextView) itemView.findViewById(R.id.tanggal);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            clickListener.onItemClick(v, getAdapterPosition());
+        }
+    }
+
+    public interface OnItemClickListener
+    {
+        void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListener(final OnItemClickListener itemClickListener)
+    {
+        this.clickListener = itemClickListener;
     }
 }
