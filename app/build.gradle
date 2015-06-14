@@ -26,17 +26,12 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.5.2'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.2'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'jp.wasabeef:picasso-transformations:1.0.1@aar'
-    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.2.3@aar'
     compile 'com.android.support:cardview-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'mbanje.kurt:fabbutton:1.+'
-    compile 'com.github.bluejamesbond:textjustify-android:2.1.0'
     compile 'com.afollestad:material-dialogs:0.7.5.5'
 }

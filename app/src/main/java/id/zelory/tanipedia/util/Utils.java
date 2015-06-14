@@ -19,8 +19,14 @@ package id.zelory.tanipedia.util;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import id.zelory.tanipedia.model.Berita;
 
 /**
  * Created by zetbaitsu on 4/26/2015.
@@ -31,6 +37,39 @@ public class Utils
     {
         Random rand = new Random();
         return rand.nextInt((max - min) + 1) + min;
+    }
+
+    public static ArrayList<Berita> getRandomBerita(Context context, String alamat)
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<Berita> beritaArrayList = null;
+        try
+        {
+            beritaArrayList = mapper.readValue(PrefUtils.ambilString(context, "berita"),
+                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, Berita.class));
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            int x = randInt(0, beritaArrayList.size()-1);
+            if (beritaArrayList.get(x).getAlamat().equals(alamat))
+            {
+                beritaArrayList.remove(x);
+                i--;
+            } else
+            {
+                beritaArrayList.set(i, beritaArrayList.get(x));
+                beritaArrayList.remove(x);
+            }
+        }
+
+        for (int i = 5; i < beritaArrayList.size(); i++)
+            beritaArrayList.remove(i);
+
+        return beritaArrayList;
     }
 
     public static boolean isMyServiceRunning(Class<?> serviceClass, Context context)

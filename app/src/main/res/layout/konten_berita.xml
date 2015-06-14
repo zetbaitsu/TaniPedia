@@ -29,7 +29,7 @@
         <LinearLayout
             style="@style/Widget.CardContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/judul"
@@ -47,17 +47,271 @@
                 android:gravity="center_horizontal"
                 android:textSize="14sp"/>
 
-            <com.bluejamesbond.text.DocumentView
+            <WebView
                 android:id="@+id/isi"
-                xmlns:ext="http://schemas.android.com/apk/res-auto"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                ext:documentView_antialias="true"
-                ext:documentView_cacheConfig="auto_quality"
-                ext:documentView_textAlignment="justified"
-                ext:documentView_textColor="@color/secondary_text"
-                ext:documentView_textSize="16sp"/>
+                android:layout_height="wrap_content"
+                android:textSize="16sp"/>
 
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/lainnya"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Artikel lainnya"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/berita1"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/judul1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:text="FAO, Sawah Indonesia Paling Produktif FAO, Sawah Indonesia Paling Produktif"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tanggal1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="8dp"
+                    android:text="11 Jun 2015"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/gambar1"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pak_tani"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/berita2"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/judul2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:text="FAO, Sawah Indonesia Paling Produktif FAO, Sawah Indonesia Paling Produktif"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tanggal2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="8dp"
+                    android:text="11 Jun 2015"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/gambar2"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pak_tani"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/berita3"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/judul3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:text="FAO, Sawah Indonesia Paling Produktif FAO, Sawah Indonesia Paling Produktif"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tanggal3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="8dp"
+                    android:text="11 Jun 2015"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/gambar3"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pak_tani"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/berita4"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/judul4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:text="FAO, Sawah Indonesia Paling Produktif FAO, Sawah Indonesia Paling Produktif"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tanggal4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="8dp"
+                    android:text="11 Jun 2015"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/gambar4"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pak_tani"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/berita5"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/judul5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:text="FAO, Sawah Indonesia Paling Produktif FAO, Sawah Indonesia Paling Produktif"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tanggal5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="8dp"
+                    android:text="11 Jun 2015"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/gambar5"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pak_tani"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
