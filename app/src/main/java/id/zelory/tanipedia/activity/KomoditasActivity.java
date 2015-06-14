@@ -36,6 +36,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -166,8 +167,10 @@ public class KomoditasActivity extends AppCompatActivity
         {
             ObjectMapper mapper = new ObjectMapper();
             komoditasArrayList = null;
+            int i = 0;
             while (komoditasArrayList == null)
             {
+                i++;
                 try
                 {
                     komoditasArrayList = mapper.readValue(new URL(Komoditas.API),
@@ -176,6 +179,26 @@ public class KomoditasActivity extends AppCompatActivity
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                {
+                    try
+                    {
+                        komoditasArrayList = mapper.readValue(PrefUtils.ambilString(KomoditasActivity.this, "komoditas"),
+                                mapper.getTypeFactory().constructCollectionType(ArrayList.class, Komoditas.class));
+                    } catch (IOException e)
+                    {
+                        Snackbar.make(fabButton, "Terjadi kesalahan silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+            try
+            {
+                PrefUtils.simpanString(KomoditasActivity.this, "komoditas", mapper.writeValueAsString(komoditasArrayList));
+            } catch (JsonProcessingException e)
+            {
+                e.printStackTrace();
             }
             return null;
         }
@@ -184,22 +207,29 @@ public class KomoditasActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            fabButton.onProgressCompleted();
-            KomoditasAdapter adapter = new KomoditasAdapter(KomoditasActivity.this, komoditasArrayList);
-            adapter.SetOnItemClickListener(new KomoditasAdapter.OnItemClickListener()
+            if (komoditasArrayList != null && !komoditasArrayList.isEmpty())
             {
-                @Override
-                public void onItemClick(View view, int position)
+                KomoditasAdapter adapter = new KomoditasAdapter(KomoditasActivity.this, komoditasArrayList);
+                adapter.SetOnItemClickListener(new KomoditasAdapter.OnItemClickListener()
                 {
-                    Komoditas komoditas = komoditasArrayList.get(position);
-                    Snackbar.make(view, "Harga " + komoditas.getNama().toLowerCase() + " adalah Rp. " + komoditas.getHarga() + " per Kg.", Snackbar.LENGTH_LONG).show();
-                }
-            });
-            recyclerView.setAdapter(adapter);
-            recyclerView.startAnimation(animation);
-            imageHeader.setVisibility(View.VISIBLE);
-            imageHeader.startAnimation(animation);
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        Komoditas komoditas = komoditasArrayList.get(position);
+                        Snackbar.make(view, "Harga " + komoditas.getNama().toLowerCase() + " adalah Rp. " + komoditas.getHarga() + ",00 per Kg.", Snackbar.LENGTH_LONG).show();
+                    }
+                });
+                recyclerView.setAdapter(adapter);
+                recyclerView.startAnimation(animation);
+                imageHeader.setVisibility(View.VISIBLE);
+                imageHeader.startAnimation(animation);
+            } else
+            {
+                Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
+            }
 
+            fabButton.onProgressCompleted();
+            fabButton.showProgress(false);
             new Handler().postDelayed(new Runnable()
             {
                 @Override

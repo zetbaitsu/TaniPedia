@@ -192,8 +192,10 @@ public class JawabActivity extends AppCompatActivity
         {
             ObjectMapper mapper = new ObjectMapper();
             jawabanArrayList = null;
+            int i = 0;
             while (jawabanArrayList == null)
             {
+                i++;
                 try
                 {
                     jawabanArrayList = mapper.readValue(new URL(Jawaban.API_AMBIL + idSoal),
@@ -201,6 +203,11 @@ public class JawabActivity extends AppCompatActivity
                 } catch (IOException e)
                 {
                     e.printStackTrace();
+                }
+                if (i >= 5)
+                {
+                    jawabanArrayList = new ArrayList<>();
+                    break;
                 }
             }
 
@@ -216,7 +223,7 @@ public class JawabActivity extends AppCompatActivity
                 jawaban = new Jawaban();
                 jawaban.setIdSoal(soal.getId());
                 jawaban.setNama("TaniPedia");
-                jawaban.setIsi("Pertanyaan ini belum mempunyai jawaban satupun, jadilah orang pertama yang bisa membantu " + soal.getNama()+"!");
+                jawaban.setIsi("Pertanyaan ini belum mempunyai jawaban satupun, jadilah orang pertama yang bisa membantu " + soal.getNama() + "!");
                 jawaban.setTanggal(soal.getTanggal());
                 jawabanArrayList.add(jawaban);
             }
@@ -228,7 +235,7 @@ public class JawabActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            fabButton.onProgressCompleted();
+
             JawabanAdapter adapter = new JawabanAdapter(JawabActivity.this, jawabanArrayList);
             adapter.SetOnItemClickListener(new JawabanAdapter.OnItemClickListener()
             {
@@ -238,6 +245,8 @@ public class JawabActivity extends AppCompatActivity
                 }
             });
             recyclerView.setAdapter(adapter);
+            fabButton.onProgressCompleted();
+            fabButton.showProgress(false);
             new Handler().postDelayed(new Runnable()
             {
                 @Override
@@ -271,9 +280,10 @@ public class JawabActivity extends AppCompatActivity
         {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = null;
-
+            int i = 0;
             while (root == null)
             {
+                i++;
                 try
                 {
                     root = mapper.readTree(new URL(Jawaban.API_KIRIM + idSoal + "&email=" + PrefUtils.ambilString(JawabActivity.this, "email") + "&isi=" + jawaban));
@@ -281,8 +291,13 @@ public class JawabActivity extends AppCompatActivity
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                    break;
             }
-            status = root.findValue("status").asText();
+            if (i < 5)
+                status = root.findValue("status").asText();
+            else
+                status = "Gagal";
             return null;
         }
 

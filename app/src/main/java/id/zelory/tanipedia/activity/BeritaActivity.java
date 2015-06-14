@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.Picasso;
 
@@ -45,6 +47,7 @@ import java.util.ArrayList;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.adapter.BeritaAdapter;
 import id.zelory.tanipedia.model.Berita;
+import id.zelory.tanipedia.model.Cuaca;
 import id.zelory.tanipedia.util.PrefUtils;
 import id.zelory.tanipedia.util.Utils;
 import mbanje.kurt.fabbutton.FabButton;
@@ -59,6 +62,7 @@ public class BeritaActivity extends AppCompatActivity
     private ImageView imageHeader;
     private FabButton fabButton;
     private Animation animation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -166,8 +170,11 @@ public class BeritaActivity extends AppCompatActivity
         {
             ObjectMapper mapper = new ObjectMapper();
             beritaArrayList = null;
+            int i = 0;
+
             while (beritaArrayList == null)
             {
+                i++;
                 try
                 {
                     beritaArrayList = mapper.readValue(new URL(Berita.API),
@@ -176,7 +183,29 @@ public class BeritaActivity extends AppCompatActivity
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                {
+                    try
+                    {
+                        beritaArrayList = mapper.readValue(PrefUtils.ambilString(BeritaActivity.this, "berita"),
+                                mapper.getTypeFactory().constructCollectionType(ArrayList.class, Berita.class));
+                    } catch (Exception e)
+                    {
+                        Snackbar.make(fabButton, "Terjadi kesalahan silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                    break;
+                }
             }
+
+            try
+            {
+                PrefUtils.simpanString(BeritaActivity.this, "berita", mapper.writeValueAsString(beritaArrayList));
+            } catch (JsonProcessingException e)
+            {
+                e.printStackTrace();
+            }
+
             return null;
         }
 
@@ -184,25 +213,33 @@ public class BeritaActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            fabButton.onProgressCompleted();
-            BeritaAdapter adapter = new BeritaAdapter(BeritaActivity.this, beritaArrayList);
-            adapter.SetOnItemClickListener(new BeritaAdapter.OnItemClickListener()
+            if (beritaArrayList != null && !beritaArrayList.isEmpty())
             {
-                @Override
-                public void onItemClick(View view, int position)
+                BeritaAdapter adapter = new BeritaAdapter(BeritaActivity.this, beritaArrayList);
+                adapter.SetOnItemClickListener(new BeritaAdapter.OnItemClickListener()
                 {
-                    Intent intent = new Intent(BeritaActivity.this, BacaActivity.class);
-                    intent.putExtra("berita", beritaArrayList.get(position));
-                    startActivity(intent);
-                }
-            });
-            recyclerView.setAdapter(adapter);
-            recyclerView.startAnimation(animation);
-            String url = beritaArrayList.get(Utils.randInt(0, beritaArrayList.size() - 1)).getGambar();
-            Picasso.with(BeritaActivity.this)
-                    .load(url)
-                    .into(imageHeader);
-            imageHeader.startAnimation(animation);
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        Intent intent = new Intent(BeritaActivity.this, BacaActivity.class);
+                        intent.putExtra("berita", beritaArrayList.get(position));
+                        startActivity(intent);
+                    }
+                });
+                recyclerView.setAdapter(adapter);
+                recyclerView.startAnimation(animation);
+                String url = beritaArrayList.get(Utils.randInt(0, beritaArrayList.size() - 1)).getGambar();
+                Picasso.with(BeritaActivity.this)
+                        .load(url)
+                        .into(imageHeader);
+                imageHeader.startAnimation(animation);
+            }else
+            {
+                Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
+            }
+
+            fabButton.onProgressCompleted();
+            fabButton.showProgress(false);
             new Handler().postDelayed(new Runnable()
             {
                 @Override

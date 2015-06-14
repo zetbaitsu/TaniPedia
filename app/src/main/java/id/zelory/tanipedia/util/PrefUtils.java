@@ -49,7 +49,7 @@ public class PrefUtils
     public static Double ambilDouble(Context context, String key)
     {
         double isi;
-        SharedPreferences sharedPreferences = context.getSharedPreferences("TaniPedia",Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("TaniPedia", Context.MODE_PRIVATE);
         switch (key)
         {
             case "lat":

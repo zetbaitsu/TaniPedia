@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -248,8 +249,10 @@ public class TanyaActivity extends AppCompatActivity
         {
             ObjectMapper mapper = new ObjectMapper();
             soalArrayList = null;
+            int i = 0;
             while (soalArrayList == null)
             {
+                i++;
                 try
                 {
                     soalArrayList = mapper.readValue(new URL(Soal.API_AMBIL),
@@ -258,7 +261,29 @@ public class TanyaActivity extends AppCompatActivity
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                {
+                    try
+                    {
+                        soalArrayList = mapper.readValue(PrefUtils.ambilString(TanyaActivity.this, "soal"),
+                                mapper.getTypeFactory().constructCollectionType(ArrayList.class, Soal.class));
+                    } catch (Exception e)
+                    {
+                        Snackbar.make(fabButton, "Terjadi kesalahan silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                    break;
+                }
             }
+
+            try
+            {
+                PrefUtils.simpanString(TanyaActivity.this, "soal", mapper.writeValueAsString(soalArrayList));
+            } catch (JsonProcessingException e)
+            {
+                e.printStackTrace();
+            }
+
             return null;
         }
 
@@ -266,25 +291,33 @@ public class TanyaActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            fabButton.onProgressCompleted();
 
-            SoalAdapter adapter = new SoalAdapter(TanyaActivity.this, soalArrayList);
-            adapter.SetOnItemClickListener(new SoalAdapter.OnItemClickListener()
+            if (soalArrayList != null && !soalArrayList.isEmpty())
             {
-                @Override
-                public void onItemClick(View view, int position)
+                SoalAdapter adapter = new SoalAdapter(TanyaActivity.this, soalArrayList);
+                adapter.SetOnItemClickListener(new SoalAdapter.OnItemClickListener()
                 {
-                    Intent intent = new Intent(TanyaActivity.this, JawabActivity.class);
-                    intent.putExtra("soal", soalArrayList.get(position));
-                    startActivity(intent);
-                }
-            });
-            recyclerView.setAdapter(adapter);
-            recyclerView.startAnimation(animation);
-            fab.startAnimation(animation);
-            fab.setVisibility(View.VISIBLE);
-            tanyaGambar.setVisibility(View.VISIBLE);
-            tanyaGambar.startAnimation(animation);
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        Intent intent = new Intent(TanyaActivity.this, JawabActivity.class);
+                        intent.putExtra("soal", soalArrayList.get(position));
+                        startActivity(intent);
+                    }
+                });
+                recyclerView.setAdapter(adapter);
+                recyclerView.startAnimation(animation);
+                fab.startAnimation(animation);
+                fab.setVisibility(View.VISIBLE);
+                tanyaGambar.setVisibility(View.VISIBLE);
+                tanyaGambar.startAnimation(animation);
+            } else
+            {
+                Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
+            }
+
+            fabButton.onProgressCompleted();
+            fabButton.showProgress(false);
             new Handler().postDelayed(new Runnable()
             {
                 @Override
@@ -318,9 +351,10 @@ public class TanyaActivity extends AppCompatActivity
         {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = null;
-
+            int i = 0;
             while (root == null)
             {
+                i++;
                 try
                 {
                     root = mapper.readTree(new URL(Soal.API_KIRIM + "?email=" + PrefUtils.ambilString(TanyaActivity.this, "email") + "&isi=" + pertanyaan));
@@ -328,8 +362,13 @@ public class TanyaActivity extends AppCompatActivity
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                    break;
             }
-            status = root.findValue("status").asText();
+            if (i < 5)
+                status = root.findValue("status").asText();
+            else
+                status = "Gagal";
             return null;
         }
 

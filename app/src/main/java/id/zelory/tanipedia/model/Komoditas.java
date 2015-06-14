@@ -70,7 +70,6 @@ public class Komoditas implements Parcelable
     public void setHarga(String harga)
     {
         harga = harga.replace(",",".");
-        harga = harga+",00";
         this.harga = harga;
     }
 

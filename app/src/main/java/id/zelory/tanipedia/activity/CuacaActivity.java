@@ -30,7 +30,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -40,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -93,7 +93,7 @@ public class CuacaActivity extends AppCompatActivity implements GoogleApiClient.
         setUpNavDrawer();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         TextView nama = (TextView) navigationView.findViewById(R.id.nama);
-        nama.setText(PrefUtils.ambilString(this,"nama"));
+        nama.setText(PrefUtils.ambilString(this, "nama"));
         TextView email = (TextView) navigationView.findViewById(R.id.email);
         email.setText(PrefUtils.ambilString(this, "email"));
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
@@ -300,17 +300,40 @@ public class CuacaActivity extends AppCompatActivity implements GoogleApiClient.
         {
             ObjectMapper mapper = new ObjectMapper();
             cuacaArrayList = null;
+            int i = 0;
+
             while (cuacaArrayList == null)
             {
+                i++;
                 try
                 {
-                    Log.d("zet", Cuaca.API + "lat=" + latitude + "&lon=" + longitude);
                     cuacaArrayList = mapper.readValue(new URL(Cuaca.API + "lat=" + latitude + "&lon=" + longitude),
                             mapper.getTypeFactory().constructCollectionType(ArrayList.class, Cuaca.class));
                 } catch (IOException e)
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                {
+                    try
+                    {
+                        cuacaArrayList = mapper.readValue(PrefUtils.ambilString(CuacaActivity.this, "cuaca"),
+                                mapper.getTypeFactory().constructCollectionType(ArrayList.class, Cuaca.class));
+                    } catch (Exception e)
+                    {
+                        Snackbar.make(fabButton, "Terjadi kesalahan silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+
+            try
+            {
+                PrefUtils.simpanString(CuacaActivity.this, "cuaca", mapper.writeValueAsString(cuacaArrayList));
+            } catch (JsonProcessingException e)
+            {
+                e.printStackTrace();
             }
             return null;
         }
@@ -319,58 +342,65 @@ public class CuacaActivity extends AppCompatActivity implements GoogleApiClient.
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            fabButton.onProgressCompleted();
-            Cuaca cuaca = cuacaArrayList.get(0);
-            cuacaArrayList.remove(0);
-            CuacaAdapter adapter = new CuacaAdapter(CuacaActivity.this, cuacaArrayList);
-            adapter.SetOnItemClickListener(new CuacaAdapter.OnItemClickListener()
+            if (cuacaArrayList != null && !cuacaArrayList.isEmpty())
             {
-                @Override
-                public void onItemClick(View view, int position)
+                Cuaca cuaca = cuacaArrayList.get(0);
+                cuacaArrayList.remove(0);
+                CuacaAdapter adapter = new CuacaAdapter(CuacaActivity.this, cuacaArrayList);
+                adapter.SetOnItemClickListener(new CuacaAdapter.OnItemClickListener()
                 {
-                    Cuaca tmp = cuacaArrayList.get(position);
-                    Snackbar.make(view, tmp.getLokasi() + " " + tmp.getCuaca().toLowerCase() + " pada " + tmp.getTanggal() + ".", Snackbar.LENGTH_LONG).show();
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        Cuaca tmp = cuacaArrayList.get(position);
+                        Snackbar.make(view, tmp.getLokasi() + " " + tmp.getCuaca().toLowerCase() + " pada " + tmp.getTanggal() + ".", Snackbar.LENGTH_LONG).show();
+                    }
+                });
+
+                recyclerView.setAdapter(adapter);
+                recyclerView.startAnimation(animation);
+
+                collapsingToolbar.setTitle(cuaca.getLokasi());
+                collapsingToolbar.invalidate();
+                cuacaText.setVisibility(View.VISIBLE);
+                cuacaText.setText(cuaca.getCuaca());
+                cuacaText.startAnimation(animation);
+                suhu.setVisibility(View.VISIBLE);
+                suhu.setText(cuaca.getSuhu() + (char) 0x2103);
+                suhu.startAnimation(animation);
+                minmax.setVisibility(View.VISIBLE);
+                minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
+                minmax.startAnimation(animation);
+                kegiatan.setVisibility(View.VISIBLE);
+                kegiatan.setText(cuaca.getKegiatan());
+                kegiatan.startAnimation(animation);
+                int gambar;
+                switch (cuaca.getCuaca())
+                {
+                    case "Cerah":
+                        gambar = R.drawable.cerah;
+                        background.setBackgroundResource(R.color.cerah);
+                        break;
+                    case "Berawan":
+                        gambar = R.drawable.berawan;
+                        background.setBackgroundResource(R.color.berawan);
+                        break;
+                    case "Hujan":
+                        gambar = R.drawable.hujan;
+                        background.setBackgroundResource(R.color.hujan);
+                        break;
+                    default:
+                        gambar = R.drawable.berawan;
                 }
-            });
-
-            recyclerView.setAdapter(adapter);
-            recyclerView.startAnimation(animation);
-
-            collapsingToolbar.setTitle(cuaca.getLokasi());
-            collapsingToolbar.invalidate();
-            cuacaText.setVisibility(View.VISIBLE);
-            cuacaText.setText(cuaca.getCuaca());
-            cuacaText.startAnimation(animation);
-            suhu.setVisibility(View.VISIBLE);
-            suhu.setText(cuaca.getSuhu() + (char) 0x2103);
-            suhu.startAnimation(animation);
-            minmax.setVisibility(View.VISIBLE);
-            minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
-            minmax.startAnimation(animation);
-            kegiatan.setVisibility(View.VISIBLE);
-            kegiatan.setText(cuaca.getKegiatan());
-            kegiatan.startAnimation(animation);
-            int gambar;
-            switch (cuaca.getCuaca())
+                iconCuaca.setVisibility(View.VISIBLE);
+                iconCuaca.setImageResource(gambar);
+                iconCuaca.startAnimation(animation);
+            } else
             {
-                case "Cerah":
-                    gambar = R.drawable.ceraah;
-                    background.setBackgroundResource(R.color.cerah);
-                    break;
-                case "Berawan":
-                    gambar = R.drawable.berawan;
-                    background.setBackgroundResource(R.color.berawan);
-                    break;
-                case "Hujan":
-                    gambar = R.drawable.hujan;
-                    background.setBackgroundResource(R.color.hujan);
-                    break;
-                default:
-                    gambar = R.drawable.berawan;
+                Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
             }
-            iconCuaca.setVisibility(View.VISIBLE);
-            iconCuaca.setImageResource(gambar);
-            iconCuaca.startAnimation(animation);
+            fabButton.onProgressCompleted();
+            fabButton.showProgress(false);
             new Handler().postDelayed(new Runnable()
             {
                 @Override

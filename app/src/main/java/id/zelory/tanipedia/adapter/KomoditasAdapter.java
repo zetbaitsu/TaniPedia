@@ -55,9 +55,9 @@ public class KomoditasAdapter extends RecyclerView.Adapter
     {
         ViewHolder viewHolder = (ViewHolder) holder;
         Komoditas komoditas = komoditasArrayList.get(position);
-        viewHolder.nomor.setText((position+1)+".");
+        viewHolder.nomor.setText((position + 1) + ".");
         viewHolder.nama.setText(komoditas.getNama());
-        viewHolder.harga.setText(komoditas.getHarga());
+        viewHolder.harga.setText(komoditas.getHarga() + ",00");
     }
 
     @Override

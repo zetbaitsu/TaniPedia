@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -105,14 +106,22 @@ public class BacaActivity extends AppCompatActivity
         {
             ObjectMapper mapper = new ObjectMapper();
             berita = null;
+            int i = 0;
             while (berita == null)
             {
+                i++;
                 try
                 {
                     berita = mapper.readValue(new URL(Berita.API + "?url=" + tmp.getAlamat()), Berita.class);
                 } catch (IOException e)
                 {
                     e.printStackTrace();
+                }
+                if (i >= 5)
+                {
+                    berita = tmp;
+                    berita.setIsi("");
+                    break;
                 }
             }
             return null;
@@ -122,12 +131,16 @@ public class BacaActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            fabButton.onProgressCompleted();
+
             Picasso.with(BacaActivity.this).load(berita.getGambar()).into(gambar);
             judul.setText(berita.getJudul());
             tanggal.setText("TaniPedia - " + berita.getTanggal());
             isi.setText(Html.fromHtml(berita.getIsi()));
             isi.invalidateCache();
+            fabButton.onProgressCompleted();
+            fabButton.showProgress(false);
+            if (berita.getIsi().equals(""))
+                Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
         }
     }
 }

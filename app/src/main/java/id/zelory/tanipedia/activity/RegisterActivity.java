@@ -108,8 +108,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             JsonNode root = null;
             String url = PakTani.REGISTER_API + "email=" + email + "&nama=" + nama + "&pass=" + password;
             url = url.replace(" ", "%20");
+            int i = 0;
             while (root == null)
             {
+                i++;
                 try
                 {
                     root = mapper.readTree(new URL(url));
@@ -117,8 +119,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                {
+                    break;
+                }
             }
-            status = root.findValue("status").asText();
+            if (i < 5)
+                status = root.findValue("status").asText();
+            else
+                status = "Gagal";
             return null;
         }
 

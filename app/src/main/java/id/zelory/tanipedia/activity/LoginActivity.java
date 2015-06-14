@@ -49,15 +49,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        if (PrefUtils.ambilString(this,"nama") != null)
+        if (PrefUtils.ambilString(this, "nama") != null)
         {
             Intent intent = new Intent(LoginActivity.this, CuacaActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         findViewById(R.id.tanipedia).startAnimation(animation);
@@ -100,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private class Login extends AsyncTask<Void, Void, Void>
     {
         MaterialDialog dialog;
+        int i = 0;
 
         @Override
         protected void onPreExecute()
@@ -118,8 +119,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         {
             ObjectMapper mapper = new ObjectMapper();
             pakTani = null;
+
             while (pakTani == null)
             {
+                i++;
                 try
                 {
                     pakTani = mapper.readValue(new URL(PakTani.LOGIN_API + "email=" + email + "&pass=" + password), PakTani.class);
@@ -127,6 +130,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     e.printStackTrace();
                 }
+                if (i >= 5)
+                    break;
             }
 
             return null;
@@ -136,18 +141,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-
-            if (pakTani.getEmail() != null)
+            if (i < 5)
             {
-                PrefUtils.simpanString(LoginActivity.this, "email", email);
-                PrefUtils.simpanString(LoginActivity.this, "nama", pakTani.getNama());
-                PrefUtils.simpanString(LoginActivity.this, "pass", password);
-                Intent intent = new Intent(LoginActivity.this, CuacaActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                if (pakTani.getEmail() != null)
+                {
+                    PrefUtils.simpanString(LoginActivity.this, "email", email);
+                    PrefUtils.simpanString(LoginActivity.this, "nama", pakTani.getNama());
+                    PrefUtils.simpanString(LoginActivity.this, "pass", password);
+                    Intent intent = new Intent(LoginActivity.this, CuacaActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else
+                {
+                    Snackbar.make(editPass, "E-Mail dan Password tidak cocok.", Snackbar.LENGTH_LONG).show();
+                }
             } else
             {
-                Snackbar.make(editPass, "E-Mail dan Password tidak cocok.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(editPass, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
             }
 
             dialog.dismiss();

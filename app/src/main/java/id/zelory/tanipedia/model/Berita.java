@@ -74,9 +74,15 @@ public class Berita implements Parcelable
 
     public void setGambar(String gambar)
     {
-        gambar = gambar.replace("-340x160", "");
-        gambar = gambar.replace("http://", "");
-        this.gambar = "http://i2.wp.com/" + gambar + "?resize=400%2C242";
+        if (gambar.contains("http://i2.wp.com/"))
+        {
+            this.gambar = gambar;
+        } else
+        {
+            gambar = gambar.replace("-340x160", "");
+            gambar = gambar.replace("http://", "");
+            this.gambar = "http://i2.wp.com/" + gambar + "?resize=400%2C242";
+        }
     }
 
     public String getTanggal()

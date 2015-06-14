@@ -66,7 +66,7 @@ public class CuacaAdapter extends RecyclerView.Adapter
         switch (cuaca.getCuaca())
         {
             case "Cerah":
-                gambar = R.drawable.ceraah;
+                gambar = R.drawable.cerah;
                 viewHolder.background.setBackgroundResource(R.color.cerah);
                 break;
             case "Berawan":
