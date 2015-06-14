@@ -29,6 +29,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -82,6 +84,9 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
         judul = (TextView) findViewById(R.id.judul);
         tanggal = (TextView) findViewById(R.id.tanggal);
         isi = (WebView) findViewById(R.id.isi);
+        isi.setWebChromeClient(new WebChromeClient());
+        isi.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        isi.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         fabButton = (FabButton) findViewById(R.id.determinate);
         fabButton.setOnClickListener(new View.OnClickListener()
