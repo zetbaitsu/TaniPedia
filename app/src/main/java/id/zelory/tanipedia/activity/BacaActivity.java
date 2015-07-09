@@ -24,17 +24,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bluejamesbond.text.DocumentView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.Picasso;
 
@@ -53,7 +52,7 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView gambar;
     private TextView judul;
     private TextView tanggal;
-    private WebView isi;
+    private DocumentView isi;
     private FabButton fabButton;
     private Berita berita;
     private ArrayList<Berita> beritaArrayList;
@@ -64,6 +63,7 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
     private CardView berita4;
     private CardView berita5;
     private Animation animation;
+    private LinearLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,10 +83,8 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
         gambar = (ImageView) findViewById(R.id.gambar);
         judul = (TextView) findViewById(R.id.judul);
         tanggal = (TextView) findViewById(R.id.tanggal);
-        isi = (WebView) findViewById(R.id.isi);
-        isi.setWebChromeClient(new WebChromeClient());
-        isi.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        isi.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        isi = (DocumentView) findViewById(R.id.isi);
+        root = (LinearLayout) findViewById(R.id.ll_root_berita);
 
         fabButton = (FabButton) findViewById(R.id.determinate);
         fabButton.setOnClickListener(new View.OnClickListener()
@@ -253,13 +251,16 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
             Picasso.with(BacaActivity.this).load(berita.getGambar()).into(gambar);
             judul.setText(berita.getJudul());
             tanggal.setText("TaniPedia - " + berita.getTanggal());
-            isi.loadData("<div style=\"text-align:justify\">" + berita.getIsi() + "</div>", "text/html", "utf-8");
-            isi.setVerticalScrollBarEnabled(false);
+            isi.setText(Html.fromHtml(berita.getIsi()));
+            isi.invalidateCache();
             showBeritaLainnya();
             fabButton.onProgressCompleted();
             fabButton.showProgress(false);
+            root.setVisibility(View.VISIBLE);
             if (berita.getIsi().equals(""))
+            {
                 Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 }
