@@ -24,9 +24,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Berita;
@@ -37,10 +37,10 @@ import id.zelory.tanipedia.model.Berita;
 public class BeritaAdapter extends RecyclerView.Adapter
 {
     private Context context;
-    private ArrayList<Berita> beritaArrayList;
+    private List<Berita> beritaArrayList;
     private OnItemClickListener clickListener;
 
-    public BeritaAdapter(Context context, ArrayList<Berita> beritaArrayList)
+    public BeritaAdapter(Context context, List<Berita> beritaArrayList)
     {
         this.context = context;
         this.beritaArrayList = beritaArrayList;
@@ -58,9 +58,9 @@ public class BeritaAdapter extends RecyclerView.Adapter
     {
         ViewHolder viewHolder = (ViewHolder) holder;
         Berita berita = beritaArrayList.get(position);
-        Picasso.with(context).load(berita.getGambar()).into(viewHolder.gambar);
+        Glide.with(context).load(berita.getGambar()).into(viewHolder.gambar);
         viewHolder.judul.setText(berita.getJudul());
-        viewHolder.tanggal.setText("TaniPedia - "+berita.getTanggal());
+        viewHolder.tanggal.setText("TaniPedia - " + berita.getTanggal());
     }
 
     @Override

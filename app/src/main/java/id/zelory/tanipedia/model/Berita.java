@@ -24,8 +24,6 @@ import android.os.Parcelable;
  */
 public class Berita implements Parcelable
 {
-    public static final String API = "http://apitanipedia.appspot.com/berita";
-
     private String judul;
     private String alamat;
     private String gambar;

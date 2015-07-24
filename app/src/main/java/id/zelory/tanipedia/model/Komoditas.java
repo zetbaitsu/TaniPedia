@@ -24,7 +24,6 @@ import android.os.Parcelable;
  */
 public class Komoditas implements Parcelable
 {
-    public static final String API = "http://apitanipedia.appspot.com/komoditas";
     public static final Creator<Komoditas> CREATOR
             = new Creator<Komoditas>()
     {

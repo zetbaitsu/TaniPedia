@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:gravity="center_horizontal"
-        android:text="TaniPedia"
+        android:text="@string/app_name"
         android:textColor="#FFF"
         android:textSize="32sp"/>
 
@@ -50,19 +50,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.bluejamesbond.text.DocumentView
+                android:id="@+id/isi"
+                xmlns:ext="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Sebuah aplikasi yang didedikasikan untuk dunia pertanian Indonesia demi terciptanya kemandirian bangsa."/>
+                ext:documentView_antialias="true"
+                ext:documentView_cacheConfig="auto_quality"
+                ext:documentView_text="@string/deskripsi_aplikasi"
+                ext:documentView_textAlignment="justified"
+                ext:documentView_textColor="@color/secondary_text"
+                ext:documentView_textSize="16sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:textSize="16sp"
                 android:gravity="center_horizontal"
-                android:text="Dikembangkan oleh :\nDimas Maulana\nGani Gemilar\nNur Jannah\nZetra"
+                android:text="@string/versi_aplikasi"
+                android:textSize="18sp"
                 />
         </LinearLayout>
 
@@ -74,8 +80,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:gravity="center_horizontal"
-        android:text="AgriCoder"
+        android:text="@string/zelory"
         android:textColor="#FFF"
-        android:textSize="17sp"/>
+        android:textSize="24sp"/>
 
 </LinearLayout>

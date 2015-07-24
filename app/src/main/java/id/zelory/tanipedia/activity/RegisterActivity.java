@@ -17,139 +17,92 @@
 package id.zelory.tanipedia.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.net.URL;
-
+import id.zelory.benih.BenihActivity;
+import id.zelory.benih.utils.BenihScheduler;
+import id.zelory.benih.utils.PrefUtils;
 import id.zelory.tanipedia.R;
-import id.zelory.tanipedia.model.PakTani;
-import id.zelory.tanipedia.util.PrefUtils;
+import id.zelory.tanipedia.network.TaniPediaService;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener
+public class RegisterActivity extends BenihActivity
 {
-    private String nama;
-    private String email;
-    private String password;
     private EditText editNama;
     private EditText editEmail;
     private EditText editPass;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected int getActivityView()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
-        findViewById(R.id.tanipedia).startAnimation(animation);
-        findViewById(R.id.card).startAnimation(animation);
-        Button daftar = (Button) findViewById(R.id.daftar);
-        daftar.startAnimation(animation);
-        daftar.setOnClickListener(this);
-        editNama = (EditText) findViewById(R.id.nama);
-        editEmail = (EditText) findViewById(R.id.email);
-        editPass = (EditText) findViewById(R.id.password);
+        return R.layout.activity_register;
     }
 
     @Override
-    public void onClick(View v)
+    protected void onViewReady(Bundle bundle)
     {
-        nama = editNama.getText().toString();
-        email = editEmail.getText().toString();
-        password = editPass.getText().toString();
-        if (nama.isEmpty())
-        {
-            Snackbar.make(v, "Mohon isi nama terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else if (email.isEmpty())
-        {
-            Snackbar.make(v, "Mohon isi email terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else if (password.isEmpty())
-        {
-            Snackbar.make(v, "Mohon isi password terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else
-        {
-            new Register().execute();
-        }
-    }
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
+        findViewById(R.id.tanipedia).startAnimation(animation);
+        findViewById(R.id.card).startAnimation(animation);
 
-    private class Register extends AsyncTask<Void, Void, Void>
-    {
-        MaterialDialog dialog;
-        String status;
+        editNama = (EditText) findViewById(R.id.nama);
+        editEmail = (EditText) findViewById(R.id.email);
+        editPass = (EditText) findViewById(R.id.password);
 
-        @Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-            dialog = new MaterialDialog.Builder(RegisterActivity.this)
-                    .title("TaniPedia")
-                    .content("Mengirim data...")
-                    .progress(true, 0)
-                    .build();
-            dialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = null;
-            String url = PakTani.REGISTER_API + "email=" + email + "&nama=" + nama + "&pass=" + password;
-            url = url.replace(" ", "%20");
-            int i = 0;
-            while (root == null)
+        Button daftar = (Button) findViewById(R.id.daftar);
+        daftar.startAnimation(animation);
+        daftar.setOnClickListener(v -> {
+            if (editNama.getText().toString().isEmpty())
             {
-                i++;
-                try
-                {
-                    root = mapper.readTree(new URL(url));
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                if (i >= 5)
-                {
-                    break;
-                }
-            }
-            if (i < 5)
-                status = root.findValue("status").asText();
-            else
-                status = "Gagal";
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid)
-        {
-            super.onPostExecute(aVoid);
-
-            if (status.equals("Berhasil"))
+                Snackbar.make(v, "Mohon isi nama terlebih dahulu!", Snackbar.LENGTH_LONG).show();
+            } else if (editEmail.getText().toString().isEmpty())
             {
-                PrefUtils.simpanString(RegisterActivity.this, "email", email);
-                PrefUtils.simpanString(RegisterActivity.this, "nama", nama);
-                PrefUtils.simpanString(RegisterActivity.this, "pass", password);
-                Intent intent = new Intent(RegisterActivity.this, CuacaActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                Snackbar.make(v, "Mohon isi email terlebih dahulu!", Snackbar.LENGTH_LONG).show();
+            } else if (editPass.getText().toString().isEmpty())
+            {
+                Snackbar.make(v, "Mohon isi password terlebih dahulu!", Snackbar.LENGTH_LONG).show();
             } else
             {
-                Snackbar.make(editPass, "Terjadi kesalahan, silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
+                register(editEmail.getText().toString(), editNama.getText().toString(), editPass.getText().toString());
             }
+        });
+    }
 
-            dialog.dismiss();
-        }
+    private void register(String email, String nama, String password)
+    {
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title("TaniPedia")
+                .content("Mengirim data...")
+                .progress(true, 0)
+                .build();
+        dialog.show();
+
+        TaniPediaService.getApi()
+                .register(email, nama, password)
+                .compose(BenihScheduler.applySchedulers(BenihScheduler.Type.IO))
+                .subscribe(status -> {
+                    if (status.getStatus())
+                    {
+                        PrefUtils.putString(RegisterActivity.this, "email", email);
+                        PrefUtils.putString(RegisterActivity.this, "nama", nama);
+                        PrefUtils.putString(RegisterActivity.this, "pass", password);
+                        Intent intent = new Intent(RegisterActivity.this, CuacaActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else
+                    {
+                        Snackbar.make(editPass, "Email tersebut sudah terdaftar!", Snackbar.LENGTH_LONG).show();
+                    }
+                    dialog.dismiss();
+                }, throwable -> {
+                    Snackbar.make(editPass, "Terjadi kesalahan, silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
+                    dialog.dismiss();
+                });
     }
 }

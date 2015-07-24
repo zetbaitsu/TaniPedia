@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Cuaca;
@@ -36,10 +37,10 @@ import id.zelory.tanipedia.model.Cuaca;
 public class CuacaAdapter extends RecyclerView.Adapter
 {
     private Context context;
-    private ArrayList<Cuaca> cuacaArrayList;
+    private List<Cuaca> cuacaArrayList;
     private OnItemClickListener clickListener;
 
-    public CuacaAdapter(Context context, ArrayList<Cuaca> cuacaArrayList)
+    public CuacaAdapter(Context context, List<Cuaca> cuacaArrayList)
     {
         this.context = context;
         this.cuacaArrayList = cuacaArrayList;

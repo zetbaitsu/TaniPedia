@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Komoditas;
@@ -34,10 +35,10 @@ import id.zelory.tanipedia.model.Komoditas;
 public class KomoditasAdapter extends RecyclerView.Adapter
 {
     private Context context;
-    private ArrayList<Komoditas> komoditasArrayList;
+    private List<Komoditas> komoditasArrayList;
     private OnItemClickListener clickListener;
 
-    public KomoditasAdapter(Context context, ArrayList<Komoditas> komoditasArrayList)
+    public KomoditasAdapter(Context context, List<Komoditas> komoditasArrayList)
     {
         this.context = context;
         this.komoditasArrayList = komoditasArrayList;

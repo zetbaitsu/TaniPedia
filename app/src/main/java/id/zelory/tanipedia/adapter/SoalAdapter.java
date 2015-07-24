@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Soal;
@@ -34,10 +35,10 @@ import id.zelory.tanipedia.model.Soal;
 public class SoalAdapter extends RecyclerView.Adapter
 {
     private Context context;
-    private ArrayList<Soal> soalArrayList;
+    private List<Soal> soalArrayList;
     private OnItemClickListener clickListener;
 
-    public SoalAdapter(Context context, ArrayList<Soal> soalArrayList)
+    public SoalAdapter(Context context, List<Soal> soalArrayList)
     {
         this.context = context;
         this.soalArrayList = soalArrayList;

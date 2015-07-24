@@ -17,7 +17,6 @@
 package id.zelory.tanipedia.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -25,49 +24,45 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-
+import id.zelory.benih.BenihActivity;
+import id.zelory.benih.utils.BenihScheduler;
+import id.zelory.benih.utils.PrefUtils;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.adapter.BeritaAdapter;
-import id.zelory.tanipedia.model.Berita;
-import id.zelory.tanipedia.model.Cuaca;
-import id.zelory.tanipedia.util.PrefUtils;
+import id.zelory.tanipedia.network.TaniPediaService;
 import id.zelory.tanipedia.util.Utils;
 import mbanje.kurt.fabbutton.FabButton;
 
 
-public class BeritaActivity extends AppCompatActivity
+public class BeritaActivity extends BenihActivity
 {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    private ArrayList<Berita> beritaArrayList;
     private ImageView imageHeader;
     private FabButton fabButton;
     private Animation animation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected int getActivityView()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_berita);
+        return R.layout.activity_berita;
+    }
+
+    @Override
+    protected void onViewReady(Bundle bundle)
+    {
         toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
 
         setSupportActionBar(toolbar);
@@ -83,47 +78,42 @@ public class BeritaActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(1).setChecked(true);
         TextView nama = (TextView) navigationView.findViewById(R.id.nama);
-        nama.setText(PrefUtils.ambilString(this, "nama"));
+        nama.setText(PrefUtils.getString(this, "nama"));
         TextView email = (TextView) navigationView.findViewById(R.id.email);
-        email.setText(PrefUtils.ambilString(this, "email"));
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem)
+        email.setText(PrefUtils.getString(this, "email"));
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            menuItem.setChecked(true);
+            drawerLayout.closeDrawers();
+            Intent intent;
+            switch (menuItem.getItemId())
             {
-                menuItem.setChecked(true);
-                drawerLayout.closeDrawers();
-                Intent intent;
-                switch (menuItem.getItemId())
-                {
-                    case R.id.cuaca:
-                        intent = new Intent(BeritaActivity.this, CuacaActivity.class);
-                        break;
-                    case R.id.berita:
-                        return true;
-                    case R.id.tanya:
-                        intent = new Intent(BeritaActivity.this, TanyaActivity.class);
-                        break;
-                    case R.id.harga:
-                        intent = new Intent(BeritaActivity.this, KomoditasActivity.class);
-                        break;
-                    case R.id.logout:
-                        PrefUtils.simpanString(BeritaActivity.this, "nama", null);
-                        intent = new Intent(BeritaActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        return true;
-                    case R.id.tentang:
-                        intent = new Intent(BeritaActivity.this, TentangActivity.class);
-                        startActivity(intent);
-                        return true;
-                    default:
-                        return true;
-                }
-                startActivity(intent);
-                finish();
-                return true;
+                case R.id.cuaca:
+                    intent = new Intent(BeritaActivity.this, CuacaActivity.class);
+                    break;
+                case R.id.berita:
+                    return true;
+                case R.id.tanya:
+                    intent = new Intent(BeritaActivity.this, TanyaActivity.class);
+                    break;
+                case R.id.harga:
+                    intent = new Intent(BeritaActivity.this, KomoditasActivity.class);
+                    break;
+                case R.id.logout:
+                    PrefUtils.putString(BeritaActivity.this, "nama", null);
+                    intent = new Intent(BeritaActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return true;
+                case R.id.tentang:
+                    intent = new Intent(BeritaActivity.this, TentangActivity.class);
+                    startActivity(intent);
+                    return true;
+                default:
+                    return true;
             }
+            startActivity(intent);
+            finish();
+            return true;
         });
         imageHeader = (ImageView) findViewById(R.id.header);
         recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
@@ -134,15 +124,10 @@ public class BeritaActivity extends AppCompatActivity
 
         fabButton = (FabButton) findViewById(R.id.determinate);
         fabButton.showProgress(true);
-        new DownloadData().execute();
-        fabButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                fabButton.showProgress(true);
-                new DownloadData().execute();
-            }
+        getAllBerita();
+        fabButton.setOnClickListener(v -> {
+            fabButton.showProgress(true);
+            getAllBerita();
         });
     }
 
@@ -152,102 +137,45 @@ public class BeritaActivity extends AppCompatActivity
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             toolbar.setNavigationIcon(R.drawable.ic_drawer);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                }
-            });
+            toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         }
     }
 
-    private class DownloadData extends AsyncTask<Void, Void, Void>
+    private void getAllBerita()
     {
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            ObjectMapper mapper = new ObjectMapper();
-            beritaArrayList = null;
-            int i = 0;
-
-            while (beritaArrayList == null)
-            {
-                i++;
-                try
-                {
-                    beritaArrayList = mapper.readValue(new URL(Berita.API),
-                            mapper.getTypeFactory().constructCollectionType(ArrayList.class, Berita.class));
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                if (i >= 5)
-                {
-                    try
+        TaniPediaService.getApi()
+                .getAllBerita()
+                .compose(BenihScheduler.applySchedulers(BenihScheduler.Type.IO))
+                .subscribe(beritaArrayList -> {
+                    if (beritaArrayList != null && !beritaArrayList.isEmpty())
                     {
-                        beritaArrayList = mapper.readValue(PrefUtils.ambilString(BeritaActivity.this, "berita"),
-                                mapper.getTypeFactory().constructCollectionType(ArrayList.class, Berita.class));
-                    } catch (Exception e)
+                        BeritaAdapter adapter = new BeritaAdapter(BeritaActivity.this, beritaArrayList);
+                        adapter.SetOnItemClickListener((view, position) -> {
+                            Intent intent = new Intent(BeritaActivity.this, BacaActivity.class);
+                            intent.putExtra("berita", beritaArrayList.get(position));
+                            startActivity(intent);
+                        });
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.startAnimation(animation);
+                        String url = beritaArrayList.get(Utils.randInt(0, beritaArrayList.size() - 1)).getGambar();
+                        Glide.with(BeritaActivity.this)
+                                .load(url)
+                                .into(imageHeader);
+                        imageHeader.startAnimation(animation);
+                        PrefUtils.putString(this, "berita", new Gson().toJson(beritaArrayList));
+                    } else
                     {
-                        Snackbar.make(fabButton, "Terjadi kesalahan silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
-                        e.printStackTrace();
+                        Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
                     }
-                    break;
-                }
-            }
 
-            try
-            {
-                PrefUtils.simpanString(BeritaActivity.this, "berita", mapper.writeValueAsString(beritaArrayList));
-            } catch (JsonProcessingException e)
-            {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid)
-        {
-            super.onPostExecute(aVoid);
-            if (beritaArrayList != null && !beritaArrayList.isEmpty())
-            {
-                BeritaAdapter adapter = new BeritaAdapter(BeritaActivity.this, beritaArrayList);
-                adapter.SetOnItemClickListener(new BeritaAdapter.OnItemClickListener()
-                {
-                    @Override
-                    public void onItemClick(View view, int position)
-                    {
-                        Intent intent = new Intent(BeritaActivity.this, BacaActivity.class);
-                        intent.putExtra("berita", beritaArrayList.get(position));
-                        startActivity(intent);
-                    }
+                    fabButton.onProgressCompleted();
+                    fabButton.showProgress(false);
+                    new Handler().postDelayed(fabButton::resetIcon, 2500);
+                }, throwable -> {
+                    Snackbar.make(fabButton, "Terjadi kesalahan silahkan coba lagi!", Snackbar.LENGTH_LONG).show();
+                    fabButton.onProgressCompleted();
+                    fabButton.showProgress(false);
+                    new Handler().postDelayed(fabButton::resetIcon, 2500);
                 });
-                recyclerView.setAdapter(adapter);
-                recyclerView.startAnimation(animation);
-                String url = beritaArrayList.get(Utils.randInt(0, beritaArrayList.size() - 1)).getGambar();
-                Picasso.with(BeritaActivity.this)
-                        .load(url)
-                        .into(imageHeader);
-                imageHeader.startAnimation(animation);
-            }else
-            {
-                Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
-            }
-
-            fabButton.onProgressCompleted();
-            fabButton.showProgress(false);
-            new Handler().postDelayed(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    fabButton.resetIcon();
-                }
-            }, 2500);
-        }
     }
 }

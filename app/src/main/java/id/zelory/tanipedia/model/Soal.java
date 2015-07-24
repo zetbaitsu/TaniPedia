@@ -24,9 +24,6 @@ import android.os.Parcelable;
  */
 public class Soal implements Parcelable
 {
-    public static final String API_AMBIL = "http://apitanipedia.appspot.com/tanya/ambil-soal";
-    public static final String API_KIRIM = "http://apitanipedia.appspot.com/tanya/kirim-soal";
-
     public String id;
     private String nama;
     private String tanggal;

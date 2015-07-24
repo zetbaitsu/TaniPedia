@@ -24,9 +24,6 @@ import android.os.Parcelable;
  */
 public class PakTani implements Parcelable
 {
-    public static final String LOGIN_API = "http://apitanipedia.appspot.com/login?";
-    public static final String REGISTER_API = "http://apitanipedia.appspot.com/register?";
-
     private String email;
     private String nama;
     private String password;

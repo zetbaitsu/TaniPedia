@@ -42,6 +42,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleTextAppearance="@android:style/TextAppearance.Large"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <include
@@ -86,7 +87,7 @@
             app:layout_anchor="@id/appbar"
             app:layout_anchorGravity="bottom|right|end"/>
 
-        <include layout="@layout/myfab" />
+        <include layout="@layout/myfab"/>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

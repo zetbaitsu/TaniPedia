@@ -17,20 +17,23 @@
 package id.zelory.tanipedia.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import id.zelory.benih.BenihActivity;
 import id.zelory.tanipedia.R;
 
-public class TentangActivity extends AppCompatActivity
+public class TentangActivity extends BenihActivity
 {
+    @Override
+    protected int getActivityView()
+    {
+        return R.layout.activity_tentang;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onViewReady(Bundle bundle)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tentang);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         findViewById(R.id.tanipedia).startAnimation(animation);
         findViewById(R.id.card).startAnimation(animation);

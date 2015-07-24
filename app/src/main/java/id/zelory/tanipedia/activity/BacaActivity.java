@@ -17,11 +17,9 @@
 package id.zelory.tanipedia.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -34,27 +32,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bluejamesbond.text.DocumentView;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
+import id.zelory.benih.BenihActivity;
+import id.zelory.benih.utils.BenihScheduler;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Berita;
+import id.zelory.tanipedia.network.TaniPediaService;
 import id.zelory.tanipedia.util.Utils;
 import mbanje.kurt.fabbutton.FabButton;
 
-public class BacaActivity extends AppCompatActivity implements View.OnClickListener
+public class BacaActivity extends BenihActivity implements View.OnClickListener
 {
-    private Berita tmp;
+    private Berita berita;
     private ImageView gambar;
     private TextView judul;
     private TextView tanggal;
     private DocumentView isi;
     private FabButton fabButton;
-    private Berita berita;
     private ArrayList<Berita> beritaArrayList;
     private TextView lainnya;
     private CardView berita1;
@@ -66,12 +63,15 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout root;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected int getActivityView()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_baca);
+        return R.layout.activity_baca;
+    }
 
-        tmp = getIntent().getParcelableExtra("berita");
+    @Override
+    protected void onViewReady(Bundle bundle)
+    {
+        berita = getIntent().getParcelableExtra("berita");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,27 +87,22 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
         root = (LinearLayout) findViewById(R.id.ll_root_berita);
 
         fabButton = (FabButton) findViewById(R.id.determinate);
-        fabButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, berita.getJudul());
-                intent.putExtra(Intent.EXTRA_TEXT, berita.getJudul() + "\n" + berita.getAlamat());
-                startActivity(Intent.createChooser(intent, "Bagikan"));
-            }
+        fabButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_SUBJECT, berita.getJudul());
+            intent.putExtra(Intent.EXTRA_TEXT, berita.getJudul() + "\n" + berita.getAlamat());
+            startActivity(Intent.createChooser(intent, "Bagikan"));
         });
 
         generateBeritaLainnya();
 
-        new DownloadData().execute();
+        getBerita(berita.getAlamat());
     }
 
     private void generateBeritaLainnya()
     {
-        beritaArrayList = Utils.getRandomBerita(this, tmp.getAlamat());
+        beritaArrayList = Utils.getRandomBerita(this, berita.getAlamat());
         lainnya = (TextView) findViewById(R.id.lainnya);
         lainnya.setVisibility(View.GONE);
         berita1 = (CardView) findViewById(R.id.berita1);
@@ -131,35 +126,35 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
         TextView tanggal = (TextView) findViewById(R.id.tanggal1);
         tanggal.setText(beritaArrayList.get(0).getTanggal());
         ImageView gambar = (ImageView) findViewById(R.id.gambar1);
-        Picasso.with(this).load(beritaArrayList.get(0).getGambar()).into(gambar);
+        Glide.with(this).load(beritaArrayList.get(0).getGambar()).into(gambar);
 
         judul = (TextView) findViewById(R.id.judul2);
         judul.setText(beritaArrayList.get(1).getJudul());
         tanggal = (TextView) findViewById(R.id.tanggal2);
         tanggal.setText(beritaArrayList.get(1).getTanggal());
         gambar = (ImageView) findViewById(R.id.gambar2);
-        Picasso.with(this).load(beritaArrayList.get(1).getGambar()).into(gambar);
+        Glide.with(this).load(beritaArrayList.get(1).getGambar()).into(gambar);
 
         judul = (TextView) findViewById(R.id.judul3);
         judul.setText(beritaArrayList.get(2).getJudul());
         tanggal = (TextView) findViewById(R.id.tanggal3);
         tanggal.setText(beritaArrayList.get(2).getTanggal());
         gambar = (ImageView) findViewById(R.id.gambar3);
-        Picasso.with(this).load(beritaArrayList.get(2).getGambar()).into(gambar);
+        Glide.with(this).load(beritaArrayList.get(2).getGambar()).into(gambar);
 
         judul = (TextView) findViewById(R.id.judul4);
         judul.setText(beritaArrayList.get(3).getJudul());
         tanggal = (TextView) findViewById(R.id.tanggal4);
         tanggal.setText(beritaArrayList.get(3).getTanggal());
         gambar = (ImageView) findViewById(R.id.gambar4);
-        Picasso.with(this).load(beritaArrayList.get(3).getGambar()).into(gambar);
+        Glide.with(this).load(beritaArrayList.get(3).getGambar()).into(gambar);
 
         judul = (TextView) findViewById(R.id.judul5);
         judul.setText(beritaArrayList.get(4).getJudul());
         tanggal = (TextView) findViewById(R.id.tanggal5);
         tanggal.setText(beritaArrayList.get(4).getTanggal());
         gambar = (ImageView) findViewById(R.id.gambar5);
-        Picasso.with(this).load(beritaArrayList.get(4).getGambar()).into(gambar);
+        Glide.with(this).load(beritaArrayList.get(4).getGambar()).into(gambar);
     }
 
     private void showBeritaLainnya()
@@ -210,57 +205,32 @@ public class BacaActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    private class DownloadData extends AsyncTask<Void, Void, Void>
+    private void getBerita(String url)
     {
-        @Override
-        protected void onPreExecute()
-        {
-            fabButton.showProgress(true);
-        }
+        fabButton.showProgress(true);
 
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            ObjectMapper mapper = new ObjectMapper();
-            berita = null;
-            int i = 0;
-            while (berita == null)
-            {
-                i++;
-                try
-                {
-                    berita = mapper.readValue(new URL(Berita.API + "?url=" + tmp.getAlamat()), Berita.class);
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                if (i >= 5)
-                {
-                    berita = tmp;
-                    berita.setIsi("");
-                    break;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid)
-        {
-            super.onPostExecute(aVoid);
-            Picasso.with(BacaActivity.this).load(berita.getGambar()).into(gambar);
-            judul.setText(berita.getJudul());
-            tanggal.setText("TaniPedia - " + berita.getTanggal());
-            isi.setText(Html.fromHtml(berita.getIsi()));
-            isi.invalidateCache();
-            showBeritaLainnya();
-            fabButton.onProgressCompleted();
-            fabButton.showProgress(false);
-            root.setVisibility(View.VISIBLE);
-            if (berita.getIsi().equals(""))
-            {
-                Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
-            }
-        }
+        TaniPediaService.getApi()
+                .getBerita(url)
+                .compose(BenihScheduler.applySchedulers(BenihScheduler.Type.IO))
+                .subscribe(berita -> {
+                    Glide.with(BacaActivity.this).load(berita.getGambar()).into(gambar);
+                    judul.setText(berita.getJudul());
+                    tanggal.setText("TaniPedia - " + berita.getTanggal());
+                    isi.setText(Html.fromHtml(berita.getIsi()));
+                    isi.invalidateCache();
+                    showBeritaLainnya();
+                    fabButton.onProgressCompleted();
+                    fabButton.showProgress(false);
+                    root.setVisibility(View.VISIBLE);
+                    root.startAnimation(animation);
+                    if (berita.getIsi().equals(""))
+                    {
+                        Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
+                    }
+                }, throwable -> {
+                    Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();
+                    fabButton.onProgressCompleted();
+                    fabButton.showProgress(false);
+                });
     }
 }

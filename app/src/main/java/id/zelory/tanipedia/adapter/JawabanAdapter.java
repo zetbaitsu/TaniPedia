@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Jawaban;
@@ -34,10 +35,10 @@ import id.zelory.tanipedia.model.Jawaban;
 public class JawabanAdapter extends RecyclerView.Adapter
 {
     private Context context;
-    private ArrayList<Jawaban> jawabanArrayList;
+    private List<Jawaban> jawabanArrayList;
     private OnItemClickListener clickListener;
 
-    public JawabanAdapter(Context context, ArrayList<Jawaban> jawabanArrayList)
+    public JawabanAdapter(Context context, List<Jawaban> jawabanArrayList)
     {
         this.context = context;
         this.jawabanArrayList = jawabanArrayList;

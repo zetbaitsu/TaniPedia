@@ -24,7 +24,6 @@ import android.os.Parcelable;
  */
 public class Cuaca implements Parcelable
 {
-    public static final String API = "http://apitanipedia.appspot.com/cuaca?";
     public static final Creator<Cuaca> CREATOR
             = new Creator<Cuaca>()
     {
