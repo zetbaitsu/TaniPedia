@@ -131,6 +131,7 @@ public class TanyaActivity extends BenihActivity
         recyclerView = (BenihRecyclerView) findViewById(R.id.scrollableview);
         recyclerView.setUpAsList();
         adapter = new SoalAdapter(this);
+        recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener((view, position) -> {
             Intent intent = new Intent(TanyaActivity.this, JawabActivity.class);

@@ -31,10 +31,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 
 import id.zelory.benih.BenihActivity;
 import id.zelory.benih.utils.BenihScheduler;
+import id.zelory.benih.utils.Bson;
 import id.zelory.benih.utils.PrefUtils;
 import id.zelory.benih.views.BenihRecyclerView;
 import id.zelory.tanipedia.R;
@@ -163,7 +163,7 @@ public class BeritaActivity extends BenihActivity
                                 .load(url)
                                 .into(imageHeader);
                         imageHeader.startAnimation(animation);
-                        PrefUtils.putString(this, "berita", new Gson().toJson(beritaArrayList));
+                        PrefUtils.putString(this, "berita", Bson.getParser().toJson(beritaArrayList));
                     } else
                     {
                         Snackbar.make(fabButton, "Mohon periksa koneksi internet anda!", Snackbar.LENGTH_LONG).show();

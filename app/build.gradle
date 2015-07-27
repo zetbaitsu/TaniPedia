@@ -39,7 +39,7 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'id.zelory.benih:benih:0.0.7'
+    compile 'id.zelory.benih:benih:0.0.8'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'mbanje.kurt:fabbutton:1.2.0'
     compile 'com.afollestad:material-dialogs:0.7.5.5'

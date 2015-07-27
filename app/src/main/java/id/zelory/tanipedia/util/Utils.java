@@ -16,15 +16,12 @@
 
 package id.zelory.tanipedia.util;
 
-import android.app.ActivityManager;
 import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import id.zelory.benih.utils.PrefUtils;
 import id.zelory.tanipedia.model.Berita;
@@ -32,14 +29,8 @@ import id.zelory.tanipedia.model.Berita;
 /**
  * Created by zetbaitsu on 4/26/2015.
  */
-public class Utils
+public class Utils extends id.zelory.benih.utils.Utils
 {
-    public static int randInt(int min, int max)
-    {
-        Random rand = new Random();
-        return rand.nextInt((max - min) + 1) + min;
-    }
-
     public static ArrayList<Berita> getRandomBerita(Context context, String alamat)
     {
         ArrayList<Berita> beritaArrayList = new Gson().fromJson(PrefUtils.getString(context, "berita"),
@@ -65,38 +56,5 @@ public class Utils
         }
 
         return beritaArrayList;
-    }
-
-    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context)
-    {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
-        {
-            if (serviceClass.getName().equals(service.service.getClassName()))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isMyAppRunning(Context context)
-    {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        boolean run = false;
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses)
-        {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
-            {
-                if (appProcess.processName.equals("id.zelory.tanipedia"))
-                {
-                    run = true;
-                    break;
-                }
-            }
-        }
-
-        return run;
     }
 }
