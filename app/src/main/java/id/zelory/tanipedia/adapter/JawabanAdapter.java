@@ -17,31 +17,24 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import id.zelory.benih.adapters.BenihRecyclerAdapter;
+import id.zelory.benih.adapters.BenihViewHolder;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Jawaban;
 
 /**
  * Created by zetbaitsu on 6/11/15.
  */
-public class JawabanAdapter extends RecyclerView.Adapter
+public class JawabanAdapter extends BenihRecyclerAdapter<Jawaban, JawabanAdapter.ViewHolder>
 {
-    private Context context;
-    private List<Jawaban> jawabanArrayList;
-    private OnItemClickListener clickListener;
-
-    public JawabanAdapter(Context context, List<Jawaban> jawabanArrayList)
+    public JawabanAdapter(Context context)
     {
-        this.context = context;
-        this.jawabanArrayList = jawabanArrayList;
+        super(context);
     }
 
     @Override
@@ -51,70 +44,34 @@ public class JawabanAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view;
-        if (viewType == 0)
-        {
-            view = LayoutInflater.from(context).inflate(R.layout.item_soal_besar, parent, false);
-        } else
-        {
-            view = LayoutInflater.from(context).inflate(R.layout.item_soal, parent, false);
-        }
-        return new ViewHolder(view);
+        view = viewType == 0 ? LayoutInflater.from(context).inflate(R.layout.item_soal_besar, parent, false) :
+                LayoutInflater.from(context).inflate(R.layout.item_soal, parent, false);
+        return new ViewHolder(view, itemClickListener, longItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(ViewHolder holder, int i)
     {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        Jawaban jawaban = jawabanArrayList.get(position);
-        viewHolder.nama.setText(jawaban.getNama());
-        viewHolder.isi.setText(jawaban.getIsi());
-        viewHolder.tanggal.setText(jawaban.getTanggal());
+        holder.nama.setText(data.get(i).getNama());
+        holder.isi.setText(data.get(i).getIsi());
+        holder.tanggal.setText(data.get(i).getTanggal());
     }
 
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return jawabanArrayList.size();
-    }
-
-    private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    class ViewHolder extends BenihViewHolder
     {
         TextView nama;
         TextView isi;
         TextView tanggal;
 
-        public ViewHolder(View itemView)
+        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
         {
-            super(itemView);
+            super(itemView, itemClickListener, longItemClickListener);
             nama = (TextView) itemView.findViewById(R.id.nama);
             isi = (TextView) itemView.findViewById(R.id.isi);
             tanggal = (TextView) itemView.findViewById(R.id.tanggal);
-            itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View v)
-        {
-            clickListener.onItemClick(v, getAdapterPosition());
-        }
-    }
-
-    public interface OnItemClickListener
-    {
-        void onItemClick(View view, int position);
-    }
-
-    public void SetOnItemClickListener(final OnItemClickListener itemClickListener)
-    {
-        this.clickListener = itemClickListener;
     }
 }

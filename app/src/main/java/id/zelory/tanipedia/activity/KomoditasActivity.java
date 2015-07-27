@@ -36,6 +36,7 @@ import android.widget.TextView;
 import id.zelory.benih.BenihActivity;
 import id.zelory.benih.utils.BenihScheduler;
 import id.zelory.benih.utils.PrefUtils;
+import id.zelory.benih.views.BenihRecyclerView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.adapter.KomoditasAdapter;
 import id.zelory.tanipedia.model.Komoditas;
@@ -46,7 +47,8 @@ public class KomoditasActivity extends BenihActivity
 {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
+    private BenihRecyclerView recyclerView;
+    private KomoditasAdapter adapter;
     private FabButton fabButton;
     private ImageView imageHeader;
     private Animation animation;
@@ -112,10 +114,15 @@ public class KomoditasActivity extends BenihActivity
             return true;
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView = (BenihRecyclerView) findViewById(R.id.scrollableview);
+        recyclerView.setUpAsList();
+        adapter = new KomoditasAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener((view, position) -> {
+            Komoditas komoditas = adapter.getData().get(position);
+            Snackbar.make(view, "Harga " + komoditas.getNama().toLowerCase() + " adalah Rp. " + komoditas.getHarga() + ",00 per Kg.", Snackbar.LENGTH_LONG).show();
+        });
 
         imageHeader = (ImageView) findViewById(R.id.header);
         imageHeader.setVisibility(View.GONE);
@@ -147,12 +154,7 @@ public class KomoditasActivity extends BenihActivity
                 .subscribe(komoditasArrayList -> {
                     if (komoditasArrayList != null && !komoditasArrayList.isEmpty())
                     {
-                        KomoditasAdapter adapter = new KomoditasAdapter(KomoditasActivity.this, komoditasArrayList);
-                        adapter.SetOnItemClickListener((view, position) -> {
-                            Komoditas komoditas = komoditasArrayList.get(position);
-                            Snackbar.make(view, "Harga " + komoditas.getNama().toLowerCase() + " adalah Rp. " + komoditas.getHarga() + ",00 per Kg.", Snackbar.LENGTH_LONG).show();
-                        });
-                        recyclerView.setAdapter(adapter);
+                        adapter.add(komoditasArrayList);
                         recyclerView.startAnimation(animation);
                         imageHeader.setVisibility(View.VISIBLE);
                         imageHeader.startAnimation(animation);

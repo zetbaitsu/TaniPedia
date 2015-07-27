@@ -17,7 +17,6 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,78 +24,59 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import id.zelory.benih.adapters.BenihRecyclerAdapter;
+import id.zelory.benih.adapters.BenihViewHolder;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Cuaca;
 
 /**
  * Created by zetbaitsu on 4/26/2015.
  */
-public class CuacaAdapter extends RecyclerView.Adapter
+public class CuacaAdapter extends BenihRecyclerAdapter<Cuaca, CuacaAdapter.ViewHolder>
 {
-    private Context context;
-    private List<Cuaca> cuacaArrayList;
-    private OnItemClickListener clickListener;
-
-    public CuacaAdapter(Context context, List<Cuaca> cuacaArrayList)
+    public CuacaAdapter(Context context)
     {
-        this.context = context;
-        this.cuacaArrayList = cuacaArrayList;
+        super(context);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_cuaca, parent, false);
-        return new ViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cuaca, viewGroup, false);
+        return new ViewHolder(view, itemClickListener, longItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(ViewHolder holder, int i)
     {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        Cuaca cuaca = cuacaArrayList.get(position);
+        Cuaca cuaca = data.get(i);
 
-        viewHolder.cuacaText.setText(cuaca.getCuaca());
-        viewHolder.suhu.setText(cuaca.getSuhu() + (char) 0x2103);
-        viewHolder.minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
-        viewHolder.tanggal.setText(cuaca.getTanggal());
+        holder.cuacaText.setText(cuaca.getCuaca());
+        holder.suhu.setText(cuaca.getSuhu() + (char) 0x2103);
+        holder.minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
+        holder.tanggal.setText(cuaca.getTanggal());
         int gambar;
         switch (cuaca.getCuaca())
         {
             case "Cerah":
                 gambar = R.drawable.cerah;
-                viewHolder.background.setBackgroundResource(R.color.cerah);
+                holder.background.setBackgroundResource(R.color.cerah);
                 break;
             case "Berawan":
                 gambar = R.drawable.berawan;
-                viewHolder.background.setBackgroundResource(R.color.berawan);
+                holder.background.setBackgroundResource(R.color.berawan);
                 break;
             case "Hujan":
                 gambar = R.drawable.hujan;
-                viewHolder.background.setBackgroundResource(R.color.hujan);
+                holder.background.setBackgroundResource(R.color.hujan);
                 break;
             default:
                 gambar = R.drawable.berawan;
         }
-        viewHolder.iconCuaca.setImageResource(gambar);
+        holder.iconCuaca.setImageResource(gambar);
     }
 
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return cuacaArrayList.size();
-    }
-
-    private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    class ViewHolder extends BenihViewHolder
     {
         TextView cuacaText;
         TextView suhu;
@@ -104,32 +84,16 @@ public class CuacaAdapter extends RecyclerView.Adapter
         ImageView iconCuaca;
         TextView tanggal;
         LinearLayout background;
-        public ViewHolder(View itemView)
+
+        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
         {
-            super(itemView);
+            super(itemView, itemClickListener, longItemClickListener);
             cuacaText = (TextView) itemView.findViewById(R.id.cuaca);
             suhu = (TextView) itemView.findViewById(R.id.suhu);
             minmax = (TextView) itemView.findViewById(R.id.minmax);
             iconCuaca = (ImageView) itemView.findViewById(R.id.icon_cuaca);
             tanggal = (TextView) itemView.findViewById(R.id.tanggal);
             background = (LinearLayout) itemView.findViewById(R.id.background);
-            itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View v)
-        {
-            clickListener.onItemClick(v, getAdapterPosition());
-        }
-    }
-
-    public interface OnItemClickListener
-    {
-        void onItemClick(View view, int position);
-    }
-
-    public void SetOnItemClickListener(final OnItemClickListener itemClickListener)
-    {
-        this.clickListener = itemClickListener;
     }
 }

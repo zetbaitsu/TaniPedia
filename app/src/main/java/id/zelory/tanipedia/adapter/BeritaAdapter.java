@@ -17,7 +17,6 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,84 +25,48 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.List;
-
+import id.zelory.benih.adapters.BenihRecyclerAdapter;
+import id.zelory.benih.adapters.BenihViewHolder;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Berita;
 
 /**
  * Created by zetbaitsu on 4/26/2015.
  */
-public class BeritaAdapter extends RecyclerView.Adapter
+public class BeritaAdapter extends BenihRecyclerAdapter<Berita, BeritaAdapter.ViewHolder>
 {
-    private Context context;
-    private List<Berita> beritaArrayList;
-    private OnItemClickListener clickListener;
-
-    public BeritaAdapter(Context context, List<Berita> beritaArrayList)
+    public BeritaAdapter(Context context)
     {
-        this.context = context;
-        this.beritaArrayList = beritaArrayList;
+        super(context);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_berita, parent, false);
-        return new ViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_berita, viewGroup, false);
+        return new ViewHolder(view, itemClickListener, longItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(ViewHolder holder, int i)
     {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        Berita berita = beritaArrayList.get(position);
-        Glide.with(context).load(berita.getGambar()).into(viewHolder.gambar);
-        viewHolder.judul.setText(berita.getJudul());
-        viewHolder.tanggal.setText("TaniPedia - " + berita.getTanggal());
+        Glide.with(context).load(data.get(i).getGambar()).into(holder.gambar);
+        holder.judul.setText(data.get(i).getJudul());
+        holder.tanggal.setText("TaniPedia - " + data.get(i).getTanggal());
     }
 
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return beritaArrayList.size();
-    }
-
-    private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    class ViewHolder extends BenihViewHolder
     {
         ImageView gambar;
         TextView judul;
         TextView tanggal;
 
-        public ViewHolder(View itemView)
+        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
         {
-            super(itemView);
+            super(itemView, itemClickListener, longItemClickListener);
             gambar = (ImageView) itemView.findViewById(R.id.gambar);
             judul = (TextView) itemView.findViewById(R.id.judul);
             tanggal = (TextView) itemView.findViewById(R.id.tanggal);
-            itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View v)
-        {
-            clickListener.onItemClick(v, getAdapterPosition());
-        }
-    }
-
-    public interface OnItemClickListener
-    {
-        void onItemClick(View view, int position);
-    }
-
-    public void SetOnItemClickListener(final OnItemClickListener itemClickListener)
-    {
-        this.clickListener = itemClickListener;
     }
 }

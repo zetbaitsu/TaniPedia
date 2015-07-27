@@ -24,8 +24,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -38,6 +36,7 @@ import com.google.gson.Gson;
 import id.zelory.benih.BenihActivity;
 import id.zelory.benih.utils.BenihScheduler;
 import id.zelory.benih.utils.PrefUtils;
+import id.zelory.benih.views.BenihRecyclerView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.adapter.BeritaAdapter;
 import id.zelory.tanipedia.network.TaniPediaService;
@@ -49,7 +48,8 @@ public class BeritaActivity extends BenihActivity
 {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
+    private BenihRecyclerView recyclerView;
+    private BeritaAdapter adapter;
     private ImageView imageHeader;
     private FabButton fabButton;
     private Animation animation;
@@ -116,11 +116,17 @@ public class BeritaActivity extends BenihActivity
             return true;
         });
         imageHeader = (ImageView) findViewById(R.id.header);
-        recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
 
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView = (BenihRecyclerView) findViewById(R.id.scrollableview);
+        recyclerView.setUpAsList();
+        adapter = new BeritaAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener((view, position) -> {
+            Intent intent = new Intent(this, BacaActivity.class);
+            intent.putExtra("berita", adapter.getData().get(position));
+            startActivity(intent);
+        });
 
         fabButton = (FabButton) findViewById(R.id.determinate);
         fabButton.showProgress(true);
@@ -149,14 +155,9 @@ public class BeritaActivity extends BenihActivity
                 .subscribe(beritaArrayList -> {
                     if (beritaArrayList != null && !beritaArrayList.isEmpty())
                     {
-                        BeritaAdapter adapter = new BeritaAdapter(BeritaActivity.this, beritaArrayList);
-                        adapter.SetOnItemClickListener((view, position) -> {
-                            Intent intent = new Intent(BeritaActivity.this, BacaActivity.class);
-                            intent.putExtra("berita", beritaArrayList.get(position));
-                            startActivity(intent);
-                        });
-                        recyclerView.setAdapter(adapter);
+                        adapter.add(beritaArrayList);
                         recyclerView.startAnimation(animation);
+
                         String url = beritaArrayList.get(Utils.randInt(0, beritaArrayList.size() - 1)).getGambar();
                         Glide.with(BeritaActivity.this)
                                 .load(url)

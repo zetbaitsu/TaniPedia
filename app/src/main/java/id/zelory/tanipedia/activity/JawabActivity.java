@@ -39,6 +39,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import id.zelory.benih.BenihActivity;
 import id.zelory.benih.utils.BenihScheduler;
 import id.zelory.benih.utils.PrefUtils;
+import id.zelory.benih.views.BenihRecyclerView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.adapter.JawabanAdapter;
 import id.zelory.tanipedia.model.Jawaban;
@@ -50,7 +51,8 @@ import mbanje.kurt.fabbutton.FabButton;
 public class JawabActivity extends BenihActivity
 {
 
-    private RecyclerView recyclerView;
+    private BenihRecyclerView recyclerView;
+    private JawabanAdapter adapter;
     private int fabMargin;
     private FrameLayout fab;
     private ImageButton fabBtn;
@@ -79,10 +81,13 @@ public class JawabActivity extends BenihActivity
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         fabMargin = getResources().getDimensionPixelSize(R.dimen.fab_margin);
 
-        recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView = (BenihRecyclerView) findViewById(R.id.scrollableview);
+        recyclerView.setUpAsList();
+        adapter = new JawabanAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener((view, position) -> {
+        });
 
         recyclerView.addOnScrollListener(new MyRecyclerScroll()
         {
@@ -166,11 +171,8 @@ public class JawabActivity extends BenihActivity
                         jawaban.setTanggal(soal.getTanggal());
                         jawabanArrayList.add(jawaban);
                     }
-
-                    JawabanAdapter adapter = new JawabanAdapter(JawabActivity.this, jawabanArrayList);
-                    adapter.SetOnItemClickListener((view, position) -> {
-                    });
-                    recyclerView.setAdapter(adapter);
+                    adapter.clear();
+                    adapter.add(jawabanArrayList);
                     fabButton.onProgressCompleted();
                     fabButton.showProgress(false);
                     new Handler().postDelayed(fabButton::resetIcon, 2500);

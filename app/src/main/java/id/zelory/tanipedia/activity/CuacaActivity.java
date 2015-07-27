@@ -44,6 +44,7 @@ import com.google.android.gms.location.LocationServices;
 import id.zelory.benih.BenihActivity;
 import id.zelory.benih.utils.BenihScheduler;
 import id.zelory.benih.utils.PrefUtils;
+import id.zelory.benih.views.BenihRecyclerView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.adapter.CuacaAdapter;
 import id.zelory.tanipedia.model.Cuaca;
@@ -58,7 +59,8 @@ public class CuacaActivity extends BenihActivity implements GoogleApiClient.Conn
     private CollapsingToolbarLayout collapsingToolbar;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
+    private BenihRecyclerView recyclerView;
+    private CuacaAdapter adapter;
     private GoogleApiClient googleApiClient;
     private double latitude;
     private double longitude;
@@ -129,10 +131,15 @@ public class CuacaActivity extends BenihActivity implements GoogleApiClient.Conn
             return true;
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView = (BenihRecyclerView) findViewById(R.id.scrollableview);
+        recyclerView.setUpAsList();
+        adapter = new CuacaAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener((view, position) -> {
+            Cuaca tmp = adapter.getData().get(position);
+            Snackbar.make(view, tmp.getLokasi() + " " + tmp.getCuaca().toLowerCase() + " pada " + tmp.getTanggal() + ".", Snackbar.LENGTH_LONG).show();
+        });
 
         fabButton = (FabButton) findViewById(R.id.determinate);
         fabButton.showProgress(true);
@@ -262,13 +269,7 @@ public class CuacaActivity extends BenihActivity implements GoogleApiClient.Conn
                     {
                         Cuaca cuaca = cuacaArrayList.get(0);
                         cuacaArrayList.remove(0);
-                        CuacaAdapter adapter = new CuacaAdapter(this, cuacaArrayList);
-                        adapter.SetOnItemClickListener((view, position) -> {
-                            Cuaca tmp = cuacaArrayList.get(position);
-                            Snackbar.make(view, tmp.getLokasi() + " " + tmp.getCuaca().toLowerCase() + " pada " + tmp.getTanggal() + ".", Snackbar.LENGTH_LONG).show();
-                        });
-
-                        recyclerView.setAdapter(adapter);
+                        adapter.add(cuacaArrayList);
                         recyclerView.startAnimation(animation);
 
                         collapsingToolbar.setTitle(cuaca.getLokasi());

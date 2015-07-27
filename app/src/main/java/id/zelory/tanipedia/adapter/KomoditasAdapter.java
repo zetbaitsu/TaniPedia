@@ -17,91 +17,55 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import id.zelory.benih.adapters.BenihRecyclerAdapter;
+import id.zelory.benih.adapters.BenihViewHolder;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Komoditas;
 
 /**
  * Created by zetbaitsu on 5/6/15.
  */
-public class KomoditasAdapter extends RecyclerView.Adapter
+public class KomoditasAdapter extends BenihRecyclerAdapter<Komoditas, KomoditasAdapter.ViewHolder>
 {
-    private Context context;
-    private List<Komoditas> komoditasArrayList;
-    private OnItemClickListener clickListener;
-
-    public KomoditasAdapter(Context context, List<Komoditas> komoditasArrayList)
+    public KomoditasAdapter(Context context)
     {
-        this.context = context;
-        this.komoditasArrayList = komoditasArrayList;
+        super(context);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(context).inflate(R.layout.item_komoditas, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, itemClickListener, longItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(ViewHolder holder, int position)
     {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        Komoditas komoditas = komoditasArrayList.get(position);
-        viewHolder.nomor.setText((position + 1) + ".");
-        viewHolder.nama.setText(komoditas.getNama());
-        viewHolder.harga.setText(komoditas.getHarga() + ",00");
+        holder.nomor.setText((position + 1) + ".");
+        holder.nama.setText(data.get(position).getNama());
+        holder.harga.setText(data.get(position).getHarga() + ",00");
     }
 
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return komoditasArrayList.size();
-    }
-
-    private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    class ViewHolder extends BenihViewHolder
     {
         TextView nomor;
         TextView nama;
         TextView harga;
 
-        public ViewHolder(View itemView)
+        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
         {
-            super(itemView);
+            super(itemView, itemClickListener, longItemClickListener);
             nomor = (TextView) itemView.findViewById(R.id.nomor);
             nama = (TextView) itemView.findViewById(R.id.nama);
             harga = (TextView) itemView.findViewById(R.id.harga);
-            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v)
-        {
-            clickListener.onItemClick(v, getAdapterPosition());
-        }
     }
 
-    public interface OnItemClickListener
-    {
-        void onItemClick(View view, int position);
-    }
-
-    public void SetOnItemClickListener(final OnItemClickListener itemClickListener)
-    {
-        this.clickListener = itemClickListener;
-    }
 }

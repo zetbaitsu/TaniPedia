@@ -17,91 +17,54 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import id.zelory.benih.adapters.BenihRecyclerAdapter;
+import id.zelory.benih.adapters.BenihViewHolder;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Soal;
 
 /**
  * Created by zetbaitsu on 5/6/15.
  */
-public class SoalAdapter extends RecyclerView.Adapter
+public class SoalAdapter extends BenihRecyclerAdapter<Soal, SoalAdapter.ViewHolder>
 {
-    private Context context;
-    private List<Soal> soalArrayList;
-    private OnItemClickListener clickListener;
-
-    public SoalAdapter(Context context, List<Soal> soalArrayList)
+    public SoalAdapter(Context context)
     {
-        this.context = context;
-        this.soalArrayList = soalArrayList;
+        super(context);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(context).inflate(R.layout.item_soal, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, itemClickListener, longItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(ViewHolder holder, int position)
     {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        Soal soal = soalArrayList.get(position);
-        viewHolder.nama.setText(soal.getNama());
-        viewHolder.isi.setText(soal.getIsi());
-        viewHolder.tanggal.setText(soal.getTanggal());
+        holder.nama.setText(data.get(position).getNama());
+        holder.isi.setText(data.get(position).getIsi());
+        holder.tanggal.setText(data.get(position).getTanggal());
     }
 
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return soalArrayList.size();
-    }
-
-    private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    class ViewHolder extends BenihViewHolder
     {
         TextView nama;
         TextView isi;
         TextView tanggal;
 
-        public ViewHolder(View itemView)
+        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
         {
-            super(itemView);
+            super(itemView, itemClickListener, longItemClickListener);
             nama = (TextView) itemView.findViewById(R.id.nama);
             isi = (TextView) itemView.findViewById(R.id.isi);
             tanggal = (TextView) itemView.findViewById(R.id.tanggal);
             itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View v)
-        {
-            clickListener.onItemClick(v, getAdapterPosition());
-        }
-    }
-
-    public interface OnItemClickListener
-    {
-        void onItemClick(View view, int position);
-    }
-
-    public void SetOnItemClickListener(final OnItemClickListener itemClickListener)
-    {
-        this.clickListener = itemClickListener;
     }
 }

@@ -25,8 +25,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
@@ -47,6 +45,7 @@ import java.net.URLEncoder;
 import id.zelory.benih.BenihActivity;
 import id.zelory.benih.utils.BenihScheduler;
 import id.zelory.benih.utils.PrefUtils;
+import id.zelory.benih.views.BenihRecyclerView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.adapter.SoalAdapter;
 import id.zelory.tanipedia.network.TaniPediaService;
@@ -57,7 +56,8 @@ public class TanyaActivity extends BenihActivity
 {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
+    private BenihRecyclerView recyclerView;
+    private SoalAdapter adapter;
     private int fabMargin;
     private FrameLayout fab;
     private ImageButton fabBtn;
@@ -128,10 +128,16 @@ public class TanyaActivity extends BenihActivity
             return true;
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView = (BenihRecyclerView) findViewById(R.id.scrollableview);
+        recyclerView.setUpAsList();
+        adapter = new SoalAdapter(this);
+
+        adapter.setOnItemClickListener((view, position) -> {
+            Intent intent = new Intent(TanyaActivity.this, JawabActivity.class);
+            intent.putExtra("soal", adapter.getData().get(position));
+            startActivity(intent);
+        });
+
         recyclerView.addOnScrollListener(new MyRecyclerScroll()
         {
             @Override
@@ -210,13 +216,7 @@ public class TanyaActivity extends BenihActivity
                 .subscribe(soalArrayList -> {
                     if (soalArrayList != null && !soalArrayList.isEmpty())
                     {
-                        SoalAdapter adapter = new SoalAdapter(TanyaActivity.this, soalArrayList);
-                        adapter.SetOnItemClickListener((view, position) -> {
-                            Intent intent = new Intent(TanyaActivity.this, JawabActivity.class);
-                            intent.putExtra("soal", soalArrayList.get(position));
-                            startActivity(intent);
-                        });
-                        recyclerView.setAdapter(adapter);
+                        adapter.add(soalArrayList);
                         recyclerView.startAnimation(animation);
                         fab.startAnimation(animation);
                         fab.setVisibility(View.VISIBLE);
