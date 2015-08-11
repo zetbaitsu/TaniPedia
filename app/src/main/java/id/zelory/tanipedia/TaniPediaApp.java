@@ -17,6 +17,7 @@
 package id.zelory.tanipedia;
 
 import id.zelory.benih.BenihApplication;
+import timber.log.Timber;
 
 /**
  * Created by zetbaitsu on 7/24/15.
@@ -30,6 +31,10 @@ public class TaniPediaApp extends BenihApplication
     {
         super.onCreate();
         taniPediaApp = this;
+        if (BuildConfig.DEBUG)
+        {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     public static TaniPediaApp pluck()
