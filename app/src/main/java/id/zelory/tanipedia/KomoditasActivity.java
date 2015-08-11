@@ -153,7 +153,7 @@ public class KomoditasActivity extends BenihActivity implements KomoditasControl
                     return true;
                 case R.id.logout:
                     BenihPreferenceUtils.putString(KomoditasActivity.this, "nama", null);
-                    intent = new Intent(KomoditasActivity.this, LoginActivity.class);
+                    intent = new Intent(KomoditasActivity.this, SignInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     return true;

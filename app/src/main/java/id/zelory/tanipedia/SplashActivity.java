@@ -86,7 +86,7 @@ public class SplashActivity extends BenihActivity implements Animation.Animation
 
             } else
             {
-                intent = new Intent(this, LoginActivity.class);
+                intent = new Intent(this, SignInActivity.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

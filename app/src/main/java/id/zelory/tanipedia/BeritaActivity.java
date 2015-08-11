@@ -154,7 +154,7 @@ public class BeritaActivity extends BenihActivity implements BeritaController.Pr
                     break;
                 case R.id.logout:
                     BenihPreferenceUtils.putString(BeritaActivity.this, "nama", null);
-                    intent = new Intent(BeritaActivity.this, LoginActivity.class);
+                    intent = new Intent(BeritaActivity.this, SignInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     return true;

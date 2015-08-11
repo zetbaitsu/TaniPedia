@@ -164,7 +164,7 @@ public class CuacaActivity extends BenihActivity implements CuacaController.Pres
                     break;
                 case R.id.logout:
                     BenihPreferenceUtils.putString(CuacaActivity.this, "nama", null);
-                    intent = new Intent(CuacaActivity.this, LoginActivity.class);
+                    intent = new Intent(CuacaActivity.this, SignInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     return true;

@@ -193,7 +193,7 @@ public class TanyaActivity extends BenihActivity implements SoalController.Prese
                     break;
                 case R.id.logout:
                     BenihPreferenceUtils.putString(TanyaActivity.this, "nama", null);
-                    intent = new Intent(TanyaActivity.this, LoginActivity.class);
+                    intent = new Intent(TanyaActivity.this, SignInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     return true;

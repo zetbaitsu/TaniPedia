@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".SignInActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".CuacaActivity"
@@ -44,10 +44,6 @@
         </activity>
         <activity
             android:name=".KomoditasActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".RegisterActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
