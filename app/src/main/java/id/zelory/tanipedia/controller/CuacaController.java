@@ -1,0 +1,184 @@
+/*
+ * Copyright (c) 2015 Zetra.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package id.zelory.tanipedia.controller;
+
+import android.location.Location;
+import android.os.Bundle;
+import android.os.Handler;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import id.zelory.benih.controller.BenihController;
+import id.zelory.benih.util.BenihPreferenceUtils;
+import id.zelory.benih.util.BenihScheduler;
+import id.zelory.tanipedia.TaniPediaApp;
+import id.zelory.tanipedia.model.Cuaca;
+import id.zelory.tanipedia.network.TaniPediaService;
+import timber.log.Timber;
+
+/**
+ * Created by zetbaitsu on 7/31/15.
+ */
+public class CuacaController extends BenihController<CuacaController.Presenter> implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
+{
+    private List<Cuaca> listCuaca;
+    private GoogleApiClient googleApiClient;
+    private double latitude;
+    private double longitude;
+
+    public CuacaController(Presenter presenter)
+    {
+        super(presenter);
+        if (checkPlayServices())
+        {
+            buildGoogleApiClient();
+        } else
+        {
+            presenter.showError(new Throwable("Google Play Services Not Found"));
+        }
+    }
+
+    public void connect()
+    {
+        if (googleApiClient != null)
+        {
+            googleApiClient.connect();
+        } else
+        {
+            presenter.showError(new Throwable("Lokasi tidak ditemukan"));
+        }
+    }
+
+    public void loadListCuaca()
+    {
+        presenter.showLoading();
+        TaniPediaService.pluck()
+                .getApi()
+                .getCuaca(latitude, longitude)
+                .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
+                .subscribe(listCuaca -> {
+                    this.listCuaca = listCuaca;
+                    if (presenter != null)
+                    {
+                        presenter.showListCuaca(listCuaca);
+                        presenter.dismissLoading();
+                    }
+                }, throwable -> {
+                    if (presenter != null)
+                    {
+                        presenter.showError(throwable);
+                        presenter.dismissLoading();
+                    }
+                });
+    }
+
+    private boolean checkPlayServices()
+    {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(TaniPediaApp.pluck().getApplicationContext());
+        return resultCode == ConnectionResult.SUCCESS;
+    }
+
+    protected synchronized void buildGoogleApiClient()
+    {
+        googleApiClient = new GoogleApiClient.Builder(TaniPediaApp.pluck().getApplicationContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void saveState(Bundle bundle)
+    {
+        bundle.putParcelableArrayList("listCuaca", (ArrayList<Cuaca>) listCuaca);
+        saveLocation();
+    }
+
+    @Override
+    public void loadState(Bundle bundle)
+    {
+        listCuaca = bundle.getParcelableArrayList("listCuaca");
+        if (listCuaca != null)
+        {
+            presenter.showListCuaca(listCuaca);
+        } else
+        {
+            presenter.showError(new Throwable("Error"));
+        }
+        restoreLocation();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle)
+    {
+        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
+        if (location != null)
+        {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            saveLocation();
+            new Handler().postDelayed(this::loadListCuaca, 800);
+        } else
+        {
+            restoreLocation();
+            new Handler().postDelayed(this::loadListCuaca, 800);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult)
+    {
+        restoreLocation();
+        new Handler().postDelayed(this::loadListCuaca, 800);
+    }
+
+    private void saveLocation()
+    {
+        BenihPreferenceUtils.putDouble(TaniPediaApp.pluck().getApplicationContext(), "lat", latitude);
+        BenihPreferenceUtils.putDouble(TaniPediaApp.pluck().getApplicationContext(), "lon", longitude);
+    }
+
+    private void restoreLocation()
+    {
+        latitude = BenihPreferenceUtils.getDouble(TaniPediaApp.pluck().getApplicationContext(), "lat");
+        longitude = BenihPreferenceUtils.getDouble(TaniPediaApp.pluck().getApplicationContext(), "lon");
+    }
+
+    public interface Presenter extends BenihController.Presenter
+    {
+        void showLoading();
+
+        void dismissLoading();
+
+        void showListCuaca(List<Cuaca> listCuaca);
+    }
+}

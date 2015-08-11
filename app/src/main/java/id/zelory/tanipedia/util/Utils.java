@@ -23,17 +23,17 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-import id.zelory.benih.utils.PrefUtils;
+import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.tanipedia.model.Berita;
 
 /**
  * Created by zetbaitsu on 4/26/2015.
  */
-public class Utils extends id.zelory.benih.utils.Utils
+public class Utils extends id.zelory.benih.util.BenihUtils
 {
     public static ArrayList<Berita> getRandomBerita(Context context, String alamat)
     {
-        ArrayList<Berita> beritaArrayList = new Gson().fromJson(PrefUtils.getString(context, "berita"),
+        ArrayList<Berita> beritaArrayList = new Gson().fromJson(BenihPreferenceUtils.getString(context, "berita"),
                                                                 new TypeToken<ArrayList<Berita>>() {}.getType());
 
         for (int i = 0; i < 5; i++)

@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <ImageView
+        <id.zelory.benih.view.BenihImageView
             android:id="@+id/gambar"
             android:layout_width="match_parent"
             android:layout_height="160dp"

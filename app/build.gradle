@@ -9,12 +9,12 @@ android {
         applicationId "id.zelory.tanipedia"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -39,7 +39,7 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'id.zelory.benih:benih:0.0.8'
+    compile 'id.zelory.benih:benih:0.1.7'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'mbanje.kurt:fabbutton:1.2.0'
     compile 'com.afollestad:material-dialogs:0.7.5.5'

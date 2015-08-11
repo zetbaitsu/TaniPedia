@@ -38,7 +38,7 @@
             app:expandedTitleTextAppearance="@android:style/TextAppearance.Large"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
+            <id.zelory.benih.view.BenihImageView
                 android:id="@+id/gambar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -80,7 +80,7 @@
         android:src="@drawable/ic_action_share"
         android:visibility="visible"
         app:fbb_autoStart="true"
-        app:fbb_endBitmap="@drawable/ic_action_share"
+        app:fbb_endBitmap="@drawable/ic_action_done"
         app:fbb_hideProgressOnComplete="true"
         app:fbb_progressColor="@color/primary_dark"
         app:fbb_progressWidthRatio="0.1"

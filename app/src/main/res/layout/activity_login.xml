@@ -23,7 +23,7 @@
     android:background="@color/primary"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    tools:context="id.zelory.tanipedia.activity.LoginActivity">
+    tools:context="id.zelory.tanipedia.LoginActivity">
 
     <TextView
         android:id="@+id/tanipedia"

@@ -23,9 +23,17 @@ import id.zelory.benih.BenihApplication;
  */
 public class TaniPediaApp extends BenihApplication
 {
+    private static TaniPediaApp taniPediaApp;
+
     @Override
     public void onCreate()
     {
         super.onCreate();
+        taniPediaApp = this;
+    }
+
+    public static TaniPediaApp pluck()
+    {
+        return taniPediaApp;
     }
 }

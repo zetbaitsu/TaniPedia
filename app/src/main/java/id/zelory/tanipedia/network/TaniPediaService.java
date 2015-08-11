@@ -18,7 +18,7 @@ package id.zelory.tanipedia.network;
 
 import java.util.List;
 
-import id.zelory.benih.networks.ServiceGenerator;
+import id.zelory.benih.network.BenihServiceGenerator;
 import id.zelory.tanipedia.model.Berita;
 import id.zelory.tanipedia.model.Cuaca;
 import id.zelory.tanipedia.model.Jawaban;
@@ -33,16 +33,22 @@ import rx.Observable;
 /**
  * Created by zetbaitsu on 7/24/15.
  */
-public class TaniPediaService
+public enum TaniPediaService
 {
-    private static final Api api = ServiceGenerator.createService(Api.class, Api.ENDPOINT);
+    HARVEST;
+    private final Api api;
 
-    private TaniPediaService()
+    TaniPediaService()
     {
-
+        api = BenihServiceGenerator.createService(Api.class, Api.ENDPOINT);
     }
 
-    public static Api getApi()
+    public static TaniPediaService pluck()
+    {
+        return HARVEST;
+    }
+
+    public Api getApi()
     {
         return api;
     }

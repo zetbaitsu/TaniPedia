@@ -17,23 +17,17 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
-import id.zelory.benih.adapters.BenihRecyclerAdapter;
-import id.zelory.benih.adapters.BenihViewHolder;
+import id.zelory.benih.adapter.BenihRecyclerAdapter;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.adapter.viewholder.BeritaViewHolder;
 import id.zelory.tanipedia.model.Berita;
 
 /**
  * Created by zetbaitsu on 4/26/2015.
  */
-public class BeritaAdapter extends BenihRecyclerAdapter<Berita, BeritaAdapter.ViewHolder>
+public class BeritaAdapter extends BenihRecyclerAdapter<Berita, BeritaViewHolder>
 {
     public BeritaAdapter(Context context)
     {
@@ -41,32 +35,14 @@ public class BeritaAdapter extends BenihRecyclerAdapter<Berita, BeritaAdapter.Vi
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
+    protected int getItemView(int i)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_berita, viewGroup, false);
-        return new ViewHolder(view, itemClickListener, longItemClickListener);
+        return R.layout.item_berita;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int i)
+    public BeritaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        Glide.with(context).load(data.get(i).getGambar()).into(holder.gambar);
-        holder.judul.setText(data.get(i).getJudul());
-        holder.tanggal.setText("TaniPedia - " + data.get(i).getTanggal());
-    }
-
-    class ViewHolder extends BenihViewHolder
-    {
-        ImageView gambar;
-        TextView judul;
-        TextView tanggal;
-
-        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
-        {
-            super(itemView, itemClickListener, longItemClickListener);
-            gambar = (ImageView) itemView.findViewById(R.id.gambar);
-            judul = (TextView) itemView.findViewById(R.id.judul);
-            tanggal = (TextView) itemView.findViewById(R.id.tanggal);
-        }
+        return new BeritaViewHolder(getView(viewGroup, i), itemClickListener, longItemClickListener);
     }
 }

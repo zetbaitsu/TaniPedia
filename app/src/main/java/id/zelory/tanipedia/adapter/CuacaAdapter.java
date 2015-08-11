@@ -17,22 +17,17 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import id.zelory.benih.adapters.BenihRecyclerAdapter;
-import id.zelory.benih.adapters.BenihViewHolder;
+import id.zelory.benih.adapter.BenihRecyclerAdapter;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.adapter.viewholder.CuacaViewHolder;
 import id.zelory.tanipedia.model.Cuaca;
 
 /**
  * Created by zetbaitsu on 4/26/2015.
  */
-public class CuacaAdapter extends BenihRecyclerAdapter<Cuaca, CuacaAdapter.ViewHolder>
+public class CuacaAdapter extends BenihRecyclerAdapter<Cuaca, CuacaViewHolder>
 {
     public CuacaAdapter(Context context)
     {
@@ -40,60 +35,14 @@ public class CuacaAdapter extends BenihRecyclerAdapter<Cuaca, CuacaAdapter.ViewH
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
+    protected int getItemView(int i)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_cuaca, viewGroup, false);
-        return new ViewHolder(view, itemClickListener, longItemClickListener);
+        return R.layout.item_cuaca;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int i)
+    public CuacaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        Cuaca cuaca = data.get(i);
-
-        holder.cuacaText.setText(cuaca.getCuaca());
-        holder.suhu.setText(cuaca.getSuhu() + (char) 0x2103);
-        holder.minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
-        holder.tanggal.setText(cuaca.getTanggal());
-        int gambar;
-        switch (cuaca.getCuaca())
-        {
-            case "Cerah":
-                gambar = R.drawable.cerah;
-                holder.background.setBackgroundResource(R.color.cerah);
-                break;
-            case "Berawan":
-                gambar = R.drawable.berawan;
-                holder.background.setBackgroundResource(R.color.berawan);
-                break;
-            case "Hujan":
-                gambar = R.drawable.hujan;
-                holder.background.setBackgroundResource(R.color.hujan);
-                break;
-            default:
-                gambar = R.drawable.berawan;
-        }
-        holder.iconCuaca.setImageResource(gambar);
-    }
-
-    class ViewHolder extends BenihViewHolder
-    {
-        TextView cuacaText;
-        TextView suhu;
-        TextView minmax;
-        ImageView iconCuaca;
-        TextView tanggal;
-        LinearLayout background;
-
-        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
-        {
-            super(itemView, itemClickListener, longItemClickListener);
-            cuacaText = (TextView) itemView.findViewById(R.id.cuaca);
-            suhu = (TextView) itemView.findViewById(R.id.suhu);
-            minmax = (TextView) itemView.findViewById(R.id.minmax);
-            iconCuaca = (ImageView) itemView.findViewById(R.id.icon_cuaca);
-            tanggal = (TextView) itemView.findViewById(R.id.tanggal);
-            background = (LinearLayout) itemView.findViewById(R.id.background);
-        }
+        return new CuacaViewHolder(getView(viewGroup, i), itemClickListener, longItemClickListener);
     }
 }

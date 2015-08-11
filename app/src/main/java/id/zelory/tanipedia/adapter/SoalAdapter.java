@@ -17,20 +17,17 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import id.zelory.benih.adapters.BenihRecyclerAdapter;
-import id.zelory.benih.adapters.BenihViewHolder;
+import id.zelory.benih.adapter.BenihRecyclerAdapter;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.adapter.viewholder.SoalViewHolder;
 import id.zelory.tanipedia.model.Soal;
 
 /**
  * Created by zetbaitsu on 5/6/15.
  */
-public class SoalAdapter extends BenihRecyclerAdapter<Soal, SoalAdapter.ViewHolder>
+public class SoalAdapter extends BenihRecyclerAdapter<Soal, SoalViewHolder>
 {
     public SoalAdapter(Context context)
     {
@@ -38,33 +35,14 @@ public class SoalAdapter extends BenihRecyclerAdapter<Soal, SoalAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    protected int getItemView(int i)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_soal, parent, false);
-        return new ViewHolder(view, itemClickListener, longItemClickListener);
+        return R.layout.item_soal;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public SoalViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        holder.nama.setText(data.get(position).getNama());
-        holder.isi.setText(data.get(position).getIsi());
-        holder.tanggal.setText(data.get(position).getTanggal());
-    }
-
-    class ViewHolder extends BenihViewHolder
-    {
-        TextView nama;
-        TextView isi;
-        TextView tanggal;
-
-        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
-        {
-            super(itemView, itemClickListener, longItemClickListener);
-            nama = (TextView) itemView.findViewById(R.id.nama);
-            isi = (TextView) itemView.findViewById(R.id.isi);
-            tanggal = (TextView) itemView.findViewById(R.id.tanggal);
-            itemView.setOnClickListener(this);
-        }
+        return new SoalViewHolder(getView(parent, viewType), itemClickListener, longItemClickListener);
     }
 }

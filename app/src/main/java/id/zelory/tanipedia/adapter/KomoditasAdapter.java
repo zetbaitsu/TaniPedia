@@ -17,20 +17,17 @@
 package id.zelory.tanipedia.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import id.zelory.benih.adapters.BenihRecyclerAdapter;
-import id.zelory.benih.adapters.BenihViewHolder;
+import id.zelory.benih.adapter.BenihRecyclerAdapter;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.adapter.viewholder.KomoditasViewHolder;
 import id.zelory.tanipedia.model.Komoditas;
 
 /**
  * Created by zetbaitsu on 5/6/15.
  */
-public class KomoditasAdapter extends BenihRecyclerAdapter<Komoditas, KomoditasAdapter.ViewHolder>
+public class KomoditasAdapter extends BenihRecyclerAdapter<Komoditas, KomoditasViewHolder>
 {
     public KomoditasAdapter(Context context)
     {
@@ -38,34 +35,14 @@ public class KomoditasAdapter extends BenihRecyclerAdapter<Komoditas, KomoditasA
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    protected int getItemView(int i)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_komoditas, parent, false);
-        return new ViewHolder(view, itemClickListener, longItemClickListener);
+        return R.layout.item_komoditas;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public KomoditasViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        holder.nomor.setText((position + 1) + ".");
-        holder.nama.setText(data.get(position).getNama());
-        holder.harga.setText(data.get(position).getHarga() + ",00");
+        return new KomoditasViewHolder(getView(parent, viewType), itemClickListener, longItemClickListener);
     }
-
-    class ViewHolder extends BenihViewHolder
-    {
-        TextView nomor;
-        TextView nama;
-        TextView harga;
-
-        public ViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
-        {
-            super(itemView, itemClickListener, longItemClickListener);
-            nomor = (TextView) itemView.findViewById(R.id.nomor);
-            nama = (TextView) itemView.findViewById(R.id.nama);
-            harga = (TextView) itemView.findViewById(R.id.harga);
-        }
-
-    }
-
 }
