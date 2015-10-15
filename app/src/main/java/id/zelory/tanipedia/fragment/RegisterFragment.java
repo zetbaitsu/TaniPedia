@@ -29,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.zelory.benih.fragment.BenihFragment;
-import id.zelory.tanipedia.CuacaActivity;
+import id.zelory.tanipedia.MainActivity;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.PakTaniController;
 
@@ -114,7 +114,7 @@ public class RegisterFragment extends BenihFragment implements PakTaniController
     @Override
     public void onRegisterSuccess()
     {
-        Intent intent = new Intent(getActivity(), CuacaActivity.class);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

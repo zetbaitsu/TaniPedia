@@ -82,7 +82,7 @@ public class SplashActivity extends BenihActivity implements Animation.Animation
             Intent intent;
             if (BenihPreferenceUtils.getString(this, "nama") != null)
             {
-                intent = new Intent(this, CuacaActivity.class);
+                intent = new Intent(this, MainActivity.class);
 
             } else
             {

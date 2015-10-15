@@ -17,6 +17,7 @@
 package id.zelory.tanipedia.controller;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class KomoditasController extends BenihController<KomoditasController.Pre
         listKomoditas = bundle.getParcelableArrayList("listKomoditas");
         if (listKomoditas != null)
         {
-            presenter.showListKomoditas(listKomoditas);
+            new Handler().postDelayed(() -> presenter.showListKomoditas(listKomoditas), 500);
         } else
         {
             presenter.showError(new Throwable("List komoditas is null"));

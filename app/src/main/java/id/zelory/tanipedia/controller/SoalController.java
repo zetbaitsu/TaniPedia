@@ -17,6 +17,7 @@
 package id.zelory.tanipedia.controller;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ public class SoalController extends BenihController<SoalController.Presenter>
         listSoal = bundle.getParcelableArrayList("listSoal");
         if (listSoal != null)
         {
-            presenter.showListSoal(listSoal);
+            new Handler().postDelayed(() -> presenter.showListSoal(listSoal), 500);
         } else
         {
             presenter.showError(new Throwable("Terjadi kesalahan!"));

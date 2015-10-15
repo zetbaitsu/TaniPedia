@@ -17,6 +17,7 @@
 package id.zelory.tanipedia.controller;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import id.zelory.benih.util.Bson;
 import id.zelory.tanipedia.TaniPediaApp;
 import id.zelory.tanipedia.model.Berita;
 import id.zelory.tanipedia.network.TaniPediaService;
+import timber.log.Timber;
 
 /**
  * Created by zetbaitsu on 7/31/15.
@@ -92,6 +94,7 @@ public class BeritaController extends BenihController<BeritaController.Presenter
     @Override
     public void saveState(Bundle bundle)
     {
+        Timber.d("saveState");
         bundle.putParcelable("berita", berita);
         bundle.putParcelableArrayList("listBerita", (ArrayList<Berita>) listBerita);
     }
@@ -99,6 +102,7 @@ public class BeritaController extends BenihController<BeritaController.Presenter
     @Override
     public void loadState(Bundle bundle)
     {
+        Timber.d("loadState");
         berita = bundle.getParcelable("berita");
         if (berita != null)
         {
@@ -111,7 +115,8 @@ public class BeritaController extends BenihController<BeritaController.Presenter
         listBerita = bundle.getParcelableArrayList("listBerita");
         if (listBerita != null)
         {
-            presenter.showListBerita(listBerita);
+            Timber.d("show list berita");
+            new Handler().postDelayed(() -> presenter.showListBerita(listBerita), 500);
         } else
         {
             presenter.showError(new Throwable("List is null"));

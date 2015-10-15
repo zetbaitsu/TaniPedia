@@ -37,7 +37,12 @@ import id.zelory.tanipedia.network.TaniPediaService;
 import timber.log.Timber;
 
 /**
- * Created by zetbaitsu on 7/31/15.
+ * Created on : October 15, 2015
+ * Author     : zetbaitsu
+ * Name       : Zetra
+ * Email      : zetra@mail.ugm.ac.id
+ * GitHub     : https://github.com/zetbaitsu
+ * LinkedIn   : https://id.linkedin.com/in/zetbaitsu
  */
 public class CuacaController extends BenihController<CuacaController.Presenter> implements
         GoogleApiClient.ConnectionCallbacks,
@@ -112,6 +117,7 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
     @Override
     public void saveState(Bundle bundle)
     {
+        Timber.d("saveState");
         bundle.putParcelableArrayList("listCuaca", (ArrayList<Cuaca>) listCuaca);
         saveLocation();
     }
@@ -119,10 +125,11 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
     @Override
     public void loadState(Bundle bundle)
     {
+        Timber.d("loadState");
         listCuaca = bundle.getParcelableArrayList("listCuaca");
         if (listCuaca != null)
         {
-            presenter.showListCuaca(listCuaca);
+            new Handler().postDelayed(() -> presenter.showListCuaca(listCuaca), 500);
         } else
         {
             presenter.showError(new Throwable("Error"));

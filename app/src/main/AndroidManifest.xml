@@ -31,21 +31,8 @@
             android:name=".SignInActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".CuacaActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".BeritaActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".TanyaActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".KomoditasActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TentangActivity"
             android:screenOrientation="portrait">
