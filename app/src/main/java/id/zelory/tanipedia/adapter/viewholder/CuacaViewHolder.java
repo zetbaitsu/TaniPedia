@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
-import id.zelory.benih.adapter.viewholder.BenihViewHolder;
+import id.zelory.benih.adapter.viewholder.BenihItemViewHolder;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Cuaca;
 
@@ -32,7 +32,7 @@ import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnLongItemClickListen
 /**
  * Created by zetbaitsu on 7/31/15.
  */
-public class CuacaViewHolder extends BenihViewHolder<Cuaca>
+public class CuacaViewHolder extends BenihItemViewHolder<Cuaca>
 {
     @Bind(R.id.cuaca) TextView cuacaText;
     @Bind(R.id.suhu) TextView suhu;

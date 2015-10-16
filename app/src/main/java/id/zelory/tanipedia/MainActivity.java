@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -73,9 +74,10 @@ public class MainActivity extends BenihActivity
     {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
-        TextView nama = (TextView) navigationView.findViewById(R.id.nama);
+        View header = navigationView.inflateHeaderView(R.layout.header_drawer);
+        TextView nama = (TextView) header.findViewById(R.id.nama);
         nama.setText(BenihPreferenceUtils.getString(this, "nama"));
-        TextView email = (TextView) navigationView.findViewById(R.id.email);
+        TextView email = (TextView) header.findViewById(R.id.email);
         email.setText(BenihPreferenceUtils.getString(this, "email"));
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             menuItem.setChecked(true);

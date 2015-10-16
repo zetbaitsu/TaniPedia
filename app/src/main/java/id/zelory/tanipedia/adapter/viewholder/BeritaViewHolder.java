@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import butterknife.Bind;
-import id.zelory.benih.adapter.viewholder.BenihViewHolder;
+import id.zelory.benih.adapter.viewholder.BenihItemViewHolder;
 import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Berita;
@@ -31,7 +31,7 @@ import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnLongItemClickListen
 /**
  * Created by zetbaitsu on 7/31/15.
  */
-public class BeritaViewHolder extends BenihViewHolder<Berita>
+public class BeritaViewHolder extends BenihItemViewHolder<Berita>
 {
     @Bind(R.id.gambar) BenihImageView gambar;
     @Bind(R.id.judul) TextView judul;

@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import butterknife.Bind;
-import id.zelory.benih.adapter.viewholder.BenihViewHolder;
+import id.zelory.benih.adapter.viewholder.BenihItemViewHolder;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.model.Soal;
 
@@ -30,7 +30,7 @@ import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnLongItemClickListen
 /**
  * Created by zetbaitsu on 7/31/15.
  */
-public class SoalViewHolder extends BenihViewHolder<Soal>
+public class SoalViewHolder extends BenihItemViewHolder<Soal>
 {
     @Bind(R.id.nama) TextView nama;
     @Bind(R.id.isi) TextView isi;
