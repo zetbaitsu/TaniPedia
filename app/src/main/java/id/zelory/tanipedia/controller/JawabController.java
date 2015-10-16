@@ -23,10 +23,10 @@ import java.util.List;
 
 import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihScheduler;
-import id.zelory.tanipedia.model.Jawaban;
-import id.zelory.tanipedia.model.PakTani;
-import id.zelory.tanipedia.model.Soal;
-import id.zelory.tanipedia.network.TaniPediaService;
+import id.zelory.tanipedia.data.model.Jawaban;
+import id.zelory.tanipedia.data.model.PakTani;
+import id.zelory.tanipedia.data.model.Soal;
+import id.zelory.tanipedia.data.api.TaniPediaApi;
 
 /**
  * Created by zetbaitsu on 8/10/15.
@@ -44,7 +44,7 @@ public class JawabController extends BenihController<JawabController.Presenter>
     public void loadJawaban(Soal soal)
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getJawaban(soal.getId())
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
@@ -89,7 +89,7 @@ public class JawabController extends BenihController<JawabController.Presenter>
     public void sendJawaban(Soal soal, String email, String isi)
     {
         presenter.showLoadingDialog();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .postJawaban(soal.getId(), email, isi)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))

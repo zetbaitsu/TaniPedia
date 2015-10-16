@@ -27,8 +27,8 @@ import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.util.BenihScheduler;
 import id.zelory.benih.util.Bson;
 import id.zelory.tanipedia.TaniPediaApp;
-import id.zelory.tanipedia.model.Berita;
-import id.zelory.tanipedia.network.TaniPediaService;
+import id.zelory.tanipedia.data.model.Berita;
+import id.zelory.tanipedia.data.api.TaniPediaApi;
 import timber.log.Timber;
 
 /**
@@ -47,7 +47,7 @@ public class BeritaController extends BenihController<BeritaController.Presenter
     public void loadBerita(String url)
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getBerita(url)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
@@ -70,7 +70,7 @@ public class BeritaController extends BenihController<BeritaController.Presenter
     public void loadListBerita()
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getAllBerita()
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))

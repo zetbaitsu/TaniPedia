@@ -22,8 +22,8 @@ import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.util.BenihScheduler;
 import id.zelory.tanipedia.TaniPediaApp;
-import id.zelory.tanipedia.model.PakTani;
-import id.zelory.tanipedia.network.TaniPediaService;
+import id.zelory.tanipedia.data.model.PakTani;
+import id.zelory.tanipedia.data.api.TaniPediaApi;
 
 /**
  * Created by zetbaitsu on 8/10/15.
@@ -38,7 +38,7 @@ public class PakTaniController extends BenihController<PakTaniController.Present
     public void login(String email, String password)
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .login(email, password)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
@@ -78,7 +78,7 @@ public class PakTaniController extends BenihController<PakTaniController.Present
     public void register(String email, String nama, String password, boolean male)
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .register(email, nama, password, male)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
@@ -116,7 +116,7 @@ public class PakTaniController extends BenihController<PakTaniController.Present
     public void loadPakTani(String email)
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getPakTani(email)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
@@ -138,7 +138,7 @@ public class PakTaniController extends BenihController<PakTaniController.Present
     public void updatePakTani(PakTani pakTani)
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .updatePakTani(pakTani.getEmail(), pakTani.getNama(), pakTani.getPassword(), pakTani.isMale())
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))

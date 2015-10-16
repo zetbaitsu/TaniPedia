@@ -24,8 +24,8 @@ import java.util.List;
 
 import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihScheduler;
-import id.zelory.tanipedia.model.Komoditas;
-import id.zelory.tanipedia.network.TaniPediaService;
+import id.zelory.tanipedia.data.model.Komoditas;
+import id.zelory.tanipedia.data.api.TaniPediaApi;
 
 /**
  * Created by zetbaitsu on 7/31/15.
@@ -42,7 +42,7 @@ public class KomoditasController extends BenihController<KomoditasController.Pre
     public void loadListKomoditas()
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getKomoditas()
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))

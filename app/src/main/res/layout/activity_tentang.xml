@@ -23,7 +23,7 @@
     android:background="@color/primary"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    tools:context="id.zelory.tanipedia.TentangActivity">
+    tools:context=".ui.TentangActivity">
 
     <TextView
         android:id="@+id/tanipedia"

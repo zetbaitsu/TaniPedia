@@ -24,8 +24,8 @@ import java.util.List;
 
 import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihScheduler;
-import id.zelory.tanipedia.model.Soal;
-import id.zelory.tanipedia.network.TaniPediaService;
+import id.zelory.tanipedia.data.model.Soal;
+import id.zelory.tanipedia.data.api.TaniPediaApi;
 
 /**
  * Created by zetbaitsu on 8/10/15.
@@ -42,7 +42,7 @@ public class SoalController extends BenihController<SoalController.Presenter>
     public void loadListSoal()
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getPertanyaan()
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
@@ -65,7 +65,7 @@ public class SoalController extends BenihController<SoalController.Presenter>
     public void loadListSoal(String email)
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getPertanyaan(email)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
@@ -88,7 +88,7 @@ public class SoalController extends BenihController<SoalController.Presenter>
     public void sendSoal(String email, String isi)
     {
         presenter.showLoadingDialog();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .postPertanyaan(email, isi)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))

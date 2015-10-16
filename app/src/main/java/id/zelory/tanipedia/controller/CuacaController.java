@@ -32,8 +32,8 @@ import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.util.BenihScheduler;
 import id.zelory.tanipedia.TaniPediaApp;
-import id.zelory.tanipedia.model.Cuaca;
-import id.zelory.tanipedia.network.TaniPediaService;
+import id.zelory.tanipedia.data.model.Cuaca;
+import id.zelory.tanipedia.data.api.TaniPediaApi;
 import timber.log.Timber;
 
 /**
@@ -79,7 +79,7 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
     public void loadListCuaca()
     {
         presenter.showLoading();
-        TaniPediaService.pluck()
+        TaniPediaApi.pluck()
                 .getApi()
                 .getCuaca(latitude, longitude)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
