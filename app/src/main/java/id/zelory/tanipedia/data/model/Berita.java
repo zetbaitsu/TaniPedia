@@ -30,6 +30,7 @@ public class Berita implements Parcelable
     private String tanggal;
     private String deskripsi;
     private String isi;
+    private boolean bookmarked;
 
     public Berita()
     {
@@ -43,6 +44,7 @@ public class Berita implements Parcelable
         tanggal = in.readString();
         deskripsi = in.readString();
         isi = in.readString();
+        bookmarked = in.readByte() != 0;
     }
 
     public String getJudul()
@@ -121,6 +123,16 @@ public class Berita implements Parcelable
         this.isi = isi;
     }
 
+    public boolean isBookmarked()
+    {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked)
+    {
+        this.bookmarked = bookmarked;
+    }
+
     @Override
     public int describeContents()
     {
@@ -136,6 +148,7 @@ public class Berita implements Parcelable
         dest.writeString(tanggal);
         dest.writeString(deskripsi);
         dest.writeString(isi);
+        dest.writeByte((byte) (bookmarked ? 1 : 0));
     }
 
     public static final Creator<Berita> CREATOR

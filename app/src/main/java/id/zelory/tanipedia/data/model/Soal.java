@@ -28,6 +28,7 @@ public class Soal implements Parcelable
     private String tanggal;
     private String isi;
     private PakTani pakTani;
+    private boolean bookmarked;
 
     public Soal()
     {
@@ -40,6 +41,7 @@ public class Soal implements Parcelable
         tanggal = in.readString();
         isi = in.readString();
         pakTani = in.readParcelable(PakTani.class.getClassLoader());
+        bookmarked = in.readByte() != 0;
     }
 
     public static final Creator<Soal> CREATOR = new Creator<Soal>()
@@ -97,6 +99,16 @@ public class Soal implements Parcelable
         this.pakTani = pakTani;
     }
 
+    public boolean isBookmarked()
+    {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked)
+    {
+        this.bookmarked = bookmarked;
+    }
+
     @Override
     public int describeContents()
     {
@@ -110,5 +122,6 @@ public class Soal implements Parcelable
         dest.writeString(tanggal);
         dest.writeString(isi);
         dest.writeParcelable(pakTani, flags);
+        dest.writeByte((byte) (bookmarked ? 1 : 0));
     }
 }
