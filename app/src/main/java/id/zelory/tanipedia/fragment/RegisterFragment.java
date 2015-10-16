@@ -22,6 +22,7 @@ import android.support.design.widget.Snackbar;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -32,6 +33,7 @@ import id.zelory.benih.fragment.BenihFragment;
 import id.zelory.tanipedia.MainActivity;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.PakTaniController;
+import id.zelory.tanipedia.model.PakTani;
 
 /**
  * Created by zetbaitsu on 8/11/15.
@@ -41,6 +43,7 @@ public class RegisterFragment extends BenihFragment implements PakTaniController
     @Bind(R.id.nama) EditText editNama;
     @Bind(R.id.email) EditText editEmail;
     @Bind(R.id.password) EditText editPass;
+    @Bind(R.id.rb_laki) RadioButton rbLaki;
     private PakTaniController controller;
     private MaterialDialog dialog;
 
@@ -80,7 +83,8 @@ public class RegisterFragment extends BenihFragment implements PakTaniController
             Snackbar.make(editPass, "Mohon isi password terlebih dahulu!", Snackbar.LENGTH_LONG).show();
         } else
         {
-            controller.register(editEmail.getText().toString(), editNama.getText().toString(), editPass.getText().toString());
+            controller.register(editEmail.getText().toString(), editNama.getText().toString(),
+                                editPass.getText().toString(), rbLaki.isChecked());
         }
     }
 
@@ -117,6 +121,12 @@ public class RegisterFragment extends BenihFragment implements PakTaniController
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void showPakTani(PakTani pakTani)
+    {
+
     }
 
     @Override

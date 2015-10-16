@@ -44,7 +44,7 @@ public class SoalViewHolder extends BenihViewHolder<Soal>
     @Override
     public void bind(Soal soal)
     {
-        nama.setText(soal.getNama());
+        nama.setText(soal.getPakTani().getNama());
         isi.setText(soal.getIsi());
         tanggal.setText(soal.getTanggal());
     }

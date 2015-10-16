@@ -62,6 +62,29 @@ public class SoalController extends BenihController<SoalController.Presenter>
                 });
     }
 
+    public void loadListSoal(String email)
+    {
+        presenter.showLoading();
+        TaniPediaService.pluck()
+                .getApi()
+                .getPertanyaan(email)
+                .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
+                .subscribe(listSoal -> {
+                    this.listSoal = listSoal;
+                    if (presenter != null)
+                    {
+                        presenter.showListSoal(listSoal);
+                        presenter.dismissLoading();
+                    }
+                }, throwable -> {
+                    if (presenter != null)
+                    {
+                        presenter.showError(throwable);
+                        presenter.dismissLoading();
+                    }
+                });
+    }
+
     public void sendSoal(String email, String isi)
     {
         presenter.showLoadingDialog();

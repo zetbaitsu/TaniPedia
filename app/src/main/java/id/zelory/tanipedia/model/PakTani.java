@@ -27,6 +27,7 @@ public class PakTani implements Parcelable
     private String email;
     private String nama;
     private String password;
+    private boolean male;
 
     public PakTani()
     {
@@ -38,7 +39,23 @@ public class PakTani implements Parcelable
         email = in.readString();
         nama = in.readString();
         password = in.readString();
+        male = in.readByte() == 1;
     }
+
+    public static final Creator<PakTani> CREATOR = new Creator<PakTani>()
+    {
+        @Override
+        public PakTani createFromParcel(Parcel in)
+        {
+            return new PakTani(in);
+        }
+
+        @Override
+        public PakTani[] newArray(int size)
+        {
+            return new PakTani[size];
+        }
+    };
 
     public String getEmail()
     {
@@ -70,6 +87,16 @@ public class PakTani implements Parcelable
         this.password = password;
     }
 
+    public boolean isMale()
+    {
+        return male;
+    }
+
+    public void setMale(boolean male)
+    {
+        this.male = male;
+    }
+
     @Override
     public int describeContents()
     {
@@ -77,24 +104,11 @@ public class PakTani implements Parcelable
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i)
+    public void writeToParcel(Parcel dest, int flags)
     {
-        parcel.writeString(email);
-        parcel.writeString(nama);
-        parcel.writeString(password);
+        dest.writeString(email);
+        dest.writeString(nama);
+        dest.writeString(password);
+        dest.writeByte((byte) (male ? 1 : 0));
     }
-
-    public static final Creator<PakTani> CREATOR
-            = new Creator<PakTani>()
-    {
-        public PakTani createFromParcel(Parcel in)
-        {
-            return new PakTani(in);
-        }
-
-        public PakTani[] newArray(int size)
-        {
-            return new PakTani[size];
-        }
-    };
 }

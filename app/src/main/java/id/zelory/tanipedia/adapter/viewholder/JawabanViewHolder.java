@@ -44,7 +44,7 @@ public class JawabanViewHolder extends BenihViewHolder<Jawaban>
     @Override
     public void bind(Jawaban jawaban)
     {
-        nama.setText(jawaban.getNama());
+        nama.setText(jawaban.getPakTani().getNama());
         isi.setText(jawaban.getIsi());
         tanggal.setText(jawaban.getTanggal());
     }

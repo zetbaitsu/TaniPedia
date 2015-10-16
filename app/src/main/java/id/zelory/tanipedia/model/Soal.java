@@ -25,22 +25,37 @@ import android.os.Parcelable;
 public class Soal implements Parcelable
 {
     public String id;
-    private String nama;
     private String tanggal;
     private String isi;
+    private PakTani pakTani;
 
     public Soal()
     {
 
     }
 
-    private Soal(Parcel in)
+    protected Soal(Parcel in)
     {
         id = in.readString();
-        nama = in.readString();
         tanggal = in.readString();
         isi = in.readString();
+        pakTani = in.readParcelable(PakTani.class.getClassLoader());
     }
+
+    public static final Creator<Soal> CREATOR = new Creator<Soal>()
+    {
+        @Override
+        public Soal createFromParcel(Parcel in)
+        {
+            return new Soal(in);
+        }
+
+        @Override
+        public Soal[] newArray(int size)
+        {
+            return new Soal[size];
+        }
+    };
 
     public String getId()
     {
@@ -50,16 +65,6 @@ public class Soal implements Parcelable
     public void setId(String id)
     {
         this.id = id;
-    }
-
-    public String getNama()
-    {
-        return nama;
-    }
-
-    public void setNama(String nama)
-    {
-        this.nama = nama;
     }
 
     public String getTanggal()
@@ -82,6 +87,16 @@ public class Soal implements Parcelable
         this.isi = isi;
     }
 
+    public PakTani getPakTani()
+    {
+        return pakTani;
+    }
+
+    public void setPakTani(PakTani pakTani)
+    {
+        this.pakTani = pakTani;
+    }
+
     @Override
     public int describeContents()
     {
@@ -89,25 +104,11 @@ public class Soal implements Parcelable
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i)
+    public void writeToParcel(Parcel dest, int flags)
     {
-        parcel.writeString(id);
-        parcel.writeString(nama);
-        parcel.writeString(tanggal);
-        parcel.writeString(isi);
+        dest.writeString(id);
+        dest.writeString(tanggal);
+        dest.writeString(isi);
+        dest.writeParcelable(pakTani, flags);
     }
-
-    public static final Creator<Soal> CREATOR
-            = new Creator<Soal>()
-    {
-        public Soal createFromParcel(Parcel in)
-        {
-            return new Soal(in);
-        }
-
-        public Soal[] newArray(int size)
-        {
-            return new Soal[size];
-        }
-    };
 }

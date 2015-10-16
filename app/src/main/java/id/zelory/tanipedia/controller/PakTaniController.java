@@ -48,6 +48,7 @@ public class PakTaniController extends BenihController<PakTaniController.Present
                         BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "email", pakTani.getEmail());
                         BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "nama", pakTani.getNama());
                         BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "pass", pakTani.getPassword());
+                        BenihPreferenceUtils.putBoolean(TaniPediaApp.pluck().getApplicationContext(), "male", pakTani.isMale());
                         if (presenter != null)
                         {
                             presenter.onLoginSuccess();
@@ -74,12 +75,12 @@ public class PakTaniController extends BenihController<PakTaniController.Present
                 });
     }
 
-    public void register(String email, String nama, String password)
+    public void register(String email, String nama, String password, boolean male)
     {
         presenter.showLoading();
         TaniPediaService.pluck()
                 .getApi()
-                .register(email, nama, password)
+                .register(email, nama, password, male)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
                 .subscribe(status -> {
                     if (status.getStatus())
@@ -87,6 +88,7 @@ public class PakTaniController extends BenihController<PakTaniController.Present
                         BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "email", email);
                         BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "nama", nama);
                         BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "pass", password);
+                        BenihPreferenceUtils.putBoolean(TaniPediaApp.pluck().getApplicationContext(), "male", male);
                         if (presenter != null)
                         {
                             presenter.onRegisterSuccess();
@@ -100,6 +102,50 @@ public class PakTaniController extends BenihController<PakTaniController.Present
                     }
                     if (presenter != null)
                     {
+                        presenter.dismissLoading();
+                    }
+                }, throwable -> {
+                    if (presenter != null)
+                    {
+                        presenter.showError(throwable);
+                        presenter.dismissLoading();
+                    }
+                });
+    }
+
+    public void loadPakTani(String email)
+    {
+        presenter.showLoading();
+        TaniPediaService.pluck()
+                .getApi()
+                .getPakTani(email)
+                .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
+                .subscribe(pakTani -> {
+                    if (presenter != null)
+                    {
+                        presenter.showPakTani(pakTani);
+                        presenter.dismissLoading();
+                    }
+                }, throwable -> {
+                    if (presenter != null)
+                    {
+                        presenter.showError(throwable);
+                        presenter.dismissLoading();
+                    }
+                });
+    }
+
+    public void updatePakTani(PakTani pakTani)
+    {
+        presenter.showLoading();
+        TaniPediaService.pluck()
+                .getApi()
+                .updatePakTani(pakTani.getEmail(), pakTani.getNama(), pakTani.getPassword(), pakTani.isMale())
+                .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
+                .subscribe(tani -> {
+                    if (presenter != null)
+                    {
+                        presenter.showPakTani(tani);
                         presenter.dismissLoading();
                     }
                 }, throwable -> {
@@ -132,5 +178,7 @@ public class PakTaniController extends BenihController<PakTaniController.Present
         void onLoginSuccess();
 
         void onRegisterSuccess();
+
+        void showPakTani(PakTani pakTani);
     }
 }

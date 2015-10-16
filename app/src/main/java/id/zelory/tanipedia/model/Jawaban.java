@@ -25,22 +25,37 @@ import android.os.Parcelable;
 public class Jawaban implements Parcelable
 {
     private String idSoal;
-    private String nama;
     private String tanggal;
     private String isi;
+    private PakTani pakTani;
 
     public Jawaban()
     {
 
     }
 
-    private Jawaban(Parcel in)
+    protected Jawaban(Parcel in)
     {
         idSoal = in.readString();
-        nama = in.readString();
         tanggal = in.readString();
         isi = in.readString();
+        pakTani = in.readParcelable(PakTani.class.getClassLoader());
     }
+
+    public static final Creator<Jawaban> CREATOR = new Creator<Jawaban>()
+    {
+        @Override
+        public Jawaban createFromParcel(Parcel in)
+        {
+            return new Jawaban(in);
+        }
+
+        @Override
+        public Jawaban[] newArray(int size)
+        {
+            return new Jawaban[size];
+        }
+    };
 
     public String getIdSoal()
     {
@@ -50,16 +65,6 @@ public class Jawaban implements Parcelable
     public void setIdSoal(String idSoal)
     {
         this.idSoal = idSoal;
-    }
-
-    public String getNama()
-    {
-        return nama;
-    }
-
-    public void setNama(String nama)
-    {
-        this.nama = nama;
     }
 
     public String getTanggal()
@@ -82,6 +87,16 @@ public class Jawaban implements Parcelable
         this.isi = isi;
     }
 
+    public PakTani getPakTani()
+    {
+        return pakTani;
+    }
+
+    public void setPakTani(PakTani pakTani)
+    {
+        this.pakTani = pakTani;
+    }
+
     @Override
     public int describeContents()
     {
@@ -89,25 +104,11 @@ public class Jawaban implements Parcelable
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i)
+    public void writeToParcel(Parcel dest, int flags)
     {
-        parcel.writeString(idSoal);
-        parcel.writeString(nama);
-        parcel.writeString(tanggal);
-        parcel.writeString(isi);
+        dest.writeString(idSoal);
+        dest.writeString(tanggal);
+        dest.writeString(isi);
+        dest.writeParcelable(pakTani, flags);
     }
-
-    public static final Creator<Jawaban> CREATOR
-            = new Creator<Jawaban>()
-    {
-        public Jawaban createFromParcel(Parcel in)
-        {
-            return new Jawaban(in);
-        }
-
-        public Jawaban[] newArray(int size)
-        {
-            return new Jawaban[size];
-        }
-    };
 }

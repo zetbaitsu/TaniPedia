@@ -61,7 +61,7 @@ public enum TaniPediaService
         Observable<PakTani> login(@Query("email") String email, @Query("pass") String password);
 
         @POST("/register")
-        Observable<Status> register(@Query("email") String email, @Query("nama") String nama, @Query("pass") String password);
+        Observable<Status> register(@Query("email") String email, @Query("nama") String nama, @Query("pass") String password, @Query("male") boolean males);
 
         @GET("/cuaca")
         Observable<List<Cuaca>> getCuaca(@Query("lat") double lat, @Query("lon") double lon);
@@ -75,6 +75,9 @@ public enum TaniPediaService
         @GET("/tanya/ambil-soal")
         Observable<List<Soal>> getPertanyaan();
 
+        @GET("/tanya/ambil-soal")
+        Observable<List<Soal>> getPertanyaan(@Query("email") String email);
+
         @POST("/tanya/kirim-soal")
         Observable<Status> postPertanyaan(@Query("email") String email, @Query("isi") String isi);
 
@@ -86,5 +89,11 @@ public enum TaniPediaService
 
         @GET("/komoditas")
         Observable<List<Komoditas>> getKomoditas();
+
+        @GET("/pak-tani")
+        Observable<PakTani> getPakTani(@Query("email") String email);
+
+        @POST("/pak-tani")
+        Observable<PakTani> updatePakTani(@Query("email") String email, @Query("nama") String nama, @Query("pass") String password, @Query("male") boolean male);
     }
 }

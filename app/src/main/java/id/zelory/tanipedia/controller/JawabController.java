@@ -24,6 +24,7 @@ import java.util.List;
 import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihScheduler;
 import id.zelory.tanipedia.model.Jawaban;
+import id.zelory.tanipedia.model.PakTani;
 import id.zelory.tanipedia.model.Soal;
 import id.zelory.tanipedia.network.TaniPediaService;
 
@@ -51,7 +52,7 @@ public class JawabController extends BenihController<JawabController.Presenter>
 
                     Jawaban jawaban = new Jawaban();
                     jawaban.setIdSoal(soal.getId());
-                    jawaban.setNama(soal.getNama());
+                    jawaban.setPakTani(soal.getPakTani());
                     jawaban.setIsi(soal.getIsi());
                     jawaban.setTanggal(soal.getTanggal());
                     jawabanArrayList.add(0, jawaban);
@@ -60,8 +61,10 @@ public class JawabController extends BenihController<JawabController.Presenter>
                     {
                         jawaban = new Jawaban();
                         jawaban.setIdSoal(soal.getId());
-                        jawaban.setNama("TaniPedia");
-                        jawaban.setIsi("Pertanyaan ini belum mempunyai jawaban satupun, jadilah orang pertama yang bisa membantu " + soal.getNama() + "!");
+                        PakTani pakTani = new PakTani();
+                        pakTani.setNama("TaniPedia");
+                        jawaban.setPakTani(pakTani);
+                        jawaban.setIsi("Pertanyaan ini belum mempunyai jawaban satupun, jadilah orang pertama yang bisa membantu " + soal.getPakTani().getNama() + "!");
                         jawaban.setTanggal(soal.getTanggal());
                         jawabanArrayList.add(jawaban);
                     }

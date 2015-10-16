@@ -32,6 +32,7 @@ import id.zelory.benih.fragment.BenihFragment;
 import id.zelory.tanipedia.MainActivity;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.PakTaniController;
+import id.zelory.tanipedia.model.PakTani;
 
 /**
  * Created by zetbaitsu on 8/11/15.
@@ -118,6 +119,12 @@ public class LoginFragment extends BenihFragment implements PakTaniController.Pr
 
     @Override
     public void onRegisterSuccess()
+    {
+
+    }
+
+    @Override
+    public void showPakTani(PakTani pakTani)
     {
 
     }
