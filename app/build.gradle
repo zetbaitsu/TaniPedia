@@ -29,7 +29,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
     }
 }
 
@@ -38,8 +38,14 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
+retrolambda {
+    incremental false
+    jvmArgs '-noverify'
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.6'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'mbanje.kurt:fabbutton:1.2.0'
     compile('com.afollestad.material-dialogs:core:0.8.4.2@aar') {

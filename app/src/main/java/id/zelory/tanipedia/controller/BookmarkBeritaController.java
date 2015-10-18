@@ -24,6 +24,7 @@ import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihBus;
 import id.zelory.benih.util.BenihScheduler;
 import id.zelory.tanipedia.controller.event.BookmarkBeritaEvent;
+import id.zelory.tanipedia.data.api.TaniPediaApi;
 import id.zelory.tanipedia.data.database.DataBaseHelper;
 import id.zelory.tanipedia.data.model.Berita;
 import timber.log.Timber;
@@ -73,7 +74,7 @@ public class BookmarkBeritaController extends BenihController<BookmarkBeritaCont
 
     private void onBookmarkEvent(BookmarkBeritaEvent bookmarkEvent)
     {
-        if (berita != null && berita.getAlamat() == bookmarkEvent.getBerita().getAlamat())
+        if (berita != null && berita.getAlamat().equals(bookmarkEvent.getBerita().getAlamat()))
         {
             if (bookmarkEvent.getBerita().isBookmarked() && !berita.isBookmarked())
             {
@@ -117,10 +118,30 @@ public class BookmarkBeritaController extends BenihController<BookmarkBeritaCont
 
     public void bookmark(Berita berita)
     {
+
         if (!berita.isBookmarked())
         {
+            if (berita.getIsi() == null)
+            {
+                TaniPediaApi.pluck()
+                        .getApi()
+                        .getBerita(berita.getAlamat())
+                        .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
+                        .subscribe(berita1 -> DataBaseHelper.pluck().bookmark(berita1),
+                                   throwable -> {
+                                       if (presenter != null)
+                                       {
+                                           berita.setBookmarked(false);
+                                           Timber.d(throwable.getMessage());
+                                           presenter.onUnBookmark(berita);
+                                           BenihBus.pluck().send(new BookmarkBeritaEvent(berita));
+                                       }
+                                   });
+            } else
+            {
+                DataBaseHelper.pluck().bookmark(berita);
+            }
             berita.setBookmarked(true);
-            DataBaseHelper.pluck().bookmark(berita);
             presenter.onBookmark(berita);
         } else
         {

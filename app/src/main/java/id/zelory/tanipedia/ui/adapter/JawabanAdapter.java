@@ -37,7 +37,7 @@ public class JawabanAdapter extends BenihRecyclerAdapter<Jawaban, JawabanViewHol
     @Override
     protected int getItemView(int i)
     {
-        return i == 0 ? R.layout.item_soal_besar : R.layout.item_soal;
+        return i == 0 ? R.layout.item_soal_besar : R.layout.item_jawaban;
     }
 
     @Override

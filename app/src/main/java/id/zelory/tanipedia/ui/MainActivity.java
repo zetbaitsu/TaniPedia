@@ -86,42 +86,49 @@ public class MainActivity extends BenihActivity
         TextView email = (TextView) header.findViewById(R.id.email);
         email.setText(BenihPreferenceUtils.getString(this, "email"));
         navigationView.setNavigationItemSelectedListener(menuItem -> {
-            menuItem.setChecked(true);
-            drawerLayout.closeDrawers();
-            states[position] = fragments[position].getState();
-            boolean changeFragment = true;
-            switch (menuItem.getItemId())
+            if (menuItem.isChecked())
             {
-                case R.id.cuaca:
-                    position = 0;
-                    break;
-                case R.id.berita:
-                    position = 1;
-                    break;
-                case R.id.tanya:
-                    position = 2;
-                    break;
-                case R.id.harga:
-                    position = 3;
-                    break;
-                case R.id.logout:
-                    changeFragment = false;
-                    BenihPreferenceUtils.putString(this, "nama", null);
-                    Intent intent = new Intent(this, SignInActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    break;
-                case R.id.tentang:
-                    changeFragment = false;
-                    startActivity(new Intent(this, TentangActivity.class));
-                    break;
-            }
-            if (changeFragment)
+                drawerLayout.closeDrawers();
+            } else
             {
-                fragments[position].setArguments(states[position]);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_container, fragments[position])
-                        .commit();
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                states[position] = fragments[position].getState();
+                boolean changeFragment = true;
+                switch (menuItem.getItemId())
+                {
+                    case R.id.cuaca:
+                        position = 0;
+                        break;
+                    case R.id.berita:
+                        position = 1;
+                        break;
+                    case R.id.tanya:
+                        position = 2;
+                        break;
+                    case R.id.harga:
+                        position = 3;
+                        break;
+                    case R.id.logout:
+                        changeFragment = false;
+                        BenihPreferenceUtils.putString(this, "nama", null);
+                        Intent intent = new Intent(this, SignInActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        break;
+                    case R.id.tentang:
+                        changeFragment = false;
+                        menuItem.setChecked(false);
+                        startActivity(new Intent(this, TentangActivity.class));
+                        break;
+                }
+                if (changeFragment)
+                {
+                    fragments[position].setArguments(states[position]);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_container, fragments[position])
+                            .commit();
+                }
             }
             return true;
         });

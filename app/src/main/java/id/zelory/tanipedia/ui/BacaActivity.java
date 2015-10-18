@@ -45,8 +45,8 @@ import id.zelory.benih.BenihActivity;
 import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.BeritaController;
-import id.zelory.tanipedia.data.model.Berita;
 import id.zelory.tanipedia.controller.util.Utils;
+import id.zelory.tanipedia.data.model.Berita;
 import mbanje.kurt.fabbutton.FabButton;
 
 public class BacaActivity extends BenihActivity implements BeritaController.Presenter
@@ -111,7 +111,12 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
             beritaController = new BeritaController(this);
         }
 
-        if (bundle == null)
+
+        if (berita.getIsi() != null)
+        {
+            beritaController.setBerita(berita);
+            showBerita(berita);
+        } else if (bundle == null)
         {
             beritaController.loadBerita(berita.getAlamat());
         } else

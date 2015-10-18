@@ -18,12 +18,19 @@ package id.zelory.tanipedia.ui.adapter.viewholder;
 
 import android.content.Intent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import id.zelory.benih.adapter.viewholder.BenihItemViewHolder;
 import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.TaniPediaApp;
+import id.zelory.tanipedia.controller.BookmarkSoalController;
 import id.zelory.tanipedia.data.model.Soal;
 import id.zelory.tanipedia.ui.ProfileActivity;
 
@@ -33,16 +40,21 @@ import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnLongItemClickListen
 /**
  * Created by zetbaitsu on 7/31/15.
  */
-public class SoalViewHolder extends BenihItemViewHolder<Soal>
+public class SoalViewHolder extends BenihItemViewHolder<Soal> implements BookmarkSoalController.Presenter
 {
     @Bind(R.id.nama) TextView nama;
     @Bind(R.id.isi) TextView isi;
     @Bind(R.id.tanggal) TextView tanggal;
     @Bind(R.id.pak_tani) BenihImageView foto;
+    @Bind(R.id.bookmark) ImageView ivBookmark;
+    private BookmarkSoalController controller;
+    private Animation animation;
 
     public SoalViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
     {
         super(itemView, itemClickListener, longItemClickListener);
+        controller = new BookmarkSoalController(this);
+        animation = AnimationUtils.loadAnimation(TaniPediaApp.pluck().getApplicationContext(), R.anim.push_right_in);
     }
 
     @Override
@@ -60,5 +72,45 @@ public class SoalViewHolder extends BenihItemViewHolder<Soal>
                 foto.getContext().startActivity(intent);
             });
         }
+        ivBookmark.setImageResource(soal.isBookmarked() ? R.drawable.ic_bookmark_yes : R.drawable.ic_bookmark_no);
+        ivBookmark.setOnClickListener(v -> controller.bookmark(soal));
+    }
+
+    @Override
+    public void showListBookmarkedSoal(List<Soal> listSoal)
+    {
+
+    }
+
+    @Override
+    public void onBookmark(Soal soal)
+    {
+        ivBookmark.startAnimation(animation);
+        ivBookmark.setImageResource(R.drawable.ic_bookmark_yes);
+    }
+
+    @Override
+    public void onUnBookmark(Soal soal)
+    {
+        ivBookmark.startAnimation(animation);
+        ivBookmark.setImageResource(R.drawable.ic_bookmark_no);
+    }
+
+    @Override
+    public void showError(Throwable throwable)
+    {
+
+    }
+
+    @Override
+    public void showLoading()
+    {
+
+    }
+
+    @Override
+    public void dismissLoading()
+    {
+
     }
 }

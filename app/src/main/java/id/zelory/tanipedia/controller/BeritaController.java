@@ -27,6 +27,7 @@ import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.util.BenihScheduler;
 import id.zelory.benih.util.Bson;
 import id.zelory.tanipedia.TaniPediaApp;
+import id.zelory.tanipedia.data.database.DataBaseHelper;
 import id.zelory.tanipedia.data.model.Berita;
 import id.zelory.tanipedia.data.api.TaniPediaApi;
 import timber.log.Timber;
@@ -52,6 +53,7 @@ public class BeritaController extends BenihController<BeritaController.Presenter
                 .getBerita(url)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
                 .subscribe(berita -> {
+                    berita.setBookmarked(DataBaseHelper.pluck().isBookmarked(berita));
                     this.berita = berita;
                     if (presenter != null)
                     {
@@ -75,6 +77,13 @@ public class BeritaController extends BenihController<BeritaController.Presenter
                 .getAllBerita()
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
                 .subscribe(listBerita -> {
+
+                    int size = listBerita.size();
+                    for (int i = 0; i < size; i++)
+                    {
+                        listBerita.get(i).setBookmarked(DataBaseHelper.pluck().isBookmarked(listBerita.get(i)));
+                    }
+
                     this.listBerita = listBerita;
                     BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "berita", Bson.pluck().getParser().toJson(listBerita));
                     if (presenter != null)
@@ -89,6 +98,11 @@ public class BeritaController extends BenihController<BeritaController.Presenter
                         presenter.dismissLoading();
                     }
                 });
+    }
+
+    public void setBerita(Berita berita)
+    {
+        this.berita = berita;
     }
 
     @Override
