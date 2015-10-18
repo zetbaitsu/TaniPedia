@@ -35,6 +35,7 @@ import id.zelory.benih.BenihActivity;
 import id.zelory.benih.view.BenihRecyclerView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.SoalController;
+import id.zelory.tanipedia.data.LocalDataManager;
 import id.zelory.tanipedia.data.model.PakTani;
 import id.zelory.tanipedia.data.model.Soal;
 import id.zelory.tanipedia.ui.adapter.SoalAdapter;
@@ -107,6 +108,10 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.profile, menu);
+        if (!pakTani.getEmail().equals(LocalDataManager.getPakTani().getEmail()))
+        {
+            menu.removeItem(R.id.edit_profile);
+        }
         return true;
     }
 
