@@ -77,6 +77,7 @@ public class JawabActivity extends BenihActivity implements JawabController.Pres
     protected void onViewReady(Bundle bundle)
     {
         controller = new JawabController(this);
+        bookmarkController = new BookmarkSoalController(this);
         soal = getIntent().getParcelableExtra("soal");
 
         setUpToolbar();
@@ -86,7 +87,6 @@ public class JawabActivity extends BenihActivity implements JawabController.Pres
         setUpLoadingDialog();
 
         controller.loadJawaban(soal);
-        bookmarkController = new BookmarkSoalController(this);
         bookmarkController.setSoal(soal);
     }
 

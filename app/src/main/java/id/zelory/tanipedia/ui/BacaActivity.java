@@ -112,6 +112,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
 
     private void setUpController(Bundle bundle, Berita berita)
     {
+        bookmarkController = new BookmarkBeritaController(this);
         if (beritaController == null)
         {
             beritaController = new BeritaController(this);
@@ -129,8 +130,6 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
         {
             beritaController.loadState(bundle);
         }
-
-        bookmarkController = new BookmarkBeritaController(this);
     }
 
     private void generateBeritaLainnya(Berita berita)
