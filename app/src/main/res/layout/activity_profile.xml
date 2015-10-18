@@ -40,6 +40,12 @@
             app:expandedTitleTextAppearance="@android:style/TextAppearance.Large"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/background"
+                android:scaleType="centerCrop"/>
+
             <TextView
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
