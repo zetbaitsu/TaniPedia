@@ -74,7 +74,7 @@ public class BookmarkBeritaController extends BenihController<BookmarkBeritaCont
 
     private void onBookmarkEvent(BookmarkBeritaEvent bookmarkEvent)
     {
-        if (berita != null && berita.getAlamat() == bookmarkEvent.getBerita().getAlamat())
+        if (berita != null && berita.getAlamat().equals(bookmarkEvent.getBerita().getAlamat()))
         {
             if (bookmarkEvent.getBerita().isBookmarked() && !berita.isBookmarked())
             {

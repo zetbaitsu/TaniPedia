@@ -19,7 +19,11 @@ package id.zelory.tanipedia.ui.fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -39,6 +43,7 @@ import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.SoalController;
 import id.zelory.tanipedia.controller.util.MyRecyclerScroll;
 import id.zelory.tanipedia.data.model.Soal;
+import id.zelory.tanipedia.ui.BookmarkActivity;
 import id.zelory.tanipedia.ui.JawabActivity;
 import id.zelory.tanipedia.ui.adapter.SoalAdapter;
 import timber.log.Timber;
@@ -61,6 +66,13 @@ public class TanyaFragment extends BaseFragment<SoalController, SoalAdapter> imp
     private int fabMargin;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     protected int getFragmentView()
     {
         return R.layout.fragment_tanya;
@@ -81,6 +93,27 @@ public class TanyaFragment extends BaseFragment<SoalController, SoalAdapter> imp
             fabAddPertanyaan.setBackground(getActivity().getDrawable(R.drawable.ripple_accent));
         }
         setUpLoadingDialog();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.tanya_tani, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.bookmark:
+                Intent intent = new Intent(getActivity(), BookmarkActivity.class);
+                intent.putExtra(BookmarkActivity.KEY_TYPE, BookmarkActivity.TYPE_SOAL);
+                startActivity(intent);
+                break;
+        }
+
+        return true;
     }
 
     private void setUpLoadingDialog()

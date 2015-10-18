@@ -100,6 +100,11 @@ public class BeritaController extends BenihController<BeritaController.Presenter
                 });
     }
 
+    public void setBerita(Berita berita)
+    {
+        this.berita = berita;
+    }
+
     @Override
     public void saveState(Bundle bundle)
     {

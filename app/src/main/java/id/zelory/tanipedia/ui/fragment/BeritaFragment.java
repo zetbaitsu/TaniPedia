@@ -18,6 +18,10 @@ package id.zelory.tanipedia.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
@@ -27,6 +31,7 @@ import id.zelory.benih.util.BenihUtils;
 import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.ui.BacaActivity;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.ui.BookmarkActivity;
 import id.zelory.tanipedia.ui.adapter.BeritaAdapter;
 import id.zelory.tanipedia.controller.BeritaController;
 import id.zelory.tanipedia.data.model.Berita;
@@ -46,6 +51,13 @@ public class BeritaFragment extends BaseFragment<BeritaController, BeritaAdapter
     @Bind(R.id.header) BenihImageView imageHeader;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     protected int getFragmentView()
     {
         return R.layout.fragment_berita;
@@ -56,6 +68,27 @@ public class BeritaFragment extends BaseFragment<BeritaController, BeritaAdapter
     {
         super.onViewReady(bundle);
         collapsingToolbar.setTitle("Berita Terbaru");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.berita, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.bookmark:
+                Intent intent = new Intent(getActivity(), BookmarkActivity.class);
+                intent.putExtra(BookmarkActivity.KEY_TYPE, BookmarkActivity.TYPE_BERITA);
+                startActivity(intent);
+                break;
+        }
+
+        return true;
     }
 
     @Override
