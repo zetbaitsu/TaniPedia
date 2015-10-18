@@ -81,6 +81,13 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CollapsingToolbarLayout collapsingToolbar = ButterKnife.findById(this, R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(pakTani.getNama());
+        if (!pakTani.isMale())
+        {
+            foto.onProgressCompleted();
+        } else
+        {
+            foto.resetIcon();
+        }
         email.setText(pakTani.getEmail());
         adapter = new SoalAdapter(this);
         adapter.setOnItemClickListener(this::onItemClick);

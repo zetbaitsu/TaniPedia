@@ -23,6 +23,7 @@ import java.util.List;
 
 import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihScheduler;
+import id.zelory.tanipedia.data.LocalDataManager;
 import id.zelory.tanipedia.data.model.Jawaban;
 import id.zelory.tanipedia.data.model.PakTani;
 import id.zelory.tanipedia.data.model.Soal;
@@ -63,6 +64,7 @@ public class JawabController extends BenihController<JawabController.Presenter>
                         jawaban.setIdSoal(soal.getId());
                         PakTani pakTani = new PakTani();
                         pakTani.setNama("TaniPedia");
+                        pakTani.setMale(!LocalDataManager.getPakTani().isMale());
                         jawaban.setPakTani(pakTani);
                         jawaban.setIsi("Pertanyaan ini belum mempunyai jawaban satupun, jadilah orang pertama yang bisa membantu " + soal.getPakTani().getNama() + "!");
                         jawaban.setTanggal(soal.getTanggal());

@@ -51,6 +51,7 @@ public class SoalViewHolder extends BenihItemViewHolder<Soal>
         nama.setText(soal.getPakTani().getNama());
         isi.setText(soal.getIsi());
         tanggal.setText(soal.getTanggal());
+        foto.setImageResource(soal.getPakTani().isMale() ? R.drawable.pak_tani : R.drawable.bu_tani);
         if (!"TaniPedia".equals(soal.getPakTani().getNama()))
         {
             foto.setOnClickListener(v -> {

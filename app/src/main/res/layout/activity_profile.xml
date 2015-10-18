@@ -87,7 +87,7 @@
         android:src="@drawable/pak_tani"
         android:visibility="visible"
         app:fbb_autoStart="true"
-        app:fbb_endBitmap="@drawable/ic_action_done"
+        app:fbb_endBitmap="@drawable/bu_tani"
         app:fbb_hideProgressOnComplete="true"
         app:fbb_progressColor="@color/primary_dark"
         app:fbb_progressWidthRatio="0.1"

@@ -51,6 +51,7 @@ public class JawabanViewHolder extends BenihItemViewHolder<Jawaban>
         nama.setText(jawaban.getPakTani().getNama());
         isi.setText(jawaban.getIsi());
         tanggal.setText(jawaban.getTanggal());
+        foto.setImageResource(jawaban.getPakTani().isMale() ? R.drawable.pak_tani : R.drawable.bu_tani);
         if (!"TaniPedia".equals(jawaban.getPakTani().getNama()))
         {
             foto.setOnClickListener(v -> {

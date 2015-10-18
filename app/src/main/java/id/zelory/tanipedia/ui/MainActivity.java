@@ -22,6 +22,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -77,7 +78,9 @@ public class MainActivity extends BenihActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         View header = navigationView.inflateHeaderView(R.layout.header_drawer);
-        header.findViewById(R.id.pak_tani).setOnClickListener(this::onProfileClick);
+        ImageView foto = (ImageView) header.findViewById(R.id.pak_tani);
+        foto.setImageResource(LocalDataManager.getPakTani().isMale() ? R.drawable.pak_tani : R.drawable.bu_tani);
+        foto.setOnClickListener(this::onProfileClick);
         TextView nama = (TextView) header.findViewById(R.id.nama);
         nama.setText(BenihPreferenceUtils.getString(this, "nama"));
         TextView email = (TextView) header.findViewById(R.id.email);
