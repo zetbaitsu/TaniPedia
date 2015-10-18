@@ -27,11 +27,9 @@
 
     <ImageView
         android:id="@+id/tanya_gambar"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:paddingLeft="120dp"
-        android:paddingStart="120dp"
-        android:scaleType="centerInside"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="40dp"
         android:src="@drawable/tanya"/>
 
 </LinearLayout>
