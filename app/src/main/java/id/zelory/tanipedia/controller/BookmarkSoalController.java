@@ -73,7 +73,7 @@ public class BookmarkSoalController extends BenihController<BookmarkSoalControll
 
     private void onBookmarkEvent(BookmarkSoalEvent bookmarkEvent)
     {
-        if (soal != null && soal.getId() == bookmarkEvent.getSoal().getId())
+        if (soal != null && soal.getId().equals(bookmarkEvent.getSoal().getId()))
         {
             if (bookmarkEvent.getSoal().isBookmarked() && !soal.isBookmarked())
             {

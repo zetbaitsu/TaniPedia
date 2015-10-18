@@ -63,6 +63,7 @@ public class BeritaViewHolder extends BenihItemViewHolder<Berita> implements
         tanggal.setText("TaniPedia - " + berita.getTanggal());
         ivBookmark.setImageResource(berita.isBookmarked() ? R.drawable.ic_bookmark_yes : R.drawable.ic_bookmark_no);
         ivBookmark.setOnClickListener(v -> controller.bookmark(berita));
+        controller.setBerita(berita);
     }
 
     @Override
