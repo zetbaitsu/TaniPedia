@@ -24,6 +24,7 @@ import java.util.List;
 
 import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihScheduler;
+import id.zelory.tanipedia.data.database.DataBaseHelper;
 import id.zelory.tanipedia.data.model.Soal;
 import id.zelory.tanipedia.data.api.TaniPediaApi;
 
@@ -47,6 +48,13 @@ public class SoalController extends BenihController<SoalController.Presenter>
                 .getPertanyaan()
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
                 .subscribe(listSoal -> {
+
+                    int size = listSoal.size();
+                    for (int i = 0; i < size; i++)
+                    {
+                        listSoal.get(i).setBookmarked(DataBaseHelper.pluck().isBookmarked(listSoal.get(i)));
+                    }
+
                     this.listSoal = listSoal;
                     if (presenter != null)
                     {
@@ -70,6 +78,13 @@ public class SoalController extends BenihController<SoalController.Presenter>
                 .getPertanyaan(email)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
                 .subscribe(listSoal -> {
+
+                    int size = listSoal.size();
+                    for (int i = 0; i < size; i++)
+                    {
+                        listSoal.get(i).setBookmarked(DataBaseHelper.pluck().isBookmarked(listSoal.get(i)));
+                    }
+
                     this.listSoal = listSoal;
                     if (presenter != null)
                     {
