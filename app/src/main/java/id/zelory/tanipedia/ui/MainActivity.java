@@ -126,6 +126,7 @@ public class MainActivity extends BenihActivity
 
     private void onProfileClick(View v)
     {
+        drawerLayout.closeDrawers();
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(ProfileActivity.KEY_PAK_TANI, LocalDataManager.getPakTani());
         startActivity(intent);
