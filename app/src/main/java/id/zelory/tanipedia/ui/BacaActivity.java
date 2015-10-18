@@ -25,6 +25,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -45,11 +46,13 @@ import id.zelory.benih.BenihActivity;
 import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.BeritaController;
+import id.zelory.tanipedia.controller.BookmarkBeritaController;
 import id.zelory.tanipedia.controller.util.Utils;
 import id.zelory.tanipedia.data.model.Berita;
 import mbanje.kurt.fabbutton.FabButton;
 
-public class BacaActivity extends BenihActivity implements BeritaController.Presenter
+public class BacaActivity extends BenihActivity implements BeritaController.Presenter,
+        BookmarkBeritaController.Presenter
 {
     @Bind(R.id.gambar) BenihImageView gambar;
     @Bind(R.id.judul) TextView judul;
@@ -65,6 +68,9 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
     private CardView berita4;
     private CardView berita5;
     private Animation animation;
+    private Berita berita;
+    private BookmarkBeritaController bookmarkController;
+    private MenuItem simpan;
 
     @Override
     protected int getActivityView()
@@ -76,7 +82,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
     protected void onViewReady(Bundle bundle)
     {
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
-        Berita berita = getIntent().getParcelableExtra("berita");
+        berita = getIntent().getParcelableExtra("berita");
 
         setUpToolbar();
         setUpFabButton(berita);
@@ -106,6 +112,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
 
     private void setUpController(Bundle bundle, Berita berita)
     {
+        bookmarkController = new BookmarkBeritaController(this);
         if (beritaController == null)
         {
             beritaController = new BeritaController(this);
@@ -225,9 +232,29 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.baca, menu);
+        simpan = menu.getItem(0);
+        simpan.setChecked(berita.isBookmarked());
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        onBackPressed();
+        switch (item.getItemId())
+        {
+            case R.id.simpan:
+                bookmarkController.bookmark(berita);
+                break;
+            case R.id.refresh:
+                beritaController.loadBerita(berita.getAlamat());
+                break;
+            case android.R.id.home:
+                onBackPressed();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -256,6 +283,8 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
         showBeritaLainnya();
         root.setVisibility(View.VISIBLE);
         root.startAnimation(animation);
+        this.berita.setIsi(berita.getIsi());
+        bookmarkController.setBerita(berita);
     }
 
     @Override
@@ -275,5 +304,29 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
     {
         beritaController.saveState(outState);
         super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    public void showListBookmarkedBerita(List<Berita> listBerita)
+    {
+
+    }
+
+    @Override
+    public void onBookmark(Berita berita)
+    {
+        if (simpan != null)
+        {
+            simpan.setChecked(berita.isBookmarked());
+        }
+    }
+
+    @Override
+    public void onUnBookmark(Berita berita)
+    {
+        if (simpan != null)
+        {
+            simpan.setChecked(berita.isBookmarked());
+        }
     }
 }

@@ -74,6 +74,7 @@ public class SoalViewHolder extends BenihItemViewHolder<Soal> implements Bookmar
         }
         ivBookmark.setImageResource(soal.isBookmarked() ? R.drawable.ic_bookmark_yes : R.drawable.ic_bookmark_no);
         ivBookmark.setOnClickListener(v -> controller.bookmark(soal));
+        controller.setSoal(soal);
     }
 
     @Override

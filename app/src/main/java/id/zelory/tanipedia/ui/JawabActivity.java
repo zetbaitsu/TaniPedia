@@ -23,6 +23,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -43,6 +44,7 @@ import id.zelory.benih.BenihActivity;
 import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.view.BenihRecyclerView;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.controller.BookmarkSoalController;
 import id.zelory.tanipedia.controller.JawabController;
 import id.zelory.tanipedia.controller.util.MyRecyclerScroll;
 import id.zelory.tanipedia.data.model.Jawaban;
@@ -50,7 +52,8 @@ import id.zelory.tanipedia.data.model.Soal;
 import id.zelory.tanipedia.ui.adapter.JawabanAdapter;
 import mbanje.kurt.fabbutton.FabButton;
 
-public class JawabActivity extends BenihActivity implements JawabController.Presenter
+public class JawabActivity extends BenihActivity implements JawabController.Presenter,
+        BookmarkSoalController.Presenter
 {
     @Bind(R.id.scrollableview) BenihRecyclerView recyclerView;
     @Bind(R.id.myfab_main) FrameLayout frameFab;
@@ -61,6 +64,8 @@ public class JawabActivity extends BenihActivity implements JawabController.Pres
     private int fabMargin;
     private Soal soal;
     private MaterialDialog dialog;
+    private BookmarkSoalController bookmarkController;
+    private MenuItem simpan;
 
     @Override
     protected int getActivityView()
@@ -72,6 +77,7 @@ public class JawabActivity extends BenihActivity implements JawabController.Pres
     protected void onViewReady(Bundle bundle)
     {
         controller = new JawabController(this);
+        bookmarkController = new BookmarkSoalController(this);
         soal = getIntent().getParcelableExtra("soal");
 
         setUpToolbar();
@@ -81,6 +87,7 @@ public class JawabActivity extends BenihActivity implements JawabController.Pres
         setUpLoadingDialog();
 
         controller.loadJawaban(soal);
+        bookmarkController.setSoal(soal);
     }
 
     private void setUpLoadingDialog()
@@ -167,9 +174,29 @@ public class JawabActivity extends BenihActivity implements JawabController.Pres
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.baca, menu);
+        simpan = menu.getItem(0);
+        simpan.setChecked(soal.isBookmarked());
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        onBackPressed();
+        switch (item.getItemId())
+        {
+            case R.id.simpan:
+                bookmarkController.bookmark(soal);
+                break;
+            case R.id.refresh:
+                controller.loadJawaban(soal);
+                break;
+            case android.R.id.home:
+                onBackPressed();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -208,5 +235,29 @@ public class JawabActivity extends BenihActivity implements JawabController.Pres
     public void showError(Throwable throwable)
     {
         Snackbar.make(fabAddJawaban, throwable.getMessage(), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showListBookmarkedSoal(List<Soal> listSoal)
+    {
+
+    }
+
+    @Override
+    public void onBookmark(Soal soal)
+    {
+        if (simpan != null)
+        {
+            simpan.setChecked(soal.isBookmarked());
+        }
+    }
+
+    @Override
+    public void onUnBookmark(Soal soal)
+    {
+        if (simpan != null)
+        {
+            simpan.setChecked(soal.isBookmarked());
+        }
     }
 }
