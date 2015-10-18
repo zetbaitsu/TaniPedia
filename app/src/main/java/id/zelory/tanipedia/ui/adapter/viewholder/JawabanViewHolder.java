@@ -16,13 +16,16 @@
 
 package id.zelory.tanipedia.ui.adapter.viewholder;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import id.zelory.benih.adapter.viewholder.BenihItemViewHolder;
+import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.data.model.Jawaban;
+import id.zelory.tanipedia.ui.ProfileActivity;
 
 import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnItemClickListener;
 import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnLongItemClickListener;
@@ -35,6 +38,7 @@ public class JawabanViewHolder extends BenihItemViewHolder<Jawaban>
     @Bind(R.id.nama) TextView nama;
     @Bind(R.id.isi) TextView isi;
     @Bind(R.id.tanggal) TextView tanggal;
+    @Bind(R.id.pak_tani) BenihImageView foto;
 
     public JawabanViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
     {
@@ -47,5 +51,13 @@ public class JawabanViewHolder extends BenihItemViewHolder<Jawaban>
         nama.setText(jawaban.getPakTani().getNama());
         isi.setText(jawaban.getIsi());
         tanggal.setText(jawaban.getTanggal());
+        if (!"TaniPedia".equals(jawaban.getPakTani().getNama()))
+        {
+            foto.setOnClickListener(v -> {
+                Intent intent = new Intent(foto.getContext(), ProfileActivity.class);
+                intent.putExtra(ProfileActivity.KEY_PAK_TANI, jawaban.getPakTani());
+                foto.getContext().startActivity(intent);
+            });
+        }
     }
 }

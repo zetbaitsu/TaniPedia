@@ -35,12 +35,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.zelory.benih.util.BenihPreferenceUtils;
-import id.zelory.tanipedia.ui.JawabActivity;
 import id.zelory.tanipedia.R;
-import id.zelory.tanipedia.ui.adapter.SoalAdapter;
 import id.zelory.tanipedia.controller.SoalController;
-import id.zelory.tanipedia.data.model.Soal;
 import id.zelory.tanipedia.controller.util.MyRecyclerScroll;
+import id.zelory.tanipedia.data.model.Soal;
+import id.zelory.tanipedia.ui.JawabActivity;
+import id.zelory.tanipedia.ui.adapter.SoalAdapter;
 import timber.log.Timber;
 
 /**

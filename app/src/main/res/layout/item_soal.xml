@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <id.zelory.benih.view.BenihImageView
+            android:id="@+id/pak_tani"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center_vertical"

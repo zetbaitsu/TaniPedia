@@ -28,6 +28,7 @@ import butterknife.Bind;
 import id.zelory.benih.BenihActivity;
 import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.tanipedia.R;
+import id.zelory.tanipedia.data.LocalDataManager;
 import id.zelory.tanipedia.ui.fragment.BaseFragment;
 import id.zelory.tanipedia.ui.fragment.BeritaFragment;
 import id.zelory.tanipedia.ui.fragment.CuacaFragment;
@@ -76,6 +77,7 @@ public class MainActivity extends BenihActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         View header = navigationView.inflateHeaderView(R.layout.header_drawer);
+        header.findViewById(R.id.pak_tani).setOnClickListener(this::onProfileClick);
         TextView nama = (TextView) header.findViewById(R.id.nama);
         nama.setText(BenihPreferenceUtils.getString(this, "nama"));
         TextView email = (TextView) header.findViewById(R.id.email);
@@ -120,6 +122,13 @@ public class MainActivity extends BenihActivity
             }
             return true;
         });
+    }
+
+    private void onProfileClick(View v)
+    {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(ProfileActivity.KEY_PAK_TANI, LocalDataManager.getPakTani());
+        startActivity(intent);
     }
 
     @Override

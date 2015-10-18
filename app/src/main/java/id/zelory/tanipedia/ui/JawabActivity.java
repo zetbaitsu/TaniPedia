@@ -43,11 +43,11 @@ import id.zelory.benih.BenihActivity;
 import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.view.BenihRecyclerView;
 import id.zelory.tanipedia.R;
-import id.zelory.tanipedia.ui.adapter.JawabanAdapter;
 import id.zelory.tanipedia.controller.JawabController;
+import id.zelory.tanipedia.controller.util.MyRecyclerScroll;
 import id.zelory.tanipedia.data.model.Jawaban;
 import id.zelory.tanipedia.data.model.Soal;
-import id.zelory.tanipedia.controller.util.MyRecyclerScroll;
+import id.zelory.tanipedia.ui.adapter.JawabanAdapter;
 import mbanje.kurt.fabbutton.FabButton;
 
 public class JawabActivity extends BenihActivity implements JawabController.Presenter

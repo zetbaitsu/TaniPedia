@@ -16,6 +16,12 @@
 
 package id.zelory.tanipedia.data;
 
+import android.content.Context;
+
+import id.zelory.benih.util.BenihPreferenceUtils;
+import id.zelory.tanipedia.TaniPediaApp;
+import id.zelory.tanipedia.data.model.PakTani;
+
 /**
  * Created on : October 16, 2015
  * Author     : zetbaitsu
@@ -26,4 +32,14 @@ package id.zelory.tanipedia.data;
  */
 public class LocalDataManager
 {
+    public static PakTani getPakTani()
+    {
+        Context context = TaniPediaApp.pluck().getApplicationContext();
+        PakTani pakTani = new PakTani();
+        pakTani.setNama(BenihPreferenceUtils.getString(context, "nama"));
+        pakTani.setEmail(BenihPreferenceUtils.getString(context, "email"));
+        pakTani.setPassword(BenihPreferenceUtils.getString(context, "pass"));
+        pakTani.setMale(BenihPreferenceUtils.getBoolean(context, "male"));
+        return pakTani;
+    }
 }

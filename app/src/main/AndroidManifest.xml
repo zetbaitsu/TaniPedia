@@ -45,6 +45,9 @@
             android:name=".ui.JawabActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity android:name=".ui.ProfileActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
