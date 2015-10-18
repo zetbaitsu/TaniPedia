@@ -15,37 +15,43 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:background="@color/primary"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
-
+    android:layout_height="250dp" >
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/pak_tani"/>
-
-    <TextView
-        android:id="@+id/nama"
-        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="8dp"
-        android:textSize="24sp"
-        android:gravity="center_horizontal"
-        android:text="Zetra"
-        android:textColor="#FFF"/>
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="zetra@mail.ugm.ac.id"
-        android:layout_gravity="center_horizontal"
-        android:textSize="16sp"
-        android:textColor="#FFF"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background"/>
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/pak_tani"/>
+        <TextView
+            android:id="@+id/nama"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="8dp"
+            android:textSize="24sp"
+            android:gravity="center_horizontal"
+            android:text="Zetra"
+            android:textColor="#FFF"/>
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="zetra@mail.ugm.ac.id"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp"
+            android:textColor="#FFF"/>
+    </LinearLayout>
+</RelativeLayout>
