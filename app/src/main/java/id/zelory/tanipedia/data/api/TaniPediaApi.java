@@ -96,5 +96,8 @@ public enum TaniPediaApi
 
         @POST("/pak-tani")
         Observable<PakTani> updatePakTani(@Query("email") String email, @Query("nama") String nama, @Query("pass") String password, @Query("male") boolean male);
+
+        @POST("/lupa-password")
+        Observable<StatusResponse> lupaPassword(@Query("email") String email);
     }
 }

@@ -16,7 +16,8 @@
 
 <resources>
     <string name="app_name">TaniPedia</string>
-    <string name="buat_akun"><u>Buat Akun Baru</u></string>
+    <string name="buat_akun">Buat Akun Baru</string>
+    <string name="lupa_password"><u>Lupa Password?</u></string>
     <string name="berita_lainnya">Berita lainnya</string>
     <string name="deskripsi_aplikasi">Sebuah aplikasi yang didedikasikan untuk dunia pertanian Indonesia demi terciptanya kemandirian bangsa.</string>
     <string name="versi_aplikasi">\nTaniPedia Beta</string>
