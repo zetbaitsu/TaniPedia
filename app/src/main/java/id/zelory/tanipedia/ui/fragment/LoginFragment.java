@@ -19,6 +19,7 @@ package id.zelory.tanipedia.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.util.Patterns;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -70,16 +71,29 @@ public class LoginFragment extends BenihFragment implements PakTaniController.Pr
     @OnClick(R.id.login)
     void loginClick()
     {
-        if (editEmail.getText().toString().isEmpty())
-        {
-            Snackbar.make(editEmail, "Mohon isi email terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else if (editPass.getText().toString().isEmpty())
-        {
-            Snackbar.make(editPass, "Mohon isi password terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else
+        if (isValid())
         {
             controller.login(editEmail.getText().toString(), editPass.getText().toString());
         }
+    }
+
+    private boolean isValid()
+    {
+        boolean valid = true;
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(editEmail.getText().toString()).matches())
+        {
+            valid = false;
+            editEmail.setError("Mohon isi dengan email yang valid!");
+        }
+
+        if (editPass.getText().toString().length() < 6)
+        {
+            valid = false;
+            editPass.setError("Password yang anda masukan tidak valid!");
+        }
+
+        return valid;
     }
 
     @OnClick(R.id.register)
