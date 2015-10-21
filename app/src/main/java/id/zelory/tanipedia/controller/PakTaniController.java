@@ -19,9 +19,11 @@ package id.zelory.tanipedia.controller;
 import android.os.Bundle;
 
 import id.zelory.benih.controller.BenihController;
+import id.zelory.benih.util.BenihBus;
 import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.util.BenihScheduler;
 import id.zelory.tanipedia.TaniPediaApp;
+import id.zelory.tanipedia.controller.event.UpdateProfileEvent;
 import id.zelory.tanipedia.data.model.PakTani;
 import id.zelory.tanipedia.data.api.TaniPediaApi;
 
@@ -145,8 +147,13 @@ public class PakTaniController extends BenihController<PakTaniController.Present
                 .subscribe(tani -> {
                     if (presenter != null)
                     {
+                        BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "email", tani.getEmail());
+                        BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "nama", tani.getNama());
+                        BenihPreferenceUtils.putString(TaniPediaApp.pluck().getApplicationContext(), "pass", tani.getPassword());
+                        BenihPreferenceUtils.putBoolean(TaniPediaApp.pluck().getApplicationContext(), "male", tani.isMale());
                         presenter.showPakTani(tani);
                         presenter.dismissLoading();
+                        BenihBus.pluck().send(new UpdateProfileEvent());
                     }
                 }, throwable -> {
                     if (presenter != null)
