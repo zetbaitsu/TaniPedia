@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nama"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords"
                     android:textSize="17sp"/>
             </android.support.design.widget.TextInputLayout>
 
