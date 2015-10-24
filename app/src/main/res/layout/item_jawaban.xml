@@ -34,8 +34,7 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:src="@drawable/pak_tani"/>
+            android:layout_margin="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,12 +45,11 @@
             <TextView
                 android:id="@+id/nama"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginBottom="6dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="Rya Meyvriska"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"/>
 
@@ -59,7 +57,6 @@
                 android:id="@+id/isi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bagaimana kita bisa tahu apakah hari ini baik atau tidak untuk memanen tanaman kita?"
                 android:textSize="14sp"/>
 
             <TextView
@@ -68,7 +65,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="4dp"
-                android:text="Kamis, 11 Jun 2015"
                 android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>

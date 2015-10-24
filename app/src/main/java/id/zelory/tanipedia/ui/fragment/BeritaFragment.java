@@ -68,6 +68,7 @@ public class BeritaFragment extends BaseFragment<BeritaController, BeritaAdapter
     {
         super.onViewReady(bundle);
         collapsingToolbar.setTitle("Berita Terbaru");
+        imageHeader.setBackgroundColor(BenihUtils.getRandomColor());
     }
 
     @Override

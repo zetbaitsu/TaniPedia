@@ -39,8 +39,7 @@
                 android:id="@+id/gambar"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/komoditas"/>
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -55,8 +54,7 @@
                     android:id="@+id/bookmark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:src="@drawable/ic_bookmark_no"/>
+                    android:layout_margin="4dp"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -66,7 +64,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Petro Hi-Corn, Benih Jagung Hibrida Genjah dengan Produktivitas Tinggi"
             android:textColor="@color/primary_text"
             android:textSize="16sp"/>
 
@@ -78,7 +75,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:gravity="end"
-            android:text="TaniPedia - 03 Jun 2015"
             android:textSize="12sp"/>
     </LinearLayout>
 

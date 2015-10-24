@@ -43,6 +43,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import id.zelory.benih.BenihActivity;
+import id.zelory.benih.util.BenihUtils;
 import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.BeritaController;
@@ -83,6 +84,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
     {
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         berita = getIntent().getParcelableExtra("berita");
+        gambar.setBackgroundColor(BenihUtils.getRandomColor());
 
         setUpToolbar();
         setUpFabButton(berita);
@@ -184,6 +186,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
         TextView tanggal = ButterKnife.findById(this, R.id.tanggal1);
         tanggal.setText(randomBerita.get(0).getTanggal());
         ImageView gambar = ButterKnife.findById(this, R.id.gambar1);
+        gambar.setBackgroundColor(BenihUtils.getRandomColor());
         Glide.with(this).load(randomBerita.get(0).getGambar()).into(gambar);
 
         judul = ButterKnife.findById(this, R.id.judul2);
@@ -191,6 +194,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
         tanggal = ButterKnife.findById(this, R.id.tanggal2);
         tanggal.setText(randomBerita.get(1).getTanggal());
         gambar = ButterKnife.findById(this, R.id.gambar2);
+        gambar.setBackgroundColor(BenihUtils.getRandomColor());
         Glide.with(this).load(randomBerita.get(1).getGambar()).into(gambar);
 
         judul = ButterKnife.findById(this, R.id.judul3);
@@ -198,6 +202,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
         tanggal = ButterKnife.findById(this, R.id.tanggal3);
         tanggal.setText(randomBerita.get(2).getTanggal());
         gambar = ButterKnife.findById(this, R.id.gambar3);
+        gambar.setBackgroundColor(BenihUtils.getRandomColor());
         Glide.with(this).load(randomBerita.get(2).getGambar()).into(gambar);
 
         judul = ButterKnife.findById(this, R.id.judul4);
@@ -205,6 +210,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
         tanggal = ButterKnife.findById(this, R.id.tanggal4);
         tanggal.setText(randomBerita.get(3).getTanggal());
         gambar = ButterKnife.findById(this, R.id.gambar4);
+        gambar.setBackgroundColor(BenihUtils.getRandomColor());
         Glide.with(this).load(randomBerita.get(3).getGambar()).into(gambar);
 
         judul = ButterKnife.findById(this, R.id.judul5);
@@ -212,6 +218,7 @@ public class BacaActivity extends BenihActivity implements BeritaController.Pres
         tanggal = ButterKnife.findById(this, R.id.tanggal5);
         tanggal.setText(randomBerita.get(4).getTanggal());
         gambar = ButterKnife.findById(this, R.id.gambar5);
+        gambar.setBackgroundColor(BenihUtils.getRandomColor());
         Glide.with(this).load(randomBerita.get(4).getGambar()).into(gambar);
     }
 

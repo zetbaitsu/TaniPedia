@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import id.zelory.benih.adapter.viewholder.BenihItemViewHolder;
+import id.zelory.benih.util.BenihUtils;
 import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.TaniPediaApp;
@@ -58,6 +59,7 @@ public class BeritaViewHolder extends BenihItemViewHolder<Berita> implements
     @Override
     public void bind(Berita berita)
     {
+        gambar.setBackgroundColor(BenihUtils.getRandomColor());
         gambar.setImageUrl(berita.getGambar());
         judul.setText(berita.getJudul());
         tanggal.setText("TaniPedia - " + berita.getTanggal());

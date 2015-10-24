@@ -37,7 +37,6 @@
         android:layout_marginRight="32dp"
         android:layout_marginTop="16dp"
         android:gravity="end"
-        android:text="Rata-rata 24 oct 2015 - 10 nov 2015"
         android:textColor="#FFF"
         android:textSize="16sp"/>
 
@@ -57,8 +56,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center_vertical"
-                android:padding="12dp"
-                android:src="@drawable/berawan"/>
+                android:padding="12dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -78,7 +76,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
-                    android:text="1006.47 hpa"
                     android:textColor="#FFF"
                     android:textSize="12sp"/>
             </LinearLayout>
@@ -102,7 +99,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
-                    android:text="90 %"
                     android:textColor="#FFF"
                     android:textSize="12sp"/>
             </LinearLayout>
@@ -127,7 +123,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="Hujan"
                 android:textColor="#FFF"
                 android:textSize="20sp"/>
 
@@ -135,7 +130,6 @@
                 android:id="@+id/suhu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="26.56&#x2103;"
                 android:textColor="#FFF"
                 android:textSize="48sp"/>
 
@@ -143,7 +137,6 @@
                 android:id="@+id/minmax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Min : 23&#x2103; Max : 32&#x2103;"
                 android:textColor="#FFF"
                 android:textSize="12sp"/>
 
@@ -152,7 +145,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Selatan"
                 android:textColor="#FFF"
                 android:textSize="32sp"/>
 
@@ -160,7 +152,6 @@
                 android:id="@+id/kecepatan_angin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kecepatan Angin : 3.56 m/s"
                 android:textColor="#FFF"
                 android:textSize="12sp"/>
         </LinearLayout>
