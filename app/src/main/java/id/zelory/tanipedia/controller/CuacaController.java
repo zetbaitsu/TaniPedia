@@ -31,9 +31,11 @@ import java.util.List;
 import id.zelory.benih.controller.BenihController;
 import id.zelory.benih.util.BenihPreferenceUtils;
 import id.zelory.benih.util.BenihScheduler;
+import id.zelory.benih.util.BenihWorker;
 import id.zelory.tanipedia.TaniPediaApp;
-import id.zelory.tanipedia.data.model.Cuaca;
 import id.zelory.tanipedia.data.api.TaniPediaApi;
+import id.zelory.tanipedia.data.model.Cuaca;
+import id.zelory.tanipedia.data.model.RangkumanCuaca;
 import timber.log.Timber;
 
 /**
@@ -49,6 +51,7 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
         GoogleApiClient.OnConnectionFailedListener
 {
     private List<Cuaca> listCuaca;
+    private RangkumanCuaca rangkumanCuaca;
     private GoogleApiClient googleApiClient;
     private double latitude;
     private double longitude;
@@ -99,6 +102,27 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
                 });
     }
 
+    public void loadRangkumanCuaca(List<Cuaca> cuacaList)
+    {
+        presenter.showLoading();
+        BenihWorker.pluck()
+                .doInComputation(() -> {
+                    rangkumanCuaca = new RangkumanCuaca(cuacaList);
+                }).subscribe(o -> {
+            if (presenter != null)
+            {
+                presenter.showRangkumanCuaca(rangkumanCuaca);
+                presenter.dismissLoading();
+            }
+        }, throwable -> {
+            if (presenter != null)
+            {
+                presenter.showError(throwable);
+                presenter.dismissLoading();
+            }
+        });
+    }
+
     private boolean checkPlayServices()
     {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(TaniPediaApp.pluck().getApplicationContext());
@@ -119,6 +143,7 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
     {
         Timber.d("saveState");
         bundle.putParcelableArrayList("listCuaca", (ArrayList<Cuaca>) listCuaca);
+        bundle.putParcelable("rangkuman", rangkumanCuaca);
         saveLocation();
     }
 
@@ -130,6 +155,15 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
         if (listCuaca != null)
         {
             new Handler().postDelayed(() -> presenter.showListCuaca(listCuaca), 500);
+        } else
+        {
+            presenter.showError(new Throwable("Error"));
+        }
+
+        rangkumanCuaca = bundle.getParcelable("rangkuman");
+        if (rangkumanCuaca != null)
+        {
+            new Handler().postDelayed(() -> presenter.showRangkumanCuaca(rangkumanCuaca), 500);
         } else
         {
             presenter.showError(new Throwable("Error"));
@@ -187,5 +221,7 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
         void dismissLoading();
 
         void showListCuaca(List<Cuaca> listCuaca);
+
+        void showRangkumanCuaca(RangkumanCuaca rangkumanCuaca);
     }
 }

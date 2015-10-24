@@ -50,7 +50,7 @@ public class CuacaViewHolder extends BenihItemViewHolder<Cuaca>
     public void bind(Cuaca cuaca)
     {
         cuacaText.setText(cuaca.getCuaca());
-        suhu.setText(cuaca.getSuhu() + (char) 0x2103);
+        suhu.setText(cuaca.getSuhu() + "" + (char) 0x2103);
         minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
         tanggal.setText(cuaca.getTanggal());
         int gambar;

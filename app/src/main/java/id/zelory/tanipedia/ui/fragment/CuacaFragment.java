@@ -27,9 +27,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import id.zelory.tanipedia.R;
-import id.zelory.tanipedia.ui.adapter.CuacaAdapter;
 import id.zelory.tanipedia.controller.CuacaController;
 import id.zelory.tanipedia.data.model.Cuaca;
+import id.zelory.tanipedia.data.model.RangkumanCuaca;
+import id.zelory.tanipedia.ui.adapter.CuacaAdapter;
 import timber.log.Timber;
 
 /**
@@ -48,8 +49,12 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
     @Bind(R.id.suhu) TextView suhu;
     @Bind(R.id.minmax) TextView minmax;
     @Bind(R.id.icon_cuaca) ImageView iconCuaca;
-    @Bind(R.id.kegiatan) TextView kegiatan;
     @Bind(R.id.background) LinearLayout background;
+    @Bind(R.id.range) TextView range;
+    @Bind(R.id.arah_angin) TextView arahAngin;
+    @Bind(R.id.kecepatan_angin) TextView kecepatanAngin;
+    @Bind(R.id.tekanan) TextView tekanan;
+    @Bind(R.id.kelembaban) TextView kelembaban;
 
     @Override
     protected int getFragmentView()
@@ -111,7 +116,6 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
         suhu.setVisibility(View.GONE);
         minmax.setVisibility(View.GONE);
         iconCuaca.setVisibility(View.GONE);
-        kegiatan.setVisibility(View.GONE);
     }
 
     @Override
@@ -125,31 +129,29 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
     public void showListCuaca(List<Cuaca> listCuaca)
     {
         Timber.d("show " + listCuaca.size() + " cuaca");
-        showHeaderContent(listCuaca.get(0));
-        listCuaca.remove(0);
+        controller.loadRangkumanCuaca(listCuaca);
         adapter.clear();
         adapter.add(listCuaca);
         recyclerView.startAnimation(animation);
     }
 
-    private void showHeaderContent(Cuaca cuaca)
+    @Override
+    public void showRangkumanCuaca(RangkumanCuaca rangkumanCuaca)
     {
-        collapsingToolbar.setTitle(cuaca.getLokasi());
+        collapsingToolbar.setTitle(rangkumanCuaca.getLokasi());
         collapsingToolbar.invalidate();
         cuacaText.setVisibility(View.VISIBLE);
-        cuacaText.setText(cuaca.getCuaca());
+        cuacaText.setText(rangkumanCuaca.getRataCuaca());
         cuacaText.startAnimation(animation);
         suhu.setVisibility(View.VISIBLE);
-        suhu.setText(String.format("%s%s", cuaca.getSuhu(), (char) 0x2103));
+        suhu.setText(String.format("%s%s", rangkumanCuaca.getRataSuhu(), (char) 0x2103));
         suhu.startAnimation(animation);
         minmax.setVisibility(View.VISIBLE);
-        minmax.setText(String.format("Min : %s%s Max : %s%s", cuaca.getSuhuMin(), (char) 0x2103, cuaca.getSuhuMax(), (char) 0x2103));
+        minmax.setText(String.format("Min : %s%s Max : %s%s", rangkumanCuaca.getSuhuMin(),
+                                     (char) 0x2103, rangkumanCuaca.getSuhuMax(), (char) 0x2103));
         minmax.startAnimation(animation);
-        kegiatan.setVisibility(View.VISIBLE);
-        kegiatan.setText(cuaca.getKegiatan());
-        kegiatan.startAnimation(animation);
         int gambar;
-        switch (cuaca.getCuaca())
+        switch (rangkumanCuaca.getRataCuaca())
         {
             case "Cerah":
                 gambar = R.drawable.cerah;
@@ -169,5 +171,10 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
         iconCuaca.setVisibility(View.VISIBLE);
         iconCuaca.setImageResource(gambar);
         iconCuaca.startAnimation(animation);
+        range.setText("Rata-rata " + rangkumanCuaca.getRangeTanggal());
+        arahAngin.setText(rangkumanCuaca.getRataArahAngin());
+        kecepatanAngin.setText("Kecepatan angin : " + rangkumanCuaca.getRataKecepatanAngin() + " m/s");
+        tekanan.setText(rangkumanCuaca.getRataTekanan() + " hpa");
+        kelembaban.setText(rangkumanCuaca.getRataKelembaban() + " %");
     }
 }

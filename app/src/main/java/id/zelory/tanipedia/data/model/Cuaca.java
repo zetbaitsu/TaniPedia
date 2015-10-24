@@ -24,41 +24,52 @@ import android.os.Parcelable;
  */
 public class Cuaca implements Parcelable
 {
-    public static final Creator<Cuaca> CREATOR
-            = new Creator<Cuaca>()
-    {
-        public Cuaca createFromParcel(Parcel in)
-        {
-            return new Cuaca(in);
-        }
 
-        public Cuaca[] newArray(int size)
-        {
-            return new Cuaca[size];
-        }
-    };
     private String lokasi;
-    private String suhuMax;
-    private String suhuMin;
-    private String suhu;
+    private double suhuMax;
+    private double suhuMin;
+    private double suhu;
     private String tanggal;
     private String cuaca;
     private String kegiatan;
+    private double tekanan;
+    private double kelembaban;
+    private double kecepatanAngin;
+    private String arahAngin;
 
     public Cuaca()
     {
     }
 
-    private Cuaca(Parcel in)
+    protected Cuaca(Parcel in)
     {
         lokasi = in.readString();
-        suhuMax = in.readString();
-        suhuMin = in.readString();
-        suhu = in.readString();
+        suhuMax = in.readDouble();
+        suhuMin = in.readDouble();
+        suhu = in.readDouble();
         tanggal = in.readString();
         cuaca = in.readString();
         kegiatan = in.readString();
+        tekanan = in.readDouble();
+        kelembaban = in.readDouble();
+        kecepatanAngin = in.readDouble();
+        arahAngin = in.readString();
     }
+
+    public static final Creator<Cuaca> CREATOR = new Creator<Cuaca>()
+    {
+        @Override
+        public Cuaca createFromParcel(Parcel in)
+        {
+            return new Cuaca(in);
+        }
+
+        @Override
+        public Cuaca[] newArray(int size)
+        {
+            return new Cuaca[size];
+        }
+    };
 
     public String getLokasi()
     {
@@ -70,32 +81,32 @@ public class Cuaca implements Parcelable
         this.lokasi = lokasi;
     }
 
-    public String getSuhuMax()
+    public double getSuhuMax()
     {
         return suhuMax;
     }
 
-    public void setSuhuMax(String suhuMax)
+    public void setSuhuMax(double suhuMax)
     {
         this.suhuMax = suhuMax;
     }
 
-    public String getSuhuMin()
+    public double getSuhuMin()
     {
         return suhuMin;
     }
 
-    public void setSuhuMin(String suhuMin)
+    public void setSuhuMin(double suhuMin)
     {
         this.suhuMin = suhuMin;
     }
 
-    public String getSuhu()
+    public double getSuhu()
     {
         return suhu;
     }
 
-    public void setSuhu(String suhu)
+    public void setSuhu(double suhu)
     {
         this.suhu = suhu;
     }
@@ -130,6 +141,46 @@ public class Cuaca implements Parcelable
         this.kegiatan = kegiatan;
     }
 
+    public double getTekanan()
+    {
+        return tekanan;
+    }
+
+    public void setTekanan(double tekanan)
+    {
+        this.tekanan = tekanan;
+    }
+
+    public double getKelembaban()
+    {
+        return kelembaban;
+    }
+
+    public void setKelembaban(double kelembaban)
+    {
+        this.kelembaban = kelembaban;
+    }
+
+    public double getKecepatanAngin()
+    {
+        return kecepatanAngin;
+    }
+
+    public void setKecepatanAngin(double kecepatanAngin)
+    {
+        this.kecepatanAngin = kecepatanAngin;
+    }
+
+    public String getArahAngin()
+    {
+        return arahAngin;
+    }
+
+    public void setArahAngin(String arahAngin)
+    {
+        this.arahAngin = arahAngin;
+    }
+
     @Override
     public int describeContents()
     {
@@ -140,11 +191,15 @@ public class Cuaca implements Parcelable
     public void writeToParcel(Parcel dest, int flags)
     {
         dest.writeString(lokasi);
-        dest.writeString(suhuMax);
-        dest.writeString(suhuMin);
-        dest.writeString(suhu);
+        dest.writeDouble(suhuMax);
+        dest.writeDouble(suhuMin);
+        dest.writeDouble(suhu);
         dest.writeString(tanggal);
         dest.writeString(cuaca);
         dest.writeString(kegiatan);
+        dest.writeDouble(tekanan);
+        dest.writeDouble(kelembaban);
+        dest.writeDouble(kecepatanAngin);
+        dest.writeString(arahAngin);
     }
 }
