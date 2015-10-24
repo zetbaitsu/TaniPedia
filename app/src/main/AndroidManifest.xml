@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="id.zelory.tanipedia"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="id.zelory.tanipedia"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -52,7 +53,10 @@
         <activity
             android:name=".ui.BookmarkActivity"
             android:screenOrientation="portrait">
-
+        </activity>
+        <activity
+            android:name=".ui.EditProfileActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <meta-data

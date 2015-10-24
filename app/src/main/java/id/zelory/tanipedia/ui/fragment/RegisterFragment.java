@@ -19,6 +19,7 @@ package id.zelory.tanipedia.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.util.Patterns;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -72,20 +73,35 @@ public class RegisterFragment extends BenihFragment implements PakTaniController
     @OnClick(R.id.daftar)
     void daftarClick()
     {
-        if (editNama.getText().toString().isEmpty())
-        {
-            Snackbar.make(editNama, "Mohon isi nama terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else if (editEmail.getText().toString().isEmpty())
-        {
-            Snackbar.make(editEmail, "Mohon isi email terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else if (editPass.getText().toString().isEmpty())
-        {
-            Snackbar.make(editPass, "Mohon isi password terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else
+        if (isValid())
         {
             controller.register(editEmail.getText().toString(), editNama.getText().toString(),
                                 editPass.getText().toString(), rbLaki.isChecked());
         }
+    }
+
+    private boolean isValid()
+    {
+        boolean valid = true;
+        if ("".equals(editNama.getText().toString()))
+        {
+            valid = false;
+            editNama.setError("Mohon isi dengan nama lengkap anda!");
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(editEmail.getText().toString()).matches())
+        {
+            valid = false;
+            editEmail.setError("Mohon isi dengan email yang valid!");
+        }
+
+        if (editPass.getText().toString().length() < 6)
+        {
+            valid = false;
+            editPass.setError("Mohon isi password minimal 6 karakter!");
+        }
+
+        return valid;
     }
 
     private void setUpDialog()

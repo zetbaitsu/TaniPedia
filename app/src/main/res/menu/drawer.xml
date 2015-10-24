@@ -34,6 +34,10 @@
             android:id="@+id/harga"
             android:icon="@drawable/ic_komoditas"
             android:title="Harga Komoditas"/>
+        <item
+            android:id="@+id/notifikasi"
+            android:icon="@drawable/ic_bantuan"
+            android:title="Notifikasi"/>
     </group>
 
     <item android:title="Lainnya">

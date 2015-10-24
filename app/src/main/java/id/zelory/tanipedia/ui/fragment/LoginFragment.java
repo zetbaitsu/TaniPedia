@@ -19,9 +19,12 @@ package id.zelory.tanipedia.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.text.InputType;
+import android.util.Patterns;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -29,20 +32,23 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.zelory.benih.fragment.BenihFragment;
-import id.zelory.tanipedia.ui.MainActivity;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.PakTaniController;
+import id.zelory.tanipedia.controller.PasswordController;
 import id.zelory.tanipedia.data.model.PakTani;
+import id.zelory.tanipedia.ui.MainActivity;
 
 /**
  * Created by zetbaitsu on 8/11/15.
  */
-public class LoginFragment extends BenihFragment implements PakTaniController.Presenter
+public class LoginFragment extends BenihFragment implements PakTaniController.Presenter,
+        PasswordController.Presenter
 {
     @Bind(R.id.email) EditText editEmail;
     @Bind(R.id.password) EditText editPass;
     private PakTaniController controller;
     private MaterialDialog dialog;
+    private PasswordController passwordController;
 
     @Override
     protected int getFragmentView()
@@ -54,6 +60,7 @@ public class LoginFragment extends BenihFragment implements PakTaniController.Pr
     protected void onViewReady(Bundle bundle)
     {
         controller = new PakTaniController(this);
+        passwordController = new PasswordController(this);
         loadAnimation();
         setUpDialog();
     }
@@ -70,16 +77,47 @@ public class LoginFragment extends BenihFragment implements PakTaniController.Pr
     @OnClick(R.id.login)
     void loginClick()
     {
-        if (editEmail.getText().toString().isEmpty())
-        {
-            Snackbar.make(editEmail, "Mohon isi email terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else if (editPass.getText().toString().isEmpty())
-        {
-            Snackbar.make(editPass, "Mohon isi password terlebih dahulu!", Snackbar.LENGTH_LONG).show();
-        } else
+        if (isValid())
         {
             controller.login(editEmail.getText().toString(), editPass.getText().toString());
         }
+    }
+
+    @OnClick(R.id.lupa_password)
+    void addJawaban()
+    {
+        new MaterialDialog.Builder(getActivity())
+                .title("TaniPedia")
+                .content("Lupa Password")
+                .inputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT)
+                .input("Masukan alamat email anda!", null, false, (dialog, input) -> {
+                    passwordController.lupaPassword(input.toString());
+                })
+                .positiveColorRes(R.color.primary_dark)
+                .positiveText("Kirim")
+                .cancelListener(dialog -> {})
+                .negativeColorRes(R.color.primary_dark)
+                .negativeText("Batal")
+                .show();
+    }
+
+    private boolean isValid()
+    {
+        boolean valid = true;
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(editEmail.getText().toString()).matches())
+        {
+            valid = false;
+            editEmail.setError("Mohon isi dengan email yang valid!");
+        }
+
+        if (editPass.getText().toString().length() < 6)
+        {
+            valid = false;
+            editPass.setError("Password yang anda masukan tidak valid!");
+        }
+
+        return valid;
     }
 
     @OnClick(R.id.register)
@@ -92,7 +130,7 @@ public class LoginFragment extends BenihFragment implements PakTaniController.Pr
     {
         dialog = new MaterialDialog.Builder(getActivity())
                 .title("TaniPedia")
-                .content("Mencoba login...")
+                .content("Mengirimkan permintaan...")
                 .progress(true, 0)
                 .build();
     }
@@ -133,5 +171,17 @@ public class LoginFragment extends BenihFragment implements PakTaniController.Pr
     public void showError(Throwable throwable)
     {
         Snackbar.make(editPass, throwable.getMessage(), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onSuccessLupaPassword()
+    {
+        Toast.makeText(getActivity(), "Password anda telah kami kirimkan ke email tersebut.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFailedLupaPassword()
+    {
+        Toast.makeText(getActivity(), "Maaf, email tersebut tidak terdaftar.", Toast.LENGTH_SHORT).show();
     }
 }

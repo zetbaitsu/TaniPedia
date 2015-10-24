@@ -32,14 +32,17 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import id.zelory.benih.BenihActivity;
+import id.zelory.benih.util.BenihBus;
 import id.zelory.benih.view.BenihRecyclerView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.SoalController;
+import id.zelory.tanipedia.controller.event.UpdateProfileEvent;
 import id.zelory.tanipedia.data.LocalDataManager;
 import id.zelory.tanipedia.data.model.PakTani;
 import id.zelory.tanipedia.data.model.Soal;
 import id.zelory.tanipedia.ui.adapter.SoalAdapter;
 import mbanje.kurt.fabbutton.FabButton;
+import timber.log.Timber;
 
 /**
  * Created on : October 16, 2015
@@ -58,9 +61,11 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
     @Bind(R.id.progress) ProgressBar progressBar;
     @Bind(R.id.background) View background;
     @Bind(R.id.scrollableview) BenihRecyclerView recyclerView;
+    @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
     private SoalController soalController;
     private PakTani pakTani;
     private SoalAdapter adapter;
+    private boolean me = false;
 
     @Override
     protected int getActivityView()
@@ -71,7 +76,16 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
     @Override
     protected void onViewReady(Bundle savedInstanceState)
     {
-
+        BenihBus.pluck()
+                .receive()
+                .subscribe(o -> {
+                    if (o instanceof UpdateProfileEvent && me)
+                    {
+                        pakTani = LocalDataManager.getPakTani();
+                        setContent();
+                        soalController.loadListSoal(pakTani.getEmail());
+                    }
+                }, throwable -> Timber.e(throwable.getMessage()));
         pakTani = getIntent().getParcelableExtra(KEY_PAK_TANI);
         if (pakTani == null && savedInstanceState != null)
         {
@@ -80,7 +94,20 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        CollapsingToolbarLayout collapsingToolbar = ButterKnife.findById(this, R.id.collapsing_toolbar);
+        if (savedInstanceState != null)
+        {
+            me = savedInstanceState.getBoolean("me", false);
+        }
+        setContent();
+        adapter = new SoalAdapter(this);
+        adapter.setOnItemClickListener(this::onItemClick);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setUpAsList();
+        setUpController(savedInstanceState);
+    }
+
+    private void setContent()
+    {
         collapsingToolbar.setTitle(pakTani.getNama());
         if (!pakTani.isMale())
         {
@@ -90,11 +117,6 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
             foto.resetIcon();
         }
         email.setText(pakTani.getEmail());
-        adapter = new SoalAdapter(this);
-        adapter.setOnItemClickListener(this::onItemClick);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setUpAsList();
-        setUpController(savedInstanceState);
     }
 
     private void onItemClick(View view, int position)
@@ -111,6 +133,9 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
         if (!pakTani.getEmail().equals(LocalDataManager.getPakTani().getEmail()))
         {
             menu.removeItem(R.id.edit_profile);
+        } else
+        {
+            me = true;
         }
         return true;
     }
@@ -121,9 +146,15 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
         switch (item.getItemId())
         {
             case R.id.edit_profile:
+                startActivity(new Intent(this, EditProfileActivity.class));
                 break;
             case R.id.refresh:
                 soalController.loadListSoal(pakTani.getEmail());
+                if (me)
+                {
+                    pakTani = LocalDataManager.getPakTani();
+                    setContent();
+                }
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -187,5 +218,6 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
         soalController.saveState(outState);
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putParcelable(KEY_PAK_TANI, pakTani);
+        outState.putBoolean("me", me);
     }
 }
