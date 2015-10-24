@@ -36,6 +36,7 @@ import id.zelory.tanipedia.ui.fragment.BaseFragment;
 import id.zelory.tanipedia.ui.fragment.BeritaFragment;
 import id.zelory.tanipedia.ui.fragment.CuacaFragment;
 import id.zelory.tanipedia.ui.fragment.KomoditasFragment;
+import id.zelory.tanipedia.ui.fragment.NotifikasiFragment;
 import id.zelory.tanipedia.ui.fragment.TanyaFragment;
 import timber.log.Timber;
 
@@ -55,10 +56,11 @@ public class MainActivity extends BenihActivity
             new CuacaFragment(),
             new BeritaFragment(),
             new TanyaFragment(),
-            new KomoditasFragment()
+            new KomoditasFragment(),
+            new NotifikasiFragment()
     };
 
-    private Bundle states[] = new Bundle[4];
+    private Bundle states[] = new Bundle[5];
 
     private int position = 0;
 
@@ -131,6 +133,9 @@ public class MainActivity extends BenihActivity
                         break;
                     case R.id.harga:
                         position = 3;
+                        break;
+                    case R.id.notifikasi:
+                        position = 4;
                         break;
                     case R.id.logout:
                         changeFragment = false;

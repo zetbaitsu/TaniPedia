@@ -23,6 +23,7 @@ import id.zelory.tanipedia.data.model.Berita;
 import id.zelory.tanipedia.data.model.Cuaca;
 import id.zelory.tanipedia.data.model.Jawaban;
 import id.zelory.tanipedia.data.model.Komoditas;
+import id.zelory.tanipedia.data.model.Notifikasi;
 import id.zelory.tanipedia.data.model.PakTani;
 import id.zelory.tanipedia.data.model.Soal;
 import id.zelory.tanipedia.data.api.response.StatusResponse;
@@ -99,5 +100,8 @@ public enum TaniPediaApi
 
         @POST("/lupa-password")
         Observable<StatusResponse> lupaPassword(@Query("email") String email);
+
+        @GET("/notif/ambil-notifikasi")
+        Observable<List<Notifikasi>> getNotif(@Query("emailPenanya") String emailPenanya);
     }
 }
