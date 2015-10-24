@@ -36,7 +36,7 @@
             android:title="Harga Komoditas"/>
         <item
             android:id="@+id/notifikasi"
-            android:icon="@drawable/ic_bantuan"
+            android:icon="@drawable/ic_pemberitahuan"
             android:title="Notifikasi"/>
     </group>
 
