@@ -55,6 +55,9 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
     @Bind(R.id.kecepatan_angin) TextView kecepatanAngin;
     @Bind(R.id.tekanan) TextView tekanan;
     @Bind(R.id.kelembaban) TextView kelembaban;
+    @Bind(R.id.divider) View divider;
+    @Bind(R.id.iv_tekanan) ImageView ivTekanan;
+    @Bind(R.id.iv_kelembaban) ImageView ivKelembaban;
 
     @Override
     protected int getFragmentView()
@@ -116,6 +119,14 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
         suhu.setVisibility(View.GONE);
         minmax.setVisibility(View.GONE);
         iconCuaca.setVisibility(View.GONE);
+        divider.setVisibility(View.GONE);
+        range.setVisibility(View.GONE);
+        arahAngin.setVisibility(View.GONE);
+        kecepatanAngin.setVisibility(View.GONE);
+        tekanan.setVisibility(View.GONE);
+        kelembaban.setVisibility(View.GONE);
+        ivKelembaban.setVisibility(View.GONE);
+        ivTekanan.setVisibility(View.GONE);
     }
 
     @Override
@@ -168,13 +179,29 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
             default:
                 gambar = R.drawable.berawan;
         }
+        divider.setVisibility(View.VISIBLE);
+        divider.startAnimation(animation);
         iconCuaca.setVisibility(View.VISIBLE);
         iconCuaca.setImageResource(gambar);
         iconCuaca.startAnimation(animation);
+        range.setVisibility(View.VISIBLE);
         range.setText("Rata-rata " + rangkumanCuaca.getRangeTanggal());
+        range.startAnimation(animation);
+        arahAngin.setVisibility(View.VISIBLE);
         arahAngin.setText(rangkumanCuaca.getRataArahAngin());
+        arahAngin.startAnimation(animation);
+        kecepatanAngin.setVisibility(View.VISIBLE);
         kecepatanAngin.setText("Kecepatan angin : " + rangkumanCuaca.getRataKecepatanAngin() + " m/s");
+        kecepatanAngin.startAnimation(animation);
+        tekanan.setVisibility(View.VISIBLE);
         tekanan.setText(rangkumanCuaca.getRataTekanan() + " hpa");
+        tekanan.startAnimation(animation);
+        kelembaban.setVisibility(View.VISIBLE);
         kelembaban.setText(rangkumanCuaca.getRataKelembaban() + " %");
+        kelembaban.startAnimation(animation);
+        ivTekanan.setVisibility(View.VISIBLE);
+        ivTekanan.startAnimation(animation);
+        ivKelembaban.setVisibility(View.VISIBLE);
+        ivKelembaban.startAnimation(animation);
     }
 }

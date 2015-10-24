@@ -40,6 +40,10 @@ public class CuacaViewHolder extends BenihItemViewHolder<Cuaca>
     @Bind(R.id.icon_cuaca) ImageView iconCuaca;
     @Bind(R.id.tanggal) TextView tanggal;
     @Bind(R.id.background) LinearLayout background;
+    @Bind(R.id.kelembaban) TextView kelembaban;
+    @Bind(R.id.tekanan) TextView tekanan;
+    @Bind(R.id.arah_angin) TextView arahAngin;
+    @Bind(R.id.kecepatan_angin) TextView kecepatanAngin;
 
     public CuacaViewHolder(View itemView, OnItemClickListener itemClickListener, OnLongItemClickListener longItemClickListener)
     {
@@ -53,6 +57,10 @@ public class CuacaViewHolder extends BenihItemViewHolder<Cuaca>
         suhu.setText(cuaca.getSuhu() + "" + (char) 0x2103);
         minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
         tanggal.setText(cuaca.getTanggal());
+        kelembaban.setText(cuaca.getKelembaban() + " %");
+        tekanan.setText(cuaca.getTekanan() + " hpa");
+        arahAngin.setText(cuaca.getArahAngin());
+        kecepatanAngin.setText(cuaca.getKecepatanAngin() + " m/s");
         int gambar;
         switch (cuaca.getCuaca())
         {

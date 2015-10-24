@@ -32,7 +32,7 @@
         <LinearLayout
             android:id="@+id/background"
             android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_height="160dp"
             android:background="@color/primary"
             android:orientation="vertical">
 
@@ -53,6 +53,30 @@
                 android:text="Berawan"
                 android:textColor="#FFF"
                 android:textSize="16sp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/kelembaban"/>
+
+                <TextView
+                    android:id="@+id/kelembaban"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:text="90 %"
+                    android:textColor="#FFF"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -61,12 +85,14 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp">
 
                 <TextView
                     android:id="@+id/suhu"
@@ -80,8 +106,97 @@
                     android:id="@+id/minmax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:text="Min : 23.97&#x2103; Max : 29.65&#x2103;"
                     android:textSize="12sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3.5"
+                        android:text="Kecepatan angin"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text=":"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/kecepatan_angin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="3.48 m/s"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3.5"
+                        android:text="Arah angin"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text=":"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/arah_angin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="Timur Laut"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3.5"
+                        android:text="Tekanan"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text=":"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/tekanan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="1003.79 hpa"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -90,8 +205,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="bottom|end"
-                android:paddingRight="12dp"
                 android:paddingEnd="12dp"
+                android:paddingRight="12dp"
                 android:text="Selasa, 09 Jun 2015"
                 android:textSize="16sp"/>
         </LinearLayout>
