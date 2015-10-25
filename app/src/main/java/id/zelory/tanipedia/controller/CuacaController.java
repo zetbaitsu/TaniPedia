@@ -87,6 +87,14 @@ public class CuacaController extends BenihController<CuacaController.Presenter> 
                 .getCuaca(latitude, longitude)
                 .compose(BenihScheduler.pluck().applySchedulers(BenihScheduler.Type.IO))
                 .subscribe(listCuaca -> {
+
+                    int size = listCuaca.size();
+
+                    for (int i = 0; i < size; i++)
+                    {
+                        listCuaca.get(i).setTanggal(listCuaca.get(i).getTanggal().replace("Oct", "Okt"));
+                    }
+
                     this.listCuaca = listCuaca;
                     if (presenter != null)
                     {

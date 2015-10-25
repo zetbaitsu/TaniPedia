@@ -158,7 +158,7 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
         suhu.setText(String.format("%s%s", rangkumanCuaca.getRataSuhu(), (char) 0x2103));
         suhu.startAnimation(animation);
         minmax.setVisibility(View.VISIBLE);
-        minmax.setText(String.format("Min : %s%s Max : %s%s", rangkumanCuaca.getSuhuMin(),
+        minmax.setText(String.format("Min : %s%s Maks : %s%s", rangkumanCuaca.getSuhuMin(),
                                      (char) 0x2103, rangkumanCuaca.getSuhuMax(), (char) 0x2103));
         minmax.startAnimation(animation);
         int gambar;

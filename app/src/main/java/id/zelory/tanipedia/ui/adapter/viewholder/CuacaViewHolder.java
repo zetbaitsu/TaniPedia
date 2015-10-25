@@ -55,7 +55,7 @@ public class CuacaViewHolder extends BenihItemViewHolder<Cuaca>
     {
         cuacaText.setText(cuaca.getCuaca());
         suhu.setText(cuaca.getSuhu() + "" + (char) 0x2103);
-        minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Max : " + cuaca.getSuhuMax() + (char) 0x2103);
+        minmax.setText("Min : " + cuaca.getSuhuMin() + (char) 0x2103 + " Maks : " + cuaca.getSuhuMax() + (char) 0x2103);
         tanggal.setText(cuaca.getTanggal());
         kelembaban.setText(cuaca.getKelembaban() + " %");
         tekanan.setText(cuaca.getTekanan() + " hpa");
