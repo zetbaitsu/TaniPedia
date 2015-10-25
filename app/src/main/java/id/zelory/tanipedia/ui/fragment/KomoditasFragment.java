@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class KomoditasFragment extends
         KomoditasController.Presenter
 {
     @Bind(R.id.header) ImageView imageHeader;
+    @Bind(R.id.sumber) TextView sumber;
 
     @Override
     protected int getFragmentView()
@@ -49,6 +51,7 @@ public class KomoditasFragment extends
     protected void onViewReady(Bundle bundle)
     {
         imageHeader.setVisibility(View.GONE);
+        sumber.setVisibility(View.GONE);
         super.onViewReady(bundle);
         collapsingToolbar.setTitle("Harga Komoditas");
     }
@@ -103,5 +106,7 @@ public class KomoditasFragment extends
         recyclerView.startAnimation(animation);
         imageHeader.setVisibility(View.VISIBLE);
         imageHeader.startAnimation(animation);
+        sumber.setVisibility(View.VISIBLE);
+        sumber.startAnimation(animation);
     }
 }

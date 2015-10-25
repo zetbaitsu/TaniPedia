@@ -58,6 +58,7 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
     @Bind(R.id.divider) View divider;
     @Bind(R.id.iv_tekanan) ImageView ivTekanan;
     @Bind(R.id.iv_kelembaban) ImageView ivKelembaban;
+    @Bind(R.id.sumber) TextView sumber;
 
     @Override
     protected int getFragmentView()
@@ -127,6 +128,7 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
         kelembaban.setVisibility(View.GONE);
         ivKelembaban.setVisibility(View.GONE);
         ivTekanan.setVisibility(View.GONE);
+        sumber.setVisibility(View.GONE);
     }
 
     @Override
@@ -203,5 +205,7 @@ public class CuacaFragment extends BaseFragment<CuacaController, CuacaAdapter> i
         ivTekanan.startAnimation(animation);
         ivKelembaban.setVisibility(View.VISIBLE);
         ivKelembaban.startAnimation(animation);
+        sumber.setVisibility(View.VISIBLE);
+        sumber.startAnimation(animation);
     }
 }
