@@ -47,6 +47,19 @@
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="33dp"
+                android:layout_marginStart="33dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Sumber : pip.kementan.org"
+                android:textColor="#FFF"
+                android:textSize="14sp"/>
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/anim_toolbar"
                 android:layout_width="match_parent"
