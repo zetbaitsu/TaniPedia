@@ -144,6 +144,11 @@ public class MainActivity extends BenihActivity
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         break;
+                    case R.id.help:
+                        changeFragment = false;
+                        menuItem.setChecked(false);
+                        startActivity(new Intent(this, HelpActivity.class));
+                        break;
                     case R.id.tentang:
                         changeFragment = false;
                         menuItem.setChecked(false);

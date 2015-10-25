@@ -58,6 +58,10 @@
             android:name=".ui.EditProfileActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".ui.HelpActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"

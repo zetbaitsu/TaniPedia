@@ -47,6 +47,10 @@
                 android:icon="@drawable/ic_logout"
                 android:title="Logout"/>
             <item
+                android:id="@+id/help"
+                android:icon="@drawable/ic_bantuan"
+                android:title="Bantuan"/>
+            <item
                 android:id="@+id/tentang"
                 android:icon="@drawable/ic_about"
                 android:title="Tentang"/>
