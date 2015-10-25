@@ -26,7 +26,9 @@ import java.util.List;
 import butterknife.Bind;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.controller.NotifikasiController;
+import id.zelory.tanipedia.data.LocalDataManager;
 import id.zelory.tanipedia.data.model.Notifikasi;
+import id.zelory.tanipedia.data.model.PakTani;
 import id.zelory.tanipedia.ui.JawabActivity;
 import id.zelory.tanipedia.ui.adapter.NotifikasiAdapter;
 
@@ -38,7 +40,8 @@ import id.zelory.tanipedia.ui.adapter.NotifikasiAdapter;
  * GitHub     : https://github.com/zetbaitsu
  * LinkedIn   : https://id.linkedin.com/in/zetbaitsu
  */
-public class NotifikasiFragment extends BaseFragment<NotifikasiController, NotifikasiAdapter> implements
+public class NotifikasiFragment extends
+        BaseFragment<NotifikasiController, NotifikasiAdapter> implements
         NotifikasiController.Presenter
 {
     @Bind(R.id.header) ImageView imageHeader;
@@ -52,9 +55,12 @@ public class NotifikasiFragment extends BaseFragment<NotifikasiController, Notif
     @Override
     protected void onItemClick(View view, int position)
     {
-        Intent intent = new Intent(getActivity(), JawabActivity.class);
-        intent.putExtra("soal", adapter.getData().get(position).getSoal());
-        startActivity(intent);
+        if (!adapter.getData().get(position).getPakTani().getNama().equals("TaniPedia"))
+        {
+            Intent intent = new Intent(getActivity(), JawabActivity.class);
+            intent.putExtra("soal", adapter.getData().get(position).getSoal());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -100,6 +106,16 @@ public class NotifikasiFragment extends BaseFragment<NotifikasiController, Notif
     @Override
     public void showNotif(List<Notifikasi> notifikasi)
     {
+        if (notifikasi.isEmpty())
+        {
+            Notifikasi notif = new Notifikasi();
+            notif.setIsi("Tidak ada notifikasi terbaru.");
+            PakTani pakTani = new PakTani();
+            pakTani.setNama("TaniPedia");
+            pakTani.setMale(!LocalDataManager.getPakTani().isMale());
+            notif.setPakTani(pakTani);
+            notifikasi.add(notif);
+        }
         adapter.clear();
         adapter.add(notifikasi);
         recyclerView.startAnimation(animation);

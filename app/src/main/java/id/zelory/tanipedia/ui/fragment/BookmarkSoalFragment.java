@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ import id.zelory.tanipedia.ui.adapter.SoalAdapter;
 public class BookmarkSoalFragment extends BenihFragment implements BookmarkSoalController.Presenter
 {
     @Bind(R.id.recycler_view) BenihRecyclerView recyclerView;
+    @Bind(R.id.empty) TextView empty;
     private BookmarkSoalController controller;
     private SoalAdapter adapter;
 
@@ -95,6 +97,8 @@ public class BookmarkSoalFragment extends BenihFragment implements BookmarkSoalC
     {
         adapter.clear();
         adapter.add(listSoal);
+        empty.setText("Anda belum menyimpan pertanyaan satupun.");
+        empty.setVisibility(listSoal.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override

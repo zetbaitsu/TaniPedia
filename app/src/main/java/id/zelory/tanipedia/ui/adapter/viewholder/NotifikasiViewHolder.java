@@ -26,7 +26,6 @@ import id.zelory.benih.view.BenihImageView;
 import id.zelory.tanipedia.R;
 import id.zelory.tanipedia.data.model.Notifikasi;
 import id.zelory.tanipedia.ui.ProfileActivity;
-import timber.log.Timber;
 
 import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnItemClickListener;
 import static id.zelory.benih.adapter.BenihRecyclerAdapter.OnLongItemClickListener;
@@ -62,7 +61,10 @@ public class NotifikasiViewHolder extends BenihItemViewHolder<Notifikasi>
         {
             nama.setText(notifikasi.getPakTani().getNama());
         }
-        nama.setText(nama.getText() + " menjawab pertanyaan anda.");
+        if (!nama.getText().equals("TaniPedia"))
+        {
+            nama.setText(nama.getText() + " menjawab pertanyaan anda.");
+        }
         isi.setText(notifikasi.getIsi());
         tanggal.setText(notifikasi.getTanggal());
         foto.setImageResource(notifikasi.getPakTani().isMale() ? R.drawable.pak_tani : R.drawable.bu_tani);

@@ -121,9 +121,12 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
 
     private void onItemClick(View view, int position)
     {
-        Intent intent = new Intent(this, JawabActivity.class);
-        intent.putExtra("soal", adapter.getData().get(position));
-        startActivity(intent);
+        if (!adapter.getData().get(position).getPakTani().getNama().equals("TaniPedia"))
+        {
+            Intent intent = new Intent(this, JawabActivity.class);
+            intent.putExtra("soal", adapter.getData().get(position));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -208,6 +211,17 @@ public class ProfileActivity extends BenihActivity implements SoalController.Pre
     @Override
     public void showListSoal(List<Soal> listSoal)
     {
+        if (listSoal.isEmpty())
+        {
+            Soal soal = new Soal();
+            PakTani pakTani = new PakTani();
+            pakTani.setNama("TaniPedia");
+            pakTani.setMale(!LocalDataManager.getPakTani().isMale());
+            soal.setPakTani(pakTani);
+            soal.setIsi(this.pakTani.getNama() + " belum mempunyai pertanyaan satupun.");
+            soal.setTanggal(soal.getTanggal());
+            listSoal.add(soal);
+        }
         adapter.clear();
         adapter.add(listSoal);
     }

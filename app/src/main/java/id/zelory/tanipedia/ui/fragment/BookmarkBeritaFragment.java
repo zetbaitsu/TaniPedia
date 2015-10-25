@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class BookmarkBeritaFragment extends BenihFragment implements
         BookmarkBeritaController.Presenter
 {
     @Bind(R.id.recycler_view) BenihRecyclerView recyclerView;
+    @Bind(R.id.empty) TextView empty;
     private BookmarkBeritaController controller;
     private BeritaAdapter adapter;
 
@@ -78,6 +80,8 @@ public class BookmarkBeritaFragment extends BenihFragment implements
     {
         adapter.clear();
         adapter.add(listBerita);
+        empty.setText("Anda belum menyimpan berita satupun.");
+        empty.setVisibility(listBerita.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override
