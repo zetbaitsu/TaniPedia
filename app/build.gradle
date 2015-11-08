@@ -46,7 +46,7 @@ retrolambda {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.6'
-    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.google.android.gms:play-services-location:8.3.0'
     compile 'mbanje.kurt:fabbutton:1.2.0'
     compile('com.afollestad.material-dialogs:core:0.8.4.2@aar') {
         transitive = true
